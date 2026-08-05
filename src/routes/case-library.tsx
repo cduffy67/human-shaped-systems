@@ -33,7 +33,7 @@ export const Route = createFileRoute("/case-library")({
   component: CaseLibrary,
 });
 
-function CaseLibrary() {
+export function CaseLibrary() {
   const [password, setPassword] = useState("");
   const [notice, setNotice] = useState(false);
 

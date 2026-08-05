@@ -48,7 +48,7 @@ export const Route = createFileRoute("/how-i-work")({
   component: HowIWork,
 });
 
-function HowIWork() {
+export function HowIWork() {
   return (
     <Page>
       <PageHeader

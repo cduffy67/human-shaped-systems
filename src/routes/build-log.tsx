@@ -60,7 +60,7 @@ export const Route = createFileRoute("/build-log")({
   component: BuildLog,
 });
 
-function BuildLog() {
+export function BuildLog() {
   return (
     <Page>
       <PageHeader

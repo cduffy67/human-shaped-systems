@@ -66,7 +66,7 @@ export const Route = createFileRoute("/journey")({
   component: Journey,
 });
 
-function Journey() {
+export function Journey() {
   return (
     <Page>
       <PageHeader
