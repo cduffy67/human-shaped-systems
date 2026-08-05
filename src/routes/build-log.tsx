@@ -1,42 +1,49 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { Page, PageHeader } from "@/components/site";
+import { Divider, Page, PageHeader } from "@/components/site";
 
 const ENTRIES = [
   {
     version: "v0",
-    title: "Scaffolded in Lovable",
-    body: "An empty page and a vague idea. Enough to start.",
+    status: "shipped",
+    title: "Blank page, vague idea",
+    body: "Scaffolded in Lovable in an evening. No copy, no plan, just a URL and some nerve.",
   },
   {
     version: "v1",
-    title: "Personal positioning and site structure",
-    body: "Worked out what this site is actually for, and which pages earn their place.",
+    status: "shipped",
+    title: "Worked out what it's for",
+    body: "Decided this is a digital garden, not a CV. Cut the pages that were only there out of habit.",
   },
   {
     version: "v2",
-    title: "Refined with better copy and visual direction",
-    body: "Made it sound like me rather than like a landing page.",
+    status: "shipped",
+    title: "Found the voice",
+    body: "Rewrote everything so it sounds like me on a good day, rather than a landing page on any day.",
   },
   {
     version: "v3",
-    title: "Enriched with real experience, images and career context",
-    body: "Added the journey, a few honest photos, and the parts of the story worth telling publicly.",
+    status: "shipped",
+    title: "Added the real story",
+    body: "The journey, a few honest photos, and the parts of the work that can be told publicly.",
   },
   {
     version: "v4",
-    title: "Reviewed and improved with Claude Code",
-    body: "A second pass on the code itself — structure, clarity, the boring-but-important bits.",
+    status: "shipped",
+    title: "Second pass with AI in the loop",
+    body: "Claude Code on the structure, me on the judgement calls. Faster, and noticeably less sloppy.",
   },
   {
     version: "v5",
-    title: "Versioned and hosted",
-    body: "Proper history and a real URL, so changes are traceable and reversible.",
+    status: "shipped",
+    title: "Warmer, more crafted",
+    body: "New palette, images pulled up the page, and a proper visual rhythm instead of stacked sections.",
   },
   {
     version: "v6",
-    title: "Tweaked slowly over time",
-    body: "Out in the world, still unfinished. That's the point.",
+    status: "ongoing",
+    title: "Out in the world, still unfinished",
+    body: "Versioned, published, and tweaked whenever something bugs me. That's the whole point.",
   },
 ];
 
@@ -47,15 +54,17 @@ export const Route = createFileRoute("/build-log")({
       {
         name: "description",
         content:
-          "A running log of how this site gets built, from scaffold to shipped: an AI-assisted builder workflow, in public.",
+          "A running log of how this site gets built, version by version: fast to ship, AI-assisted, versioned, and tweaked slowly in public.",
       },
       { property: "og:title", content: "Build Log — Conor Duffy" },
       {
         property: "og:description",
-        content:
-          "How this site gets built, version by version — a small learning project in public.",
+        content: "How this site gets built, version by version — a small learning project in public.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://human-shaped-systems.lovable.app/build-log" }],
   }),
   component: BuildLog,
 });
@@ -66,27 +75,55 @@ export function BuildLog() {
       <PageHeader
         eyebrow="Working in public"
         title="Build Log"
-        intro="This site is also a small learning project: a way to understand the modern AI-assisted builder workflow from idea to shipped artefact."
+        intro="Built quickly, refined with AI, versioned over time, tweaked slowly. This page is the receipts."
       />
 
-      <ol className="relative mt-14 space-y-7 border-l border-border pl-8">
-        {ENTRIES.map((entry) => (
-          <li key={entry.version} className="relative">
-            <span className="absolute -left-[2.28rem] top-2 h-3 w-3 rounded-full border-2 border-accent bg-background" />
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="rounded-full bg-secondary px-2.5 py-0.5 font-display text-xs font-semibold text-accent">
+      <div className="mt-10 flex flex-wrap gap-2">
+        {["Built quickly", "Refined with AI", "Versioned", "Learning in public", "Tweaked slowly"].map(
+          (t) => (
+            <span
+              key={t}
+              className="rounded-full border border-border bg-card px-3 py-1 text-xs text-ink-soft"
+            >
+              {t}
+            </span>
+          ),
+        )}
+      </div>
+
+      <ol className="ruled mt-10 space-y-0 rounded-3xl border border-border bg-paper/70 p-5 sm:p-7">
+        {ENTRIES.map((entry, i) => (
+          <li
+            key={entry.version}
+            className={`flex flex-col gap-1 py-5 sm:flex-row sm:gap-6 ${i > 0 ? "border-t border-border/70" : ""}`}
+          >
+            <div className="flex flex-none items-center gap-2 sm:w-32 sm:flex-col sm:items-start">
+              <span className="font-display text-lg font-semibold text-accent">
                 {entry.version}
               </span>
-              <h2 className="text-lg">{entry.title}</h2>
+              <span
+                className={`rounded-full px-2 py-0.5 text-[0.65rem] uppercase tracking-[0.14em] ${
+                  entry.status === "ongoing" ? "bg-clay/30" : "bg-sage/25"
+                }`}
+              >
+                {entry.status}
+              </span>
             </div>
-            <p className="mt-1.5 max-w-2xl text-sm text-ink-soft">{entry.body}</p>
+            <div>
+              <h2 className="text-lg">{entry.title}</h2>
+              <p className="mt-1 max-w-2xl text-sm text-ink-soft">{entry.body}</p>
+            </div>
           </li>
         ))}
       </ol>
 
-      <p className="mt-14 max-w-2xl rounded-2xl border border-dashed border-border bg-card p-5 text-sm text-ink-soft">
-        The point is not to build the most complex site possible. The point is to build something
-        real, ship it quickly, and keep learning in public.
+      <div className="py-12">
+        <Divider mark="✳" />
+      </div>
+
+      <p className="max-w-2xl rounded-2xl border border-dashed border-border bg-card p-5 text-sm text-ink-soft">
+        The goal was never the most complex site possible. It was to build something real, ship it
+        before it was ready, and keep improving it where people can see.
       </p>
     </Page>
   );
