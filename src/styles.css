@@ -33,6 +33,10 @@
   --color-ring: var(--ring);
   --color-paper: var(--paper);
   --color-ink-soft: var(--ink-soft);
+  --color-sage: var(--sage);
+  --color-clay: var(--clay);
+  --color-haze: var(--haze);
+
   --font-display: "Fraunces", Georgia, serif;
   --font-sans: "Karla", ui-sans-serif, system-ui, sans-serif;
 }
