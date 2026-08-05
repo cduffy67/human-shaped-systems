@@ -81,7 +81,7 @@ function Journey() {
             <Card className="relative overflow-hidden">
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute -right-4 -top-6 font-display text-7xl text-secondary"
+                className="pointer-events-none absolute right-3 -top-4 font-display text-6xl text-secondary"
               >
                 {String(i + 1).padStart(2, "0")}
               </span>
