@@ -2,9 +2,20 @@
 
 A warm, lightly whimsical digital-garden-style site. Five pages, card-based, fast to publish, easy to edit.
 
-## Note on the portrait
+## How the photos are used
 
-No photo came through with this message. I'll build the homepage portrait area with a soft circular frame and a warm abstract placeholder shape in the meantime — drop the image into chat any time and I'll swap it in with no layout changes.
+Five photos came through; four get used, each in exactly one place, none repeated.
+
+- **Studio headshot** — the homepage hero portrait, in a soft circular frame with a warm accent ring and a small doodle mark. Natural crop, no filters.
+- **Office group selfie** — a small supporting image in a short "who I work with" card on the homepage, in a rounded rectangle at modest size. Signals collaboration without becoming a team page.
+- **Running event photo** — a light "beyond work" strip near the bottom of the homepage, small and offset, paired with a line or two of personal copy.
+- **Salesforce stage photo** — a thin, wide supporting banner on the Case Library page as a proof-of-work signal. Deliberately not a focal point.
+- **Family photo and the rugby-ground photo** — left out for MVP. Both push the page toward photo-heavy and the family shot is more personal than the tone needs. Easy to add later if you want.
+
+Everywhere else stays photo-free: soft abstract shapes, cards and small doodles carry the visual interest.
+
+All photos are uploaded to the CDN as asset pointers rather than committed into the repo, so the site stays light.
+
 
 ## Look and feel
 
