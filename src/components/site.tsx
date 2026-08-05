@@ -99,6 +99,7 @@ export function BrandPill({ label, className = "" }: { label: string; className?
 export function Plate({
   src,
   alt,
+  title,
   caption,
   className = "",
   ratio = "aspect-[4/3]",
@@ -106,7 +107,8 @@ export function Plate({
 }: {
   src: string;
   alt: string;
-  caption: string;
+  title?: string;
+  caption?: string;
   className?: string;
   ratio?: string;
   position?: string;
