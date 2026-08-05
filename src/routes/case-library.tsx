@@ -40,10 +40,11 @@ export function CaseLibrary() {
   return (
     <Page>
       <PageHeader
-        eyebrow="Behind the curtain"
+        eyebrow="Available privately"
         title="Case Library"
-        intro="Selected case studies are available privately. This area will eventually hold more detailed write-ups on enterprise AI adoption, workflow design, Slack/Salesforce architecture, and value-led transformation work."
+        intro="High-level themes here, detail on request. Most of this work involves other people's names and numbers, so it stays behind a door."
       />
+
 
       <form
         className="mt-10 flex max-w-md flex-wrap gap-2"
