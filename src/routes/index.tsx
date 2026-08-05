@@ -144,18 +144,23 @@ export function Home() {
           <Plate
             src={stage.url}
             alt="Conor speaking on stage at a Salesforce event"
+            ratio="aspect-[4/3]"
             caption="On stage — customer stories and live demos, demo gods permitting."
           />
           <Plate
             src={podcast.url}
             alt="Conor in conversation during a filmed interview"
+            ratio="aspect-[4/3]"
             caption="In conversation — how teams actually adopt AI, not how it demos."
           />
           <Plate
             src={cambridge.url}
             alt="Conor outside a Cambridge college during an AI course"
+            ratio="aspect-[4/3]"
+            position="object-top"
             caption="Still studying — Cambridge, and the habit of being the least expert in the room."
           />
+
         </div>
       </section>
 
