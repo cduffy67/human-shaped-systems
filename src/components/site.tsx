@@ -64,7 +64,11 @@ export function Card({
   className?: string;
 }) {
   return (
-    <div className={`rounded-md border border-border bg-card p-6 ${className}`}>{children}</div>
+    <div
+      className={`card-lift rounded-2xl border border-border bg-card p-6 shadow-[0_1px_0_color-mix(in_oklab,var(--foreground)_7%,transparent)] ${className}`}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -84,7 +88,7 @@ export function Divider({ className = "" }: { className?: string; mark?: string 
 export function BrandPill({ label, className = "" }: { label: string; className?: string }) {
   return (
     <span
-      className={`font-display text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-foreground/70 ${className}`}
+      className={`inline-flex items-center rounded-full border border-border bg-card px-3 py-1 font-display text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-foreground/75 transition-colors hover:border-accent/50 hover:text-foreground ${className}`}
     >
       {label}
     </span>
@@ -107,15 +111,17 @@ export function Plate({
 }) {
   return (
     <figure className={`group ${className}`}>
-      <div className={`overflow-hidden rounded-sm bg-secondary ${ratio}`}>
-        <img
-          src={src}
-          alt={alt}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-        />
+      <div className="tape rotate-[-1.2deg] rounded-sm border border-border bg-card p-3 pb-4 shadow-[0_10px_28px_-22px_color-mix(in_oklab,var(--foreground)_70%,transparent)] transition-transform duration-500 ease-out group-hover:rotate-0">
+        <div className={`overflow-hidden rounded-sm bg-secondary ${ratio}`}>
+          <img
+            src={src}
+            alt={alt}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          />
+        </div>
+        <figcaption className="mt-3 text-sm leading-relaxed text-ink-soft">{caption}</figcaption>
       </div>
-      <figcaption className="mt-3 text-sm leading-relaxed text-ink-soft">{caption}</figcaption>
     </figure>
   );
 }
