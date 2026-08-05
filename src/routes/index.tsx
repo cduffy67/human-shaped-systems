@@ -62,7 +62,7 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-function Home() {
+export function Home() {
   return (
     <div>
       {/* Hero */}

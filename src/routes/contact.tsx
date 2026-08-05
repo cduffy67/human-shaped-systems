@@ -37,7 +37,7 @@ export const Route = createFileRoute("/contact")({
   component: Contact,
 });
 
-function Contact() {
+export function Contact() {
   return (
     <Page className="relative">
       <Blob className="pointer-events-none absolute -right-20 top-0 h-64 w-64 text-primary/10" />

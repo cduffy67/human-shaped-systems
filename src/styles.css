@@ -138,3 +138,42 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  .print-doc .print-section {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .print-doc .print-section:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  .print-doc .rise {
+    animation: none !important;
+  }
+
+  .card-lift,
+  .rounded-2xl,
+  img,
+  svg {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

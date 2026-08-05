@@ -7,6 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { FileDown } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
@@ -152,15 +153,26 @@ function Header() {
           ))}
         </nav>
 
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-label="Toggle menu"
-          className="rounded-full border border-border px-3 py-1.5 text-sm md:hidden"
-        >
-          {open ? "Close" : "Menu"}
-        </button>
+        <div className="flex items-center gap-2">
+          <Link
+            to="/print"
+            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-muted hover:text-foreground"
+            title="Open a printable version of the whole site"
+          >
+            <FileDown className="h-4 w-4" aria-hidden="true" />
+            <span className="hidden sm:inline">Export PDF</span>
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-label="Toggle menu"
+            className="rounded-full border border-border px-3 py-1.5 text-sm md:hidden"
+          >
+            {open ? "Close" : "Menu"}
+          </button>
+        </div>
       </div>
 
       {open ? (
