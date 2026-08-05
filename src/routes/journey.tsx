@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { BrandPill, Card, Divider, Page, PageHeader, SectionHeading } from "@/components/site";
+import { BrandPill, Divider, Page, PageHeader, Plate, SectionHeading } from "@/components/site";
 import stage from "@/assets/stage.png.asset.json";
 import cambridge from "@/assets/cambridge.png.asset.json";
 import podcast from "@/assets/podcast.png.asset.json";
@@ -89,14 +89,14 @@ export function Journey() {
       />
 
       {/* Stage markers */}
-      <div className="mt-10 flex flex-wrap items-center gap-x-2 gap-y-3 rounded-2xl border border-dashed border-border bg-paper/70 p-4">
+      <div className="mt-12 flex flex-wrap items-center gap-x-5 gap-y-2 border-y border-border py-4">
         {["UCD", "KPMG", "Deloitte", "Slack", "Salesforce", "Cambridge", "Slack · AI-native"].map(
           (label, i, arr) => (
-            <span key={label} className="flex items-center gap-2">
+            <span key={label} className="flex items-center gap-5">
               <BrandPill label={label} />
               {i < arr.length - 1 ? (
-                <span aria-hidden="true" className="text-accent/60">
-                  ·
+                <span aria-hidden="true" className="text-border">
+                  /
                 </span>
               ) : null}
             </span>
@@ -104,86 +104,57 @@ export function Journey() {
         )}
       </div>
 
-      {/* Work in the wild — early, not buried */}
-      <section className="mt-12">
+      {/* Photography, early */}
+      <section className="mt-20">
         <SectionHeading note="occasionally in public">Different dimensions</SectionHeading>
-        <div className="grid gap-4 md:grid-cols-3">
-          {[
-            {
-              src: stage.url,
-              alt: "Conor speaking on stage at a Salesforce event",
-              h: "Presenting",
-              p: "Customer stories and live demos, in front of rooms that ask hard questions.",
-            },
-            {
-              src: podcast.url,
-              alt: "Conor in conversation during a filmed interview",
-              h: "In conversation",
-              p: "Interviews and panels — usually about adoption, not features.",
-            },
-            {
-              src: cambridge.url,
-              alt: "Conor outside a Cambridge college during an AI course",
-              h: "Learning",
-              p: "Cambridge, for an AI programme. Being the least expert in the room is a good habit.",
-            },
-          ].map((f) => (
-            <figure
-              key={f.h}
-              className="card-lift overflow-hidden rounded-2xl border border-border bg-card"
-            >
-              <img src={f.src} alt={f.alt} loading="lazy" className="h-44 w-full object-cover" />
-              <figcaption className="p-4">
-                <h3 className="text-base">{f.h}</h3>
-                <p className="mt-1 text-sm text-ink-soft">{f.p}</p>
-              </figcaption>
-            </figure>
-          ))}
+        <div className="grid gap-8 md:grid-cols-3">
+          <Plate
+            src={stage.url}
+            alt="Conor speaking on stage at a Salesforce event"
+            caption="Presenting — customer stories and live demos, demo gods permitting."
+          />
+          <Plate
+            src={podcast.url}
+            alt="Conor in conversation during a filmed interview"
+            caption="In conversation — usually about adoption, not features."
+          />
+          <Plate
+            src={cambridge.url}
+            alt="Conor outside a Cambridge college during an AI course"
+            caption="Learning — Cambridge, for an AI programme. Being the least expert in the room is a good habit."
+          />
         </div>
       </section>
 
-      <div className="py-12">
-        <Divider mark="↓" />
+      <div className="py-20">
+        <Divider />
       </div>
 
       <SectionHeading note="the winding version">Chapter by chapter</SectionHeading>
 
-      <ol className="relative space-y-5 border-l border-dashed border-border pl-6 sm:pl-9">
+      <ol className="border-t border-border">
         {CHAPTERS.map((c, i) => (
-          <li key={c.brand} className="relative">
-            <span className="absolute -left-[1.85rem] top-6 h-2.5 w-2.5 rounded-full border-2 border-accent bg-background sm:-left-[2.6rem]" />
-            <Card className="relative overflow-hidden">
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute right-4 top-3 font-display text-5xl leading-none text-secondary"
-              >
+          <li
+            key={c.brand}
+            className="grid gap-x-10 gap-y-3 border-b border-border py-9 md:grid-cols-[10rem_1fr]"
+          >
+            <div className="flex flex-col gap-1.5">
+              <span className="font-display text-sm text-accent/80">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <div className="relative flex flex-wrap items-center gap-2">
-                <BrandPill label={c.brand} />
-                <span className="rounded-full bg-secondary px-2.5 py-0.5 font-display text-xs font-semibold text-accent">
-                  {c.era}
-                </span>
-                <span className="text-xs text-muted-foreground">{c.years}</span>
-              </div>
-              <h2 className="relative mt-3 text-xl">{c.title}</h2>
-              <p className="relative mt-2 max-w-2xl text-ink-soft">{c.body}</p>
-              <ul className="relative mt-4 flex flex-wrap gap-2">
-                {c.tags.map((t) => (
-                  <li
-                    key={t}
-                    className="rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground"
-                  >
-                    {t}
-                  </li>
-                ))}
-              </ul>
-            </Card>
+              <BrandPill label={c.brand} />
+              <span className="text-sm text-muted-foreground">{c.years}</span>
+            </div>
+            <div>
+              <h2 className="text-2xl leading-snug">{c.title}</h2>
+              <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">{c.body}</p>
+              <p className="mt-4 text-sm italic text-muted-foreground">{c.tags.join(" · ")}</p>
+            </div>
           </li>
         ))}
       </ol>
 
-      <p className="ruled mt-14 max-w-2xl rounded-2xl border border-border bg-paper/70 p-5 text-ink-soft">
+      <p className="mt-16 max-w-2xl border-l border-accent/50 pl-5 text-lg leading-relaxed text-ink-soft">
         The through-line: numbers taught me what a business cares about, consulting taught me how
         change actually lands, and enterprise software taught me how to build something people will
         still use on a wet Tuesday.
