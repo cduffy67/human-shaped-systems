@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { Blob, BrandPill, Card, Divider, Polaroid, SectionHeading, Squiggle } from "@/components/site";
+import { BrandPill, Divider, Label, Plate, SectionHeading } from "@/components/site";
 import headshot from "@/assets/headshot.png.asset.json";
 import team from "@/assets/team.png.asset.json";
 import running from "@/assets/running.png.asset.json";
@@ -37,11 +37,11 @@ const STRENGTHS = [
 ];
 
 const EXPLORING = [
-  "Building with AI tools",
-  "This digital garden",
-  "Enterprise AI adoption",
-  "Systems thinking",
-  "How non-technical people become builders",
+  { title: "Building with AI tools", note: "less designing, more shipping" },
+  { title: "This digital garden", note: "perpetually unfinished, deliberately" },
+  { title: "Enterprise AI adoption", note: "the human bit, not the model bit" },
+  { title: "Systems thinking", note: "an old habit, newly useful" },
+  { title: "How non-technical people become builders", note: "including me" },
 ];
 
 export const Route = createFileRoute("/")({
@@ -74,196 +74,181 @@ export function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <Blob className="pointer-events-none absolute -right-24 -top-32 h-96 w-96 text-clay/25" />
-        <Blob className="pointer-events-none absolute -left-28 top-40 h-72 w-72 rotate-45 text-sage/25" />
-
-        <div className="mx-auto grid w-full max-w-5xl items-center gap-10 px-5 py-14 sm:px-8 sm:py-20 md:grid-cols-[1.2fr_0.8fr]">
-          <div className="rise">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-              Conor Duffy · London / Ireland
-            </p>
-            <h1 className="mt-4 text-4xl leading-[1.06] sm:text-6xl">
-              Enterprise problems,
-              <br />
-              <span className="relative inline-block">
-                human-shaped solutions.
-                <Squiggle className="absolute -bottom-2 left-0 w-full" />
-              </span>
-            </h1>
-            <p className="mt-7 max-w-xl text-lg text-ink-soft">
-              I help turn messy business problems into systems people can actually use, buy and
-              trust — usually somewhere between enterprise software, AI adoption and a whiteboard
-              nobody has rubbed out yet.
-            </p>
-            <p className="mt-3 max-w-xl text-base text-muted-foreground">
-              Part storyteller, part systems thinker, part practical builder. Irish, based in
-              London, still learning out loud.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                to="/how-i-work"
-                className="rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-              >
-                How I work
-              </Link>
-              <Link
-                to="/journey"
-                className="rounded-full border border-border bg-card px-5 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
-              >
-                My journey
-              </Link>
-            </div>
-            <div className="mt-8 flex flex-wrap items-center gap-2">
-              <span className="mr-1 text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                Previously
-              </span>
-              <BrandPill label="KPMG" />
-              <BrandPill label="Deloitte" />
-              <BrandPill label="Salesforce" />
-              <BrandPill label="Slack" />
-            </div>
+      <section className="mx-auto grid w-full max-w-5xl gap-12 px-5 py-16 sm:px-8 sm:py-24 md:grid-cols-[1.25fr_0.75fr] md:items-end">
+        <div className="rise">
+          <Label>Conor Duffy · London / Ireland</Label>
+          <h1 className="mt-6 text-[2.6rem] leading-[1.04] sm:text-[4rem]">
+            Enterprise problems,
+            <br />
+            human-shaped
+            <br />
+            solutions.
+          </h1>
+          <p className="mt-8 max-w-xl text-lg leading-relaxed text-ink-soft">
+            I help turn messy business problems into systems people can actually use, buy and
+            trust — usually somewhere between enterprise software, AI adoption and a whiteboard
+            nobody has rubbed out yet.
+          </p>
+          <p className="mt-4 max-w-xl leading-relaxed text-muted-foreground">
+            Part storyteller, part systems thinker, part practical builder. Irish, based in London,
+            still learning out loud.
+          </p>
+          <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 text-sm">
+            <Link to="/how-i-work" className="quiet-link font-medium text-foreground">
+              How I work →
+            </Link>
+            <Link to="/journey" className="quiet-link font-medium text-foreground">
+              My journey →
+            </Link>
+            <Link to="/contact" className="quiet-link text-ink-soft">
+              Say hello
+            </Link>
           </div>
+        </div>
 
-          <div className="rise relative mx-auto w-full max-w-[280px]">
-            <div className="absolute -inset-3 rounded-full border-2 border-dashed border-accent/40" />
+        <div className="rise">
+          <div className="overflow-hidden rounded-sm bg-secondary">
             <img
               src={headshot.url}
               alt="Conor Duffy"
               width={560}
-              height={560}
-              className="relative aspect-square w-full rounded-full object-cover shadow-[0_24px_60px_-30px_var(--foreground)]"
+              height={700}
+              className="aspect-[4/5] w-full object-cover object-top"
             />
-            <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-border bg-card px-3 py-1 text-xs text-ink-soft">
-              well, hello
-            </span>
           </div>
+          <p className="mt-3 text-sm text-muted-foreground">
+            Conor Duffy — Principal Solutions Engineer, Slack.
+          </p>
         </div>
       </section>
 
-      {/* Field notes — images high on the page */}
-      <section className="mx-auto w-full max-w-5xl px-5 pb-4 sm:px-8">
-        <div className="ruled rounded-3xl border border-border bg-paper/70 p-5 sm:p-8">
-          <SectionHeading note="presenting, learning, talking">Work in the wild</SectionHeading>
-          <div className="grid gap-6 sm:grid-cols-3">
-            <Polaroid
-              src={stage.url}
-              alt="Conor speaking on stage at a Salesforce event"
-              caption="On stage — customer stories and live demos, demo gods permitting."
-              tilt={-1.4}
-            />
-            <Polaroid
-              src={podcast.url}
-              alt="Conor in conversation during a filmed interview"
-              caption="In conversation — how teams actually adopt AI, not how it demos."
-              tilt={1.1}
-            />
-            <Polaroid
-              src={cambridge.url}
-              alt="Conor outside a Cambridge college during an AI course"
-              caption="Still studying — Cambridge, and the habit of being the least expert in the room."
-              tilt={-0.8}
-            />
-          </div>
+      {/* Previously */}
+      <section className="mx-auto w-full max-w-5xl px-5 sm:px-8">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-border py-4">
+          <span className="text-[0.68rem] uppercase tracking-[0.22em] text-muted-foreground">
+            Previously
+          </span>
+          <BrandPill label="KPMG" />
+          <BrandPill label="Deloitte" />
+          <BrandPill label="Salesforce" />
+          <BrandPill label="Slack" />
         </div>
       </section>
 
-      <div className="py-12">
+      {/* Field notes — photography high on the page */}
+      <section className="mx-auto w-full max-w-5xl px-5 pt-20 sm:px-8">
+        <SectionHeading note="presenting, learning, talking">Work in the wild</SectionHeading>
+        <div className="grid gap-8 sm:grid-cols-3">
+          <Plate
+            src={stage.url}
+            alt="Conor speaking on stage at a Salesforce event"
+            caption="On stage — customer stories and live demos, demo gods permitting."
+          />
+          <Plate
+            src={podcast.url}
+            alt="Conor in conversation during a filmed interview"
+            caption="In conversation — how teams actually adopt AI, not how it demos."
+          />
+          <Plate
+            src={cambridge.url}
+            alt="Conor outside a Cambridge college during an AI course"
+            caption="Still studying — Cambridge, and the habit of being the least expert in the room."
+          />
+        </div>
+      </section>
+
+      <div className="py-20">
         <Divider />
       </div>
 
       {/* Positioning */}
-      <section className="mx-auto w-full max-w-5xl px-5 pb-16 sm:px-8">
-        <div className="grid gap-4 rounded-3xl border border-dashed border-border bg-card p-6 sm:p-8 md:grid-cols-[1.4fr_1fr] md:items-center">
-          <p className="max-w-2xl text-lg text-ink-soft">
+      <section className="mx-auto w-full max-w-5xl px-5 sm:px-8">
+        <div className="grid gap-10 md:grid-cols-[1.35fr_1fr] md:items-start">
+          <p className="max-w-2xl text-lg leading-relaxed text-ink-soft">
             I started in accounting, ended up in consulting, and then spent years in enterprise
             software watching good ideas die of vagueness. Most of my work now happens on that messy
             edge where a business problem, a customer story, an architecture diagram and a budget
             all have to agree with each other.
           </p>
-          <p className="rounded-2xl bg-secondary/70 p-4 font-display text-base leading-relaxed text-foreground/80">
+          <blockquote className="border-l border-accent/50 pl-5 font-display text-lg italic leading-relaxed text-foreground/80">
             “The interesting part is rarely the software. It's the people arguing about what the
             software is for.”
-          </p>
+          </blockquote>
         </div>
       </section>
 
-      {/* Strengths */}
-      <section className="mx-auto w-full max-w-5xl px-5 pb-16 sm:px-8">
-        <SectionHeading note="the short version">What I'm good at</SectionHeading>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Strengths — editorial index */}
+      <section className="mx-auto w-full max-w-5xl px-5 pt-24 sm:px-8">
+        <SectionHeading note="the short version">What I do</SectionHeading>
+        <div className="border-t border-border">
           {STRENGTHS.map((s) => (
-            <Card key={s.title} className="relative overflow-hidden">
-              <span
-                aria-hidden="true"
-                className="absolute right-3 top-1 font-display text-4xl text-secondary"
-              >
-                {s.no}
-              </span>
-              <h2 className="relative text-lg">{s.title}</h2>
-              <p className="relative mt-2 text-sm text-ink-soft">{s.body}</p>
-            </Card>
+            <article
+              key={s.title}
+              className="row-warm grid gap-2 border-b border-border px-1 py-6 sm:grid-cols-[3.5rem_1fr_1.35fr] sm:gap-6 sm:px-3"
+            >
+              <span className="font-display text-sm text-accent/80">{s.no}</span>
+              <h3 className="text-xl leading-snug">{s.title}</h3>
+              <p className="leading-relaxed text-ink-soft">{s.body}</p>
+            </article>
           ))}
-          <Card className="flex items-center justify-center bg-secondary/70 text-center">
-            <p className="text-sm text-ink-soft">
-              Accounting → consulting → Slack → Salesforce → Slack again.
-              <br />
-              <Link to="/journey" className="text-accent underline underline-offset-4">
-                The winding version
-              </Link>
-            </p>
-          </Card>
         </div>
+        <p className="mt-6 text-sm text-muted-foreground">
+          Accounting → consulting → Slack → Salesforce → Slack again.{" "}
+          <Link to="/journey" className="quiet-link text-accent">
+            The winding version
+          </Link>
+        </p>
       </section>
 
-      {/* Currently building */}
-      <section className="mx-auto w-full max-w-5xl px-5 pb-16 sm:px-8">
+      {/* Currently exploring — notebook index */}
+      <section className="mx-auto w-full max-w-5xl px-5 pt-24 sm:px-8">
         <SectionHeading note="always in progress">Currently exploring</SectionHeading>
-        <ul className="flex flex-wrap gap-3">
+        <ol className="max-w-3xl">
           {EXPLORING.map((item, i) => (
             <li
-              key={item}
-              className="card-lift rounded-2xl border border-border bg-card px-4 py-3 text-sm"
-              style={{ transform: `rotate(${(i % 2 === 0 ? -1 : 1) * (0.6 + (i % 3) * 0.4)}deg)` }}
+              key={item.title}
+              className="flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-border/70 py-3.5"
             >
-              <span className="mr-2 text-accent">✳</span>
-              {item}
+              <span className="w-6 font-display text-sm text-muted-foreground">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="text-lg">{item.title}</span>
+              <span className="text-sm italic text-muted-foreground">{item.note}</span>
             </li>
           ))}
-        </ul>
+        </ol>
       </section>
 
       {/* Beyond work */}
-      <section className="mx-auto grid w-full max-w-5xl gap-4 px-5 pb-24 sm:px-8 md:grid-cols-2">
-        <Card className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <img
-            src={team.url}
-            alt="Conor with colleagues in the office"
-            loading="lazy"
-            className="h-28 w-full rounded-xl object-cover sm:w-36"
-          />
+      <section className="mx-auto w-full max-w-5xl px-5 pb-28 pt-24 sm:px-8">
+        <SectionHeading note="the rest of it">Beyond work</SectionHeading>
+        <div className="grid gap-10 md:grid-cols-[1fr_1fr] md:items-start">
           <div>
-            <h2 className="text-lg">Mostly a team sport</h2>
-            <p className="mt-1.5 text-sm text-ink-soft">
-              Nothing I've shipped happened alone. The good bits usually came out of an argument.
+            <p className="max-w-xl text-lg leading-relaxed text-ink-soft">
+              Usually running, reading, watching a film, following sport, or somewhere around a
+              table with friends. Most of the good ideas turn up in one of those places rather than
+              at a desk.
+            </p>
+            <p className="mt-4 max-w-xl leading-relaxed text-muted-foreground">
+              Nothing I've shipped happened alone either. The good bits usually came out of an
+              argument with people I like.
             </p>
           </div>
-        </Card>
-
-        <Card className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <img
-            src={running.url}
-            alt="Conor with friends after a running event"
-            loading="lazy"
-            className="h-28 w-full rounded-xl object-cover sm:w-36"
-          />
-          <div>
-            <h2 className="text-lg">Beyond work</h2>
-            <p className="mt-1.5 text-sm text-ink-soft">
-              Running, rugby, and an ongoing search for a decent flat white in London.
-            </p>
+          <div className="grid gap-8 sm:grid-cols-2">
+            <Plate
+              src={running.url}
+              alt="Conor with friends after a running event"
+              caption="Post-race, mostly still talking."
+              ratio="aspect-[3/4]"
+            />
+            <Plate
+              src={team.url}
+              alt="Conor with colleagues in the office"
+              caption="The other half of the work."
+              ratio="aspect-[3/4]"
+            />
           </div>
-        </Card>
+        </div>
       </section>
     </div>
   );

@@ -1,17 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { Blob, Card, Page, PageHeader } from "@/components/site";
+import { Page, PageHeader } from "@/components/site";
 
 const LINKS = [
   {
     label: "LinkedIn",
     value: "linkedin.com/in/conor-duffy",
     href: "https://www.linkedin.com/in/conor-duffy/",
-    icon: "in",
   },
-  { label: "Email", value: "conor_duffy@me.com", href: "mailto:conor_duffy@me.com", icon: "@" },
+  { label: "Email", value: "conor_duffy@me.com", href: "mailto:conor_duffy@me.com" },
   // Swap in the real handle when there's something worth showing.
-  { label: "GitHub", value: "coming soon", href: "#", icon: "{ }" },
+  { label: "GitHub", value: "coming soon", href: "#" },
 ];
 
 export const Route = createFileRoute("/contact")({
@@ -39,37 +38,36 @@ export const Route = createFileRoute("/contact")({
 
 export function Contact() {
   return (
-    <Page className="relative">
-      <Blob className="pointer-events-none absolute -right-20 top-0 h-64 w-64 text-primary/10" />
+    <Page>
       <PageHeader
         eyebrow="Say hello"
         title="Contact"
         intro="Always happy to chat about enterprise AI, systems thinking, solution architecture, or the odd good coffee."
       />
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-3">
+      <div className="mt-14 max-w-2xl border-t border-border">
         {LINKS.map((link) => (
           <a
             key={link.label}
             href={link.href}
             target={link.href.startsWith("http") ? "_blank" : undefined}
             rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-            className="block"
+            className="row-warm flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-border px-1 py-5 sm:px-3"
           >
-            <Card>
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary font-display text-sm text-accent">
-                {link.icon}
-              </span>
-              <h2 className="mt-3 text-lg">{link.label}</h2>
-              <p className="mt-1 break-words text-sm text-muted-foreground">{link.value}</p>
-            </Card>
+            <span className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground sm:w-24">
+              {link.label}
+            </span>
+            <span className="quiet-link relative flex-1 font-display text-lg text-foreground">
+              {link.value}
+            </span>
           </a>
         ))}
       </div>
 
-      <p className="mt-8 text-sm text-ink-soft">
-        Based in <strong className="font-semibold">London</strong>, from{" "}
-        <strong className="font-semibold">Ireland</strong>. Usually reachable somewhere in between.
+      <p className="mt-10 max-w-2xl leading-relaxed text-ink-soft">
+        Based in <span className="font-medium">London</span>, from{" "}
+        <span className="font-medium">Ireland</span>. Usually reachable somewhere in between, and
+        generally quicker to reply to a good question than a good pitch.
       </p>
     </Page>
   );

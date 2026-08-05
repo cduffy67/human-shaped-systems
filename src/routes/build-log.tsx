@@ -41,6 +41,12 @@ const ENTRIES = [
   },
   {
     version: "v6",
+    status: "shipped",
+    title: "De-templated",
+    body: "Took the cards, pills and squiggles out. Parchment, espresso ink, hairlines and whitespace instead — closer to a book than a landing page.",
+  },
+  {
+    version: "v7",
     status: "ongoing",
     title: "Out in the world, still unfinished",
     body: "Versioned, published, and tweaked whenever something bugs me. That's the whole point.",
@@ -59,7 +65,8 @@ export const Route = createFileRoute("/build-log")({
       { property: "og:title", content: "Build Log — Conor Duffy" },
       {
         property: "og:description",
-        content: "How this site gets built, version by version — a small learning project in public.",
+        content:
+          "How this site gets built, version by version — a small learning project in public.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -78,50 +85,39 @@ export function BuildLog() {
         intro="Built quickly, refined with AI, versioned over time, tweaked slowly. This page is the receipts."
       />
 
-      <div className="mt-10 flex flex-wrap gap-2">
-        {["Built quickly", "Refined with AI", "Versioned", "Learning in public", "Tweaked slowly"].map(
-          (t) => (
-            <span
-              key={t}
-              className="rounded-full border border-border bg-card px-3 py-1 text-xs text-ink-soft"
-            >
-              {t}
-            </span>
-          ),
-        )}
-      </div>
+      <p className="mt-8 text-sm italic text-muted-foreground">
+        Built quickly · refined with AI · versioned · learning in public · tweaked slowly
+      </p>
 
-      <ol className="ruled mt-10 space-y-0 rounded-3xl border border-border bg-paper/70 p-5 sm:p-7">
-        {ENTRIES.map((entry, i) => (
+      <ol className="mt-14 border-t border-border">
+        {ENTRIES.map((entry) => (
           <li
             key={entry.version}
-            className={`flex flex-col gap-1 py-5 sm:flex-row sm:gap-6 ${i > 0 ? "border-t border-border/70" : ""}`}
+            className="row-warm grid gap-x-8 gap-y-2 border-b border-border px-1 py-6 sm:grid-cols-[6rem_1fr] sm:px-3"
           >
-            <div className="flex flex-none items-center gap-2 sm:w-32 sm:flex-col sm:items-start">
-              <span className="font-display text-lg font-semibold text-accent">
-                {entry.version}
-              </span>
+            <div className="flex items-baseline gap-3 sm:flex-col sm:gap-1">
+              <span className="font-display text-lg text-accent">{entry.version}</span>
               <span
-                className={`rounded-full px-2 py-0.5 text-[0.65rem] uppercase tracking-[0.14em] ${
-                  entry.status === "ongoing" ? "bg-clay/30" : "bg-sage/25"
+                className={`text-[0.62rem] uppercase tracking-[0.2em] ${
+                  entry.status === "ongoing" ? "text-tobacco" : "text-muted-foreground"
                 }`}
               >
                 {entry.status}
               </span>
             </div>
             <div>
-              <h2 className="text-lg">{entry.title}</h2>
-              <p className="mt-1 max-w-2xl text-sm text-ink-soft">{entry.body}</p>
+              <h2 className="text-lg leading-snug">{entry.title}</h2>
+              <p className="mt-1.5 max-w-2xl leading-relaxed text-ink-soft">{entry.body}</p>
             </div>
           </li>
         ))}
       </ol>
 
-      <div className="py-12">
-        <Divider mark="✳" />
+      <div className="py-16">
+        <Divider />
       </div>
 
-      <p className="max-w-2xl rounded-2xl border border-dashed border-border bg-card p-5 text-sm text-ink-soft">
+      <p className="max-w-2xl text-lg leading-relaxed text-ink-soft">
         The goal was never the most complex site possible. It was to build something real, ship it
         before it was ready, and keep improving it where people can see.
       </p>

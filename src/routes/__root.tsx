@@ -34,7 +34,7 @@ function NotFoundComponent() {
         <div className="mt-6">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-sm bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Back home
           </Link>
@@ -64,13 +64,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-sm bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Try again
           </button>
           <a
             href="/"
-            className="inline-flex items-center justify-center rounded-full border border-border bg-card px-5 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
+            className="inline-flex items-center justify-center rounded-sm border border-border bg-card px-5 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
           >
             Go home
           </a>
@@ -101,7 +101,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Karla:wght@400;500;600&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
@@ -129,34 +129,33 @@ function RootShell({ children }: { children: ReactNode }) {
 function Header() {
   const [open, setOpen] = useState(false);
   const linkBase =
-    "rounded-full px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-muted hover:text-foreground";
+    "quiet-link relative py-1 text-sm text-ink-soft transition-colors hover:text-foreground";
 
   return (
-    <header className="sticky top-0 z-30 border-b border-border/70 bg-background/85 backdrop-blur">
-      <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-5 py-3 sm:px-8">
-        <Link to="/" className="font-display text-lg font-semibold tracking-tight">
+    <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur">
+      <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-5 py-4 sm:px-8">
+        <Link to="/" className="font-display text-lg tracking-tight">
           Conor Duffy
-          <span className="ml-1 text-accent">.</span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-7 md:flex">
           {NAV.map((item) => (
             <Link
               key={item.to}
               to={item.to}
               className={linkBase}
               activeOptions={{ exact: item.to === "/" }}
-              activeProps={{ className: "bg-secondary text-foreground font-medium" }}
+              activeProps={{ className: "text-foreground font-medium" }}
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-5">
           <Link
             to="/print"
-            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm text-ink-soft transition-colors hover:bg-muted hover:text-foreground"
+            className="quiet-link relative inline-flex items-center gap-1.5 py-1 text-sm text-ink-soft transition-colors hover:text-foreground"
             title="Open a printable version of the whole site"
           >
             <FileDown className="h-4 w-4" aria-hidden="true" />
@@ -168,7 +167,7 @@ function Header() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-label="Toggle menu"
-            className="rounded-full border border-border px-3 py-1.5 text-sm md:hidden"
+            className="text-sm text-ink-soft md:hidden"
           >
             {open ? "Close" : "Menu"}
           </button>
@@ -176,15 +175,15 @@ function Header() {
       </div>
 
       {open ? (
-        <nav className="flex flex-col gap-1 border-t border-border px-5 pb-4 pt-2 md:hidden">
+        <nav className="flex flex-col border-t border-border px-5 pb-4 pt-1 md:hidden">
           {NAV.map((item) => (
             <Link
               key={item.to}
               to={item.to}
               onClick={() => setOpen(false)}
-              className="rounded-xl px-3 py-2 text-sm text-ink-soft hover:bg-muted"
+              className="border-b border-border/60 py-2.5 text-sm text-ink-soft"
               activeOptions={{ exact: item.to === "/" }}
-              activeProps={{ className: "bg-secondary text-foreground font-medium" }}
+              activeProps={{ className: "text-foreground font-medium" }}
             >
               {item.label}
             </Link>
@@ -197,9 +196,9 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="border-t border-border/70">
-      <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-5 py-8 text-sm text-muted-foreground sm:px-8">
-        <p>Built quickly, tweaked slowly.</p>
+    <footer className="border-t border-border">
+      <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-5 py-10 text-sm text-muted-foreground sm:px-8">
+        <p className="italic">Built quickly, tweaked slowly.</p>
         <p>London / Ireland</p>
       </div>
     </footer>
