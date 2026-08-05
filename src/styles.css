@@ -185,3 +185,40 @@
     page-break-inside: avoid;
   }
 }
+
+/* faint ruled-notebook backdrop for field-note sections */
+@utility ruled {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 31px,
+    color-mix(in oklab, var(--foreground) 7%, transparent) 31px,
+    color-mix(in oklab, var(--foreground) 7%, transparent) 32px
+  );
+}
+
+/* small strip of washi tape for pinned photos */
+@utility tape {
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: -0.55rem;
+    left: 50%;
+    width: 4.5rem;
+    height: 1.1rem;
+    transform: translateX(-50%) rotate(-2.5deg);
+    background: color-mix(in oklab, var(--clay) 55%, transparent);
+    border-radius: 2px;
+    opacity: 0.75;
+  }
+}
+
+@utility hairline {
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in oklab, var(--foreground) 22%, transparent),
+    transparent
+  );
+}
