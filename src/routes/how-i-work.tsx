@@ -1,11 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { Divider, Page, PageHeader, SectionHeading } from "@/components/site";
+import { Divider, Label, Page, PageHeader, SectionHeading } from "@/components/site";
 
 const PHASES = [
   {
     phase: "Messy problem",
-    tone: "clay",
     steps: [
       {
         title: "Start with the user journey",
@@ -19,7 +18,6 @@ const PHASES = [
   },
   {
     phase: "Mapped system",
-    tone: "haze",
     steps: [
       {
         title: "Expose the trade-offs",
@@ -33,7 +31,6 @@ const PHASES = [
   },
   {
     phase: "Credible solution",
-    tone: "sage",
     steps: [
       {
         title: "Build the smallest credible version",
@@ -46,12 +43,6 @@ const PHASES = [
     ],
   },
 ];
-
-const TONE: Record<string, string> = {
-  clay: "bg-clay/25",
-  haze: "bg-haze/35",
-  sage: "bg-sage/25",
-};
 
 export const Route = createFileRoute("/how-i-work")({
   head: () => ({
@@ -84,45 +75,37 @@ export function HowIWork() {
         intro="Not a methodology. Three moves, six habits, and the order things usually need to happen in."
       />
 
-      {/* Flow map */}
-      <div className="mt-12 grid items-center gap-3 rounded-3xl border border-dashed border-border bg-paper/70 p-5 text-center font-display text-sm sm:grid-cols-[1fr_auto_1fr_auto_1fr] sm:p-6">
-        <span className="rounded-full bg-clay/25 px-4 py-2">Messy problem</span>
+      {/* Flow line */}
+      <div className="mt-14 flex flex-wrap items-center gap-x-4 gap-y-2 border-y border-border py-5 font-display text-lg">
+        <span>Messy problem</span>
         <span aria-hidden="true" className="text-accent">
           →
         </span>
-        <span className="rounded-full bg-haze/35 px-4 py-2">Mapped system</span>
+        <span>mapped system</span>
         <span aria-hidden="true" className="text-accent">
           →
         </span>
-        <span className="rounded-full bg-sage/25 px-4 py-2">Credible solution</span>
+        <span>credible solution</span>
       </div>
 
-      <div className="mt-14 space-y-12">
+      <div className="mt-16 space-y-16">
         {PHASES.map((p, pi) => (
-          <section key={p.phase} className="relative">
-            <div className="flex flex-wrap items-center gap-3">
-              <span
-                className={`rounded-full px-3 py-1 font-display text-xs font-semibold uppercase tracking-[0.16em] ${TONE[p.tone]}`}
-              >
-                {p.phase}
-              </span>
-              <span className="hairline h-px flex-1" />
-              <span className="font-display text-sm text-muted-foreground">
+          <section key={p.phase}>
+            <div className="flex flex-wrap items-baseline gap-x-5 border-b border-border pb-3">
+              <Label>{p.phase}</Label>
+              <span className="ml-auto font-display text-sm text-muted-foreground">
                 0{pi + 1} / 03
               </span>
             </div>
 
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-x-12 sm:grid-cols-2">
               {p.steps.map((s, si) => (
-                <article
-                  key={s.title}
-                  className="card-lift relative rounded-2xl border border-border bg-card p-5"
-                >
-                  <span className="font-display text-xs uppercase tracking-[0.16em] text-accent">
+                <article key={s.title} className="border-b border-border/70 py-6">
+                  <span className="font-display text-xs uppercase tracking-[0.2em] text-muted-foreground">
                     Step {pi * 2 + si + 1}
                   </span>
-                  <h2 className="mt-2 text-xl">{s.title}</h2>
-                  <p className="mt-2 text-ink-soft">{s.body}</p>
+                  <h2 className="mt-2 text-xl leading-snug">{s.title}</h2>
+                  <p className="mt-2 leading-relaxed text-ink-soft">{s.body}</p>
                 </article>
               ))}
             </div>
@@ -130,12 +113,12 @@ export function HowIWork() {
         ))}
       </div>
 
-      <div className="py-12">
-        <Divider mark="↓" />
+      <div className="py-16">
+        <Divider />
       </div>
 
       <SectionHeading note="the honest caveat">In practice</SectionHeading>
-      <p className="ruled max-w-2xl rounded-2xl border border-border bg-paper/70 p-5 text-ink-soft">
+      <p className="max-w-2xl text-lg leading-relaxed text-ink-soft">
         None of this is rigid. Some projects need three of these and a whiteboard. Some need all six
         twice, and a difficult conversation in the middle.
       </p>
