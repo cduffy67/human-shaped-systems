@@ -1,44 +1,57 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { Card, Page, PageHeader, SectionHeading } from "@/components/site";
+import { BrandPill, Card, Divider, Page, PageHeader, SectionHeading } from "@/components/site";
 import stage from "@/assets/stage.png.asset.json";
 import cambridge from "@/assets/cambridge.png.asset.json";
 import podcast from "@/assets/podcast.png.asset.json";
 
 const CHAPTERS = [
   {
-    era: "Dublin",
+    brand: "UCD / Dublin",
+    era: "Roots",
     title: "Numbers first",
-    years: "Commerce, then audit",
-    body: "Started in Dublin with a commerce degree and a training contract at KPMG — insurance, SaaS and an Irish pillar bank. Learning to read a business through its accounts turned out to be a useful superpower later.",
+    years: "Commerce, then a training contract",
+    body: "Dublin, a commerce degree, and an audit training contract at KPMG — insurance, SaaS and an Irish pillar bank. Learning to read a business through its accounts turned out to be a quiet superpower later.",
     tags: ["Irish roots", "ACMA, CGMA", "Audit"],
   },
   {
-    era: "Deloitte",
-    title: "Consulting, at scale",
+    brand: "KPMG",
+    era: "Audit",
+    title: "Learning how businesses actually run",
+    years: "Training contract",
+    body: "Three years of looking at companies from the inside out. You stop being impressed by strategy decks quite quickly when you've reconciled the numbers behind them.",
+    tags: ["Financial services", "Assurance", "Detail"],
+  },
+  {
+    brand: "Deloitte",
+    era: "Consulting",
+    title: "Transformation, at scale",
     years: "2018 – 2022",
-    body: "Four years in financial digital transformation: SAP S/4HANA finance programmes for FTSE 100 clients, from design through to deployment, plus CFO labs and workshops. This is where messy stakeholder reality became the interesting part.",
+    body: "Four years in financial digital transformation: SAP S/4HANA finance programmes for FTSE 100 clients, design through deployment, plus CFO labs and workshops. This is where messy stakeholder reality became the interesting part.",
     tags: ["Finance transformation", "Programme delivery", "Executive rooms"],
   },
   {
-    era: "Slack",
-    title: "Enterprise and fintech",
+    brand: "Slack",
+    era: "Enterprise",
+    title: "Solutions engineering, first lap",
     years: "2022 – 2025",
-    body: "Solutions engineering for enterprise financial services and fintech. Rookie of the Year, then #1 in EMEA. Built the UKI Partner Network and designed Slack Campfires, an enablement programme that ended up running globally.",
-    tags: ["Solution design", "Zero-to-one programmes", "Storytelling"],
+    body: "Enterprise financial services and fintech. Rookie of the Year, then #1 in EMEA. Built the UKI Partner Network and designed Slack Campfires, an enablement programme that ended up running globally.",
+    tags: ["Solution design", "Zero-to-one", "Storytelling"],
   },
   {
-    era: "Salesforce",
+    brand: "Salesforce",
+    era: "Platform",
     title: "High tech and agents",
     years: "2025",
-    body: "Led solution engineering for High Tech Enterprise, shaping go-to-market for Agentforce and the wider platform. A year of learning how quickly AI moves from slide to production — and how differently teams react to it.",
+    body: "Led solution engineering for High Tech Enterprise, shaping go-to-market for Agentforce and the wider platform. A year of watching AI move from slide to production, and of how differently teams react to that.",
     tags: ["Agentforce", "Go-to-market", "AI adoption"],
   },
   {
+    brand: "Slack · AI-native",
     era: "Now",
-    title: "AI-native, second lap",
+    title: "Second lap, building this time",
     years: "Present",
-    body: "Back at Slack as Principal Solutions Engineer, working where conversation, CRM and AI meet. Increasingly building things myself rather than just designing them on a whiteboard.",
+    body: "Back at Slack as Principal Solutions Engineer, working where conversation, CRM and AI meet — and increasingly building things myself instead of only designing them on a whiteboard.",
     tags: ["Principal SE", "Building", "Learning in public"],
   },
 ];
@@ -75,24 +88,86 @@ export function Journey() {
         intro="A slightly winding route: accounting, consulting, then enterprise software. Each step added a language — numbers, systems, customers — and I still use all three."
       />
 
-      <ol className="mt-14 space-y-5">
+      {/* Stage markers */}
+      <div className="mt-10 flex flex-wrap items-center gap-x-2 gap-y-3 rounded-2xl border border-dashed border-border bg-paper/70 p-4">
+        {["UCD", "KPMG", "Deloitte", "Slack", "Salesforce", "Cambridge", "Slack · AI-native"].map(
+          (label, i, arr) => (
+            <span key={label} className="flex items-center gap-2">
+              <BrandPill label={label} />
+              {i < arr.length - 1 ? (
+                <span aria-hidden="true" className="text-accent/60">
+                  ·
+                </span>
+              ) : null}
+            </span>
+          ),
+        )}
+      </div>
+
+      {/* Work in the wild — early, not buried */}
+      <section className="mt-12">
+        <SectionHeading note="occasionally in public">Different dimensions</SectionHeading>
+        <div className="grid gap-4 md:grid-cols-3">
+          {[
+            {
+              src: stage.url,
+              alt: "Conor speaking on stage at a Salesforce event",
+              h: "Presenting",
+              p: "Customer stories and live demos, in front of rooms that ask hard questions.",
+            },
+            {
+              src: podcast.url,
+              alt: "Conor in conversation during a filmed interview",
+              h: "In conversation",
+              p: "Interviews and panels — usually about adoption, not features.",
+            },
+            {
+              src: cambridge.url,
+              alt: "Conor outside a Cambridge college during an AI course",
+              h: "Learning",
+              p: "Cambridge, for an AI programme. Being the least expert in the room is a good habit.",
+            },
+          ].map((f) => (
+            <figure
+              key={f.h}
+              className="card-lift overflow-hidden rounded-2xl border border-border bg-card"
+            >
+              <img src={f.src} alt={f.alt} loading="lazy" className="h-44 w-full object-cover" />
+              <figcaption className="p-4">
+                <h3 className="text-base">{f.h}</h3>
+                <p className="mt-1 text-sm text-ink-soft">{f.p}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <div className="py-12">
+        <Divider mark="↓" />
+      </div>
+
+      <SectionHeading note="the winding version">Chapter by chapter</SectionHeading>
+
+      <ol className="relative space-y-5 border-l border-dashed border-border pl-6 sm:pl-9">
         {CHAPTERS.map((c, i) => (
-          <li key={c.era}>
+          <li key={c.brand} className="relative">
+            <span className="absolute -left-[1.85rem] top-6 h-2.5 w-2.5 rounded-full border-2 border-accent bg-background sm:-left-[2.6rem]" />
             <Card className="relative overflow-hidden">
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute right-3 -top-4 font-display text-6xl text-secondary"
+                className="pointer-events-none absolute right-4 top-3 font-display text-5xl leading-none text-secondary"
               >
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <div className="relative flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="rounded-full bg-secondary px-3 py-0.5 font-display text-xs font-semibold text-accent">
+              <div className="relative flex flex-wrap items-center gap-2">
+                <BrandPill label={c.brand} />
+                <span className="rounded-full bg-secondary px-2.5 py-0.5 font-display text-xs font-semibold text-accent">
                   {c.era}
                 </span>
-                <h2 className="text-xl">{c.title}</h2>
                 <span className="text-xs text-muted-foreground">{c.years}</span>
               </div>
-              <p className="relative mt-3 max-w-2xl text-ink-soft">{c.body}</p>
+              <h2 className="relative mt-3 text-xl">{c.title}</h2>
+              <p className="relative mt-2 max-w-2xl text-ink-soft">{c.body}</p>
               <ul className="relative mt-4 flex flex-wrap gap-2">
                 {c.tags.map((t) => (
                   <li
@@ -108,61 +183,10 @@ export function Journey() {
         ))}
       </ol>
 
-      <section className="mt-20">
-        <SectionHeading note="occasionally in public">Work in the wild</SectionHeading>
-        <div className="grid gap-4 md:grid-cols-3">
-          <figure className="card-lift overflow-hidden rounded-2xl border border-border bg-card">
-            <img
-              src={stage.url}
-              alt="Conor speaking on stage at a Salesforce event"
-              loading="lazy"
-              className="h-44 w-full object-cover"
-            />
-            <figcaption className="p-4">
-              <h3 className="text-base">On stage</h3>
-              <p className="mt-1 text-sm text-ink-soft">
-                Customer stories, live demos, and the occasional demo gods moment.
-              </p>
-            </figcaption>
-          </figure>
-
-          <figure className="card-lift overflow-hidden rounded-2xl border border-border bg-card">
-            <img
-              src={podcast.url}
-              alt="Conor in conversation during a filmed interview"
-              loading="lazy"
-              className="h-44 w-full object-cover"
-            />
-            <figcaption className="p-4">
-              <h3 className="text-base">In conversation</h3>
-              <p className="mt-1 text-sm text-ink-soft">
-                Interviews and panels — usually about how teams actually adopt AI, not how it demos.
-              </p>
-            </figcaption>
-          </figure>
-
-          <figure className="card-lift overflow-hidden rounded-2xl border border-border bg-card">
-            <img
-              src={cambridge.url}
-              alt="Conor outside a Cambridge college during an AI course"
-              loading="lazy"
-              className="h-44 w-full object-cover"
-            />
-            <figcaption className="p-4">
-              <h3 className="text-base">Still studying</h3>
-              <p className="mt-1 text-sm text-ink-soft">
-                Cambridge, for an AI programme. Being the least expert person in the room is a good
-                habit.
-              </p>
-            </figcaption>
-          </figure>
-        </div>
-      </section>
-
-      <p className="mt-14 max-w-2xl rounded-2xl bg-secondary/70 p-5 text-sm text-ink-soft">
+      <p className="ruled mt-14 max-w-2xl rounded-2xl border border-border bg-paper/70 p-5 text-ink-soft">
         The through-line: numbers taught me what a business cares about, consulting taught me how
         change actually lands, and enterprise software taught me how to build something people will
-        use on a Tuesday.
+        still use on a wet Tuesday.
       </p>
     </Page>
   );

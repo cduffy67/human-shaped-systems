@@ -40,10 +40,11 @@ export function CaseLibrary() {
   return (
     <Page>
       <PageHeader
-        eyebrow="Behind the curtain"
+        eyebrow="Available privately"
         title="Case Library"
-        intro="Selected case studies are available privately. This area will eventually hold more detailed write-ups on enterprise AI adoption, workflow design, Slack/Salesforce architecture, and value-led transformation work."
+        intro="High-level themes here, detail on request. Most of this work involves other people's names and numbers, so it stays behind a door."
       />
+
 
       <form
         className="mt-10 flex max-w-md flex-wrap gap-2"
@@ -72,7 +73,7 @@ export function CaseLibrary() {
       </form>
       {notice ? (
         <p className="mt-3 text-sm text-accent">
-          Shared by request for now — drop me a note and I'll send what's relevant.
+          Shared by request — send me a note and I will pass on whatever is relevant.
         </p>
       ) : null}
 
@@ -83,7 +84,7 @@ export function CaseLibrary() {
 
       <div className="mt-10 grid gap-4 sm:grid-cols-2">
         {LOCKED.map((title) => (
-          <Card key={title} className="bg-secondary/50">
+          <Card key={title} className="bg-paper/70">
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-lg">{title}</h2>
               <svg

@@ -89,3 +89,55 @@ export function Blob({ className = "" }: { className?: string }) {
     </svg>
   );
 }
+
+/** Thin editorial divider with a small centred mark. */
+export function Divider({ mark = "✳" }: { mark?: string }) {
+  return (
+    <div aria-hidden="true" className="mx-auto flex w-full max-w-5xl items-center gap-4 px-5 sm:px-8">
+      <span className="hairline h-px flex-1" />
+      <span className="font-display text-sm text-accent/70">{mark}</span>
+      <span className="hairline h-px flex-1" />
+    </div>
+  );
+}
+
+/** Monochrome text badge used as a logo-style marker. */
+export function BrandPill({ label, className = "" }: { label: string; className?: string }) {
+  return (
+    <span
+      className={`inline-flex items-center rounded-md border border-foreground/25 px-2 py-0.5 font-display text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-foreground/70 ${className}`}
+    >
+      {label}
+    </span>
+  );
+}
+
+/** Pinned photo with a handwritten-feel caption. */
+export function Polaroid({
+  src,
+  alt,
+  caption,
+  tilt = 0,
+  className = "",
+}: {
+  src: string;
+  alt: string;
+  caption: string;
+  tilt?: number;
+  className?: string;
+}) {
+  return (
+    <figure
+      className={`card-lift tape rounded-xl border border-border bg-paper p-2.5 pb-3 shadow-[0_12px_30px_-22px_var(--foreground)] ${className}`}
+      style={{ transform: `rotate(${tilt}deg)` }}
+    >
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        className="h-40 w-full rounded-lg object-cover sm:h-44"
+      />
+      <figcaption className="mt-2.5 px-1 text-sm text-ink-soft">{caption}</figcaption>
+    </figure>
+  );
+}

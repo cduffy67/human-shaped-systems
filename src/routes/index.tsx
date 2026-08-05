@@ -1,36 +1,44 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { Blob, Card, SectionHeading, Squiggle } from "@/components/site";
+import { Blob, BrandPill, Card, Divider, Polaroid, SectionHeading, Squiggle } from "@/components/site";
 import headshot from "@/assets/headshot.png.asset.json";
 import team from "@/assets/team.png.asset.json";
 import running from "@/assets/running.png.asset.json";
+import stage from "@/assets/stage.png.asset.json";
+import podcast from "@/assets/podcast.png.asset.json";
+import cambridge from "@/assets/cambridge.png.asset.json";
 
 const STRENGTHS = [
   {
-    title: "Value-led Solutions",
-    body: "Start from the outcome someone is willing to pay for, then work backwards to the build.",
+    no: "01",
+    title: "Value-led solutions",
+    body: "Start from the outcome someone will actually pay for, then work backwards to the build.",
   },
   {
-    title: "Ambiguity to Execution",
-    body: "Take a vague, half-formed problem and turn it into something a team can actually start on.",
+    no: "02",
+    title: "Ambiguity to execution",
+    body: "Turn a vague, half-formed problem into something a team can start on this week.",
   },
   {
-    title: "Executive to Technical Fluency",
-    body: "Same story, two rooms. Board-level framing upstairs, honest detail with the engineers.",
+    no: "03",
+    title: "Two rooms, one story",
+    body: "Board-level framing upstairs, honest detail with the engineers. Same story either way.",
   },
   {
-    title: "Pragmatic Architecture",
+    no: "04",
+    title: "Pragmatic architecture",
     body: "Enough structure to hold weight, not so much that nobody can change it later.",
   },
   {
-    title: "Commercially Grounded Thinking",
-    body: "An accountant's instinct for what a decision costs, and what it's actually worth.",
+    no: "05",
+    title: "Commercially grounded",
+    body: "An accountant's instinct for what a decision costs, and what it's genuinely worth.",
   },
 ];
 
 const EXPLORING = [
-  "AI-assisted product building",
-  "Personal digital garden",
+  "Building with AI tools",
+  "This digital garden",
   "Enterprise AI adoption",
   "Systems thinking",
   "How non-technical people become builders",
@@ -67,15 +75,15 @@ export function Home() {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <Blob className="pointer-events-none absolute -right-24 -top-32 h-96 w-96 text-accent/10" />
-        <Blob className="pointer-events-none absolute -left-28 top-40 h-72 w-72 rotate-45 text-primary/10" />
+        <Blob className="pointer-events-none absolute -right-24 -top-32 h-96 w-96 text-clay/25" />
+        <Blob className="pointer-events-none absolute -left-28 top-40 h-72 w-72 rotate-45 text-sage/25" />
 
-        <div className="mx-auto grid w-full max-w-5xl items-center gap-10 px-5 py-16 sm:px-8 sm:py-24 md:grid-cols-[1.25fr_0.75fr]">
+        <div className="mx-auto grid w-full max-w-5xl items-center gap-10 px-5 py-14 sm:px-8 sm:py-20 md:grid-cols-[1.2fr_0.8fr]">
           <div className="rise">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
               Conor Duffy · London / Ireland
             </p>
-            <h1 className="mt-4 text-4xl leading-[1.08] sm:text-6xl">
+            <h1 className="mt-4 text-4xl leading-[1.06] sm:text-6xl">
               Enterprise problems,
               <br />
               <span className="relative inline-block">
@@ -84,12 +92,13 @@ export function Home() {
               </span>
             </h1>
             <p className="mt-7 max-w-xl text-lg text-ink-soft">
-              I work at the intersection of enterprise software, AI adoption, customer storytelling
-              and practical architecture — helping teams turn messy business problems into systems
-              people can actually use, buy and trust.
+              I help turn messy business problems into systems people can actually use, buy and
+              trust — usually somewhere between enterprise software, AI adoption and a whiteboard
+              nobody has rubbed out yet.
             </p>
-            <p className="mt-4 max-w-xl text-base text-muted-foreground">
-              Part storyteller, part systems thinker, part practical builder.
+            <p className="mt-3 max-w-xl text-base text-muted-foreground">
+              Part storyteller, part systems thinker, part practical builder. Irish, based in
+              London, still learning out loud.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -104,6 +113,15 @@ export function Home() {
               >
                 My journey
               </Link>
+            </div>
+            <div className="mt-8 flex flex-wrap items-center gap-2">
+              <span className="mr-1 text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                Previously
+              </span>
+              <BrandPill label="KPMG" />
+              <BrandPill label="Deloitte" />
+              <BrandPill label="Salesforce" />
+              <BrandPill label="Slack" />
             </div>
           </div>
 
@@ -123,25 +141,67 @@ export function Home() {
         </div>
       </section>
 
+      {/* Field notes — images high on the page */}
+      <section className="mx-auto w-full max-w-5xl px-5 pb-4 sm:px-8">
+        <div className="ruled rounded-3xl border border-border bg-paper/70 p-5 sm:p-8">
+          <SectionHeading note="presenting, learning, talking">Work in the wild</SectionHeading>
+          <div className="grid gap-6 sm:grid-cols-3">
+            <Polaroid
+              src={stage.url}
+              alt="Conor speaking on stage at a Salesforce event"
+              caption="On stage — customer stories and live demos, demo gods permitting."
+              tilt={-1.4}
+            />
+            <Polaroid
+              src={podcast.url}
+              alt="Conor in conversation during a filmed interview"
+              caption="In conversation — how teams actually adopt AI, not how it demos."
+              tilt={1.1}
+            />
+            <Polaroid
+              src={cambridge.url}
+              alt="Conor outside a Cambridge college during an AI course"
+              caption="Still studying — Cambridge, and the habit of being the least expert in the room."
+              tilt={-0.8}
+            />
+          </div>
+        </div>
+      </section>
+
+      <div className="py-12">
+        <Divider />
+      </div>
+
       {/* Positioning */}
       <section className="mx-auto w-full max-w-5xl px-5 pb-16 sm:px-8">
-        <div className="rounded-3xl border border-dashed border-border bg-card p-6 sm:p-8">
-          <p className="max-w-3xl text-lg text-ink-soft">
-            I'm an Irish enterprise solutions engineer based in London, with a background across
-            Slack, Salesforce, consulting and finance. I work on the messy edge where business
-            problems, customer storytelling, technical architecture and commercial reality meet.
+        <div className="grid gap-4 rounded-3xl border border-dashed border-border bg-card p-6 sm:p-8 md:grid-cols-[1.4fr_1fr] md:items-center">
+          <p className="max-w-2xl text-lg text-ink-soft">
+            I started in accounting, ended up in consulting, and then spent years in enterprise
+            software watching good ideas die of vagueness. Most of my work now happens on that messy
+            edge where a business problem, a customer story, an architecture diagram and a budget
+            all have to agree with each other.
+          </p>
+          <p className="rounded-2xl bg-secondary/70 p-4 font-display text-base leading-relaxed text-foreground/80">
+            “The interesting part is rarely the software. It's the people arguing about what the
+            software is for.”
           </p>
         </div>
       </section>
 
       {/* Strengths */}
       <section className="mx-auto w-full max-w-5xl px-5 pb-16 sm:px-8">
-        <SectionHeading note="the short version">What I do</SectionHeading>
+        <SectionHeading note="the short version">What I'm good at</SectionHeading>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {STRENGTHS.map((s) => (
-            <Card key={s.title}>
-              <h2 className="text-lg">{s.title}</h2>
-              <p className="mt-2 text-sm text-ink-soft">{s.body}</p>
+            <Card key={s.title} className="relative overflow-hidden">
+              <span
+                aria-hidden="true"
+                className="absolute right-3 top-1 font-display text-4xl text-secondary"
+              >
+                {s.no}
+              </span>
+              <h2 className="relative text-lg">{s.title}</h2>
+              <p className="relative mt-2 text-sm text-ink-soft">{s.body}</p>
             </Card>
           ))}
           <Card className="flex items-center justify-center bg-secondary/70 text-center">
@@ -158,7 +218,7 @@ export function Home() {
 
       {/* Currently building */}
       <section className="mx-auto w-full max-w-5xl px-5 pb-16 sm:px-8">
-        <SectionHeading note="always in progress">Currently building</SectionHeading>
+        <SectionHeading note="always in progress">Currently exploring</SectionHeading>
         <ul className="flex flex-wrap gap-3">
           {EXPLORING.map((item, i) => (
             <li
@@ -173,7 +233,7 @@ export function Home() {
         </ul>
       </section>
 
-      {/* Collaboration + beyond work */}
+      {/* Beyond work */}
       <section className="mx-auto grid w-full max-w-5xl gap-4 px-5 pb-24 sm:px-8 md:grid-cols-2">
         <Card className="flex flex-col gap-4 sm:flex-row sm:items-center">
           <img
@@ -185,8 +245,7 @@ export function Home() {
           <div>
             <h2 className="text-lg">Mostly a team sport</h2>
             <p className="mt-1.5 text-sm text-ink-soft">
-              The interesting part is rarely the software. It's the people arguing about what the
-              software is for.
+              Nothing I've shipped happened alone. The good bits usually came out of an argument.
             </p>
           </div>
         </Card>
@@ -201,7 +260,7 @@ export function Home() {
           <div>
             <h2 className="text-lg">Beyond work</h2>
             <p className="mt-1.5 text-sm text-ink-soft">
-              Running, rugby, and the ongoing search for a decent flat white in London.
+              Running, rugby, and an ongoing search for a decent flat white in London.
             </p>
           </div>
         </Card>
