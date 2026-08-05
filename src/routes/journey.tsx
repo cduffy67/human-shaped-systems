@@ -98,11 +98,11 @@ export function Journey() {
       />
 
       {/* Stage markers */}
-      <div className="mt-12 flex flex-wrap items-center gap-x-5 gap-y-2 border-y border-border py-4">
-        {["UCD", "KPMG", "Deloitte", "Slack", "Salesforce", "Cambridge", "Slack · AI-native"].map(
+      <div className="mt-12 flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-border py-4">
+        {["UCD", "KPMG", "Deloitte", "Slack", "Salesforce", "Slack, again", "Cambridge"].map(
           (label, i, arr) => (
-            <span key={label} className="flex items-center gap-5">
-              <BrandPill label={label} />
+            <span key={label} className="flex items-center gap-3">
+              <BrandPill label={label} className="whitespace-nowrap" />
               {i < arr.length - 1 ? (
                 <span aria-hidden="true" className="text-border">
                   /
@@ -161,6 +161,9 @@ export function Journey() {
             </div>
             <div>
               <h2 className="text-2xl leading-snug">{c.title}</h2>
+              {c.subtitle ? (
+                <p className="mt-1 text-base italic text-muted-foreground">{c.subtitle}</p>
+              ) : null}
               <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">{c.body}</p>
               <p className="mt-4 text-sm italic text-muted-foreground">{c.tags.join(" · ")}</p>
             </div>
