@@ -47,9 +47,10 @@ const CHAPTERS = [
     tags: ["Agentforce", "Go-to-market", "AI adoption"],
   },
   {
-    brand: "Slack · AI-native",
+    brand: "Slack, again",
     era: "Now",
-    title: "Second lap, building this time",
+    title: "Slack, again",
+    subtitle: "Second lap, building this time",
     years: "Present",
     body: "Back at Slack as Principal Solutions Engineer, working where conversation, CRM and AI meet — and increasingly building things myself instead of only designing them on a whiteboard.",
     tags: ["Principal SE", "Building", "Learning in public"],

@@ -125,7 +125,12 @@ export function Plate({
           className={`h-full w-full object-cover ${position} transition-transform duration-700 ease-out group-hover:scale-[1.03]`}
         />
       </div>
-      <figcaption className="mt-3 text-sm leading-relaxed text-ink-soft">{caption}</figcaption>
+      <figcaption className="mt-3 text-sm leading-relaxed text-ink-soft">
+        {title ? (
+          <span className="block font-display text-base text-foreground">{title}</span>
+        ) : null}
+        {caption ? <span className="block">{caption}</span> : null}
+      </figcaption>
     </figure>
   );
 }
