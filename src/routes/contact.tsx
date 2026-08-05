@@ -2,11 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { Blob, Card, Page, PageHeader } from "@/components/site";
 
-// Swap these placeholders for the real links.
 const LINKS = [
-  { label: "LinkedIn", value: "linkedin.com/in/your-handle", href: "#", icon: "in" },
-  { label: "Email", value: "hello@example.com", href: "#", icon: "@" },
-  { label: "GitHub", value: "github.com/your-handle", href: "#", icon: "{ }" },
+  {
+    label: "LinkedIn",
+    value: "linkedin.com/in/conor-duffy",
+    href: "https://www.linkedin.com/in/conor-duffy/",
+    icon: "in",
+  },
+  { label: "Email", value: "conor_duffy@me.com", href: "mailto:conor_duffy@me.com", icon: "@" },
+  // Swap in the real handle when there's something worth showing.
+  { label: "GitHub", value: "coming soon", href: "#", icon: "{ }" },
 ];
 
 export const Route = createFileRoute("/contact")({
@@ -16,14 +21,18 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "Get in touch about enterprise AI, solution architecture, Slack and Salesforce, career pivots, or coffee. Based in London and Ireland.",
+          "Get in touch about enterprise AI, systems thinking, solution architecture, or coffee. Based in London, from Ireland.",
       },
       { property: "og:title", content: "Contact — Conor Duffy" },
       {
         property: "og:description",
-        content: "Always happy to chat about enterprise AI, architecture, or the odd good coffee.",
+        content:
+          "Always happy to chat about enterprise AI, systems thinking, solution architecture, or the odd good coffee.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://human-shaped-systems.lovable.app/contact" }],
   }),
   component: Contact,
 });
@@ -35,12 +44,18 @@ function Contact() {
       <PageHeader
         eyebrow="Say hello"
         title="Contact"
-        intro="Always happy to chat about enterprise AI, solution architecture, Slack/Salesforce, career pivots, or the odd good coffee."
+        intro="Always happy to chat about enterprise AI, systems thinking, solution architecture, or the odd good coffee."
       />
 
       <div className="mt-10 grid gap-4 sm:grid-cols-3">
         {LINKS.map((link) => (
-          <a key={link.label} href={link.href} className="block">
+          <a
+            key={link.label}
+            href={link.href}
+            target={link.href.startsWith("http") ? "_blank" : undefined}
+            rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+            className="block"
+          >
             <Card>
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary font-display text-sm text-accent">
                 {link.icon}
