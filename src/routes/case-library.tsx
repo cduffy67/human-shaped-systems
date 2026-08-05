@@ -73,7 +73,7 @@ export function CaseLibrary() {
       </form>
       {notice ? (
         <p className="mt-3 text-sm text-accent">
-          Shared by request for now — drop me a note and I'll send what's relevant.
+          Shared by request — send me a note and I will pass on whatever is relevant.
         </p>
       ) : null}
 
@@ -84,7 +84,7 @@ export function CaseLibrary() {
 
       <div className="mt-10 grid gap-4 sm:grid-cols-2">
         {LOCKED.map((title) => (
-          <Card key={title} className="bg-secondary/50">
+          <Card key={title} className="bg-paper/70">
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-lg">{title}</h2>
               <svg
