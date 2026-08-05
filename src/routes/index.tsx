@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { BrandPill, Divider, Label, Plate, SectionHeading } from "@/components/site";
 import headshot from "@/assets/headshot.png.asset.json";
 import team from "@/assets/team.png.asset.json";
-import running from "@/assets/running.png.asset.json";
+
 import stage from "@/assets/stage.png.asset.json";
 import podcast from "@/assets/podcast.png.asset.json";
 import cambridge from "@/assets/cambridge.png.asset.json";
