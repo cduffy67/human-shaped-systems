@@ -248,18 +248,13 @@ export function Home() {
               argument with people I like.
             </p>
           </div>
-          <div className="grid gap-8 sm:grid-cols-2">
-            <Plate
-              src={running.url}
-              alt="Conor with friends after a running event"
-              caption="Post-race, mostly still talking."
-              ratio="aspect-[3/4]"
-            />
+          <div>
             <Plate
               src={team.url}
               alt="Conor with colleagues in the office"
-              caption="The other half of the work."
-              ratio="aspect-[3/4]"
+              title="People"
+              ratio="aspect-[4/3]"
+              position="object-center"
             />
           </div>
         </div>
