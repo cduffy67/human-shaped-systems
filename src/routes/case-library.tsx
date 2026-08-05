@@ -87,22 +87,36 @@ export function CaseLibrary() {
         high-level. No customer names, no numbers, no internal detail.
       </p>
 
-      <ol className="mt-14 max-w-3xl border-t border-border">
+      <div className="mt-14 grid gap-6 sm:grid-cols-2">
         {LOCKED.map((title, i) => (
-          <li
-            key={title}
-            className="flex flex-wrap items-baseline gap-x-5 gap-y-1 border-b border-border py-5"
-          >
-            <span className="w-6 font-display text-sm text-muted-foreground">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <span className="flex-1 text-xl">{title}</span>
-            <span className="text-[0.62rem] uppercase tracking-[0.2em] text-muted-foreground">
+          <Card key={title} className="relative overflow-hidden">
+            <div className="flex items-start justify-between gap-4">
+              <span className="font-display text-sm text-accent/80">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="h-4 w-4 text-muted-foreground"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+              >
+                <rect x="4" y="10.5" width="16" height="10" rx="2.5" />
+                <path d="M8 10.5V7.5a4 4 0 1 1 8 0v3" />
+              </svg>
+            </div>
+            <h2 className="mt-4 text-xl leading-snug">{title}</h2>
+            <p className="mt-2 select-none text-sm leading-relaxed text-ink-soft blur-[3px]">
+              Context, approach and outcome — written up properly, shared on request.
+            </p>
+            <span className="mt-5 inline-flex items-center rounded-full border border-border bg-secondary px-3 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
               Locked
             </span>
-          </li>
+          </Card>
         ))}
-      </ol>
+      </div>
+
     </Page>
   );
 }
