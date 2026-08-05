@@ -111,19 +111,24 @@ export function Journey() {
           <Plate
             src={stage.url}
             alt="Conor speaking on stage at a Salesforce event"
+            ratio="aspect-[4/3]"
             caption="Presenting — customer stories and live demos, demo gods permitting."
           />
           <Plate
             src={podcast.url}
             alt="Conor in conversation during a filmed interview"
+            ratio="aspect-[4/3]"
             caption="In conversation — usually about adoption, not features."
           />
           <Plate
             src={cambridge.url}
             alt="Conor outside a Cambridge college during an AI course"
+            ratio="aspect-[4/3]"
+            position="object-top"
             caption="Learning — Cambridge, for an AI programme. Being the least expert in the room is a good habit."
           />
         </div>
+
       </section>
 
       <div className="py-20">
