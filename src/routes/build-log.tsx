@@ -15,27 +15,27 @@ const ENTRIES = [
   },
   {
     version: "v2",
-    title: "Copy, tone and visual design refined",
+    title: "Refined with better copy and visual direction",
     body: "Made it sound like me rather than like a landing page.",
   },
   {
     version: "v3",
+    title: "Enriched with real experience, images and career context",
+    body: "Added the journey, a few honest photos, and the parts of the story worth telling publicly.",
+  },
+  {
+    version: "v4",
     title: "Reviewed and improved with Claude Code",
     body: "A second pass on the code itself — structure, clarity, the boring-but-important bits.",
   },
   {
-    version: "v4",
-    title: "Versioned in GitHub",
-    body: "Proper history, so changes are traceable and reversible.",
-  },
-  {
     version: "v5",
-    title: "Tracked as a small product sprint in Linear",
-    body: "Treating a personal site like a real piece of work, at a sensible scale.",
+    title: "Versioned and hosted",
+    body: "Proper history and a real URL, so changes are traceable and reversible.",
   },
   {
     version: "v6",
-    title: "Published, shared and improved over time",
+    title: "Tweaked slowly over time",
     body: "Out in the world, still unfinished. That's the point.",
   },
 ];

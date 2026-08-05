@@ -15,6 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 const NAV = [
   { to: "/", label: "Home" },
   { to: "/how-i-work", label: "How I Work" },
+  { to: "/journey", label: "Journey" },
   { to: "/build-log", label: "Build Log" },
   { to: "/case-library", label: "Case Library" },
   { to: "/contact", label: "Contact" },
