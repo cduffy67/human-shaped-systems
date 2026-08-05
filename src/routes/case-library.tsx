@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
-import { Page, PageHeader } from "@/components/site";
+import { Card, Page, PageHeader } from "@/components/site";
 
 const LOCKED = [
   "Enterprise AI Adoption",
