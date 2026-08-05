@@ -2,13 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { Card, Page, PageHeader } from "@/components/site";
-import stage from "@/assets/stage.png.asset.json";
 
 const LOCKED = [
   "Enterprise AI Adoption",
+  "Workflow & Systems Design",
   "Slack + Salesforce Architecture",
   "Value-led Transformation",
-  "Workflow and Systems Design",
+  "Complex Enterprise Sales",
 ];
 
 export const Route = createFileRoute("/case-library")({
@@ -18,14 +18,17 @@ export const Route = createFileRoute("/case-library")({
       {
         name: "description",
         content:
-          "Selected case studies on enterprise AI adoption, Slack and Salesforce architecture, and value-led solution design — available privately.",
+          "Selected case studies on enterprise AI adoption, workflow design, Slack and Salesforce architecture, and value-led transformation — shared privately.",
       },
       { property: "og:title", content: "Case Library — Conor Duffy" },
       {
         property: "og:description",
         content: "Private write-ups on enterprise AI adoption and value-led solution design.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://human-shaped-systems.lovable.app/case-library" }],
   }),
   component: CaseLibrary,
 });
@@ -39,20 +42,8 @@ function CaseLibrary() {
       <PageHeader
         eyebrow="Behind the curtain"
         title="Case Library"
-        intro="Selected case studies are available privately. This area will eventually hold more detailed write-ups on enterprise AI adoption, Slack/Salesforce architecture, value-led solution design and customer transformation work."
+        intro="Selected case studies are available privately. This area will eventually hold more detailed write-ups on enterprise AI adoption, workflow design, Slack/Salesforce architecture, and value-led transformation work."
       />
-
-      <figure className="mt-10 overflow-hidden rounded-2xl border border-border">
-        <img
-          src={stage.url}
-          alt="Conor presenting on stage at a Salesforce event"
-          loading="lazy"
-          className="h-32 w-full object-cover sm:h-40"
-        />
-        <figcaption className="bg-card px-4 py-2 text-xs text-muted-foreground">
-          Some of the work ends up on a stage. Most of it doesn't.
-        </figcaption>
-      </figure>
 
       <form
         className="mt-10 flex max-w-md flex-wrap gap-2"
@@ -81,13 +72,13 @@ function CaseLibrary() {
       </form>
       {notice ? (
         <p className="mt-3 text-sm text-accent">
-          Not wired up yet — drop me a note and I'll share what's relevant.
+          Shared by request for now — drop me a note and I'll send what's relevant.
         </p>
       ) : null}
 
       <p className="mt-8 max-w-2xl text-sm text-muted-foreground">
-        Some examples involve commercially sensitive work, so the public version stays deliberately
-        high-level.
+        Some of this work is commercially sensitive, so the public version stays deliberately
+        high-level. No customer names, no numbers, no internal detail.
       </p>
 
       <div className="mt-10 grid gap-4 sm:grid-cols-2">
@@ -107,7 +98,6 @@ function CaseLibrary() {
                 <rect x="4" y="10" width="16" height="10" rx="2.5" />
                 <path d="M8 10V7a4 4 0 0 1 8 0v3" />
               </svg>
-
             </div>
             <div className="mt-3 space-y-2" aria-hidden="true">
               <div className="h-2 w-full rounded-full bg-muted" />

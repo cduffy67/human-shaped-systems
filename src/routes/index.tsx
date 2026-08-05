@@ -23,16 +23,16 @@ const STRENGTHS = [
     body: "Enough structure to hold weight, not so much that nobody can change it later.",
   },
   {
-    title: "Measurable ROI",
-    body: "If we can't say what got better, we haven't finished the job.",
+    title: "Commercially Grounded Thinking",
+    body: "An accountant's instinct for what a decision costs, and what it's actually worth.",
   },
 ];
 
 const EXPLORING = [
-  "Building with AI tools",
+  "AI-assisted product building",
   "Personal digital garden",
   "Enterprise AI adoption",
-  "Slack, Salesforce and workflow systems",
+  "Systems thinking",
   "How non-technical people become builders",
 ];
 
@@ -54,7 +54,10 @@ export const Route = createFileRoute("/")({
         content:
           "I help turn messy business problems into systems people can actually use, buy and trust.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://human-shaped-systems.lovable.app/" }],
   }),
   component: Home,
 });
@@ -81,12 +84,12 @@ function Home() {
               </span>
             </h1>
             <p className="mt-7 max-w-xl text-lg text-ink-soft">
-              I work at the intersection of enterprise software, AI adoption, customer
-              storytelling and practical architecture.
+              I work at the intersection of enterprise software, AI adoption, customer storytelling
+              and practical architecture — helping teams turn messy business problems into systems
+              people can actually use, buy and trust.
             </p>
             <p className="mt-4 max-w-xl text-base text-muted-foreground">
-              I help turn messy business problems into systems people can actually use, buy and
-              trust.
+              Part storyteller, part systems thinker, part practical builder.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -96,10 +99,10 @@ function Home() {
                 How I work
               </Link>
               <Link
-                to="/contact"
+                to="/journey"
                 className="rounded-full border border-border bg-card px-5 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
               >
-                Say hello
+                My journey
               </Link>
             </div>
           </div>
@@ -120,29 +123,42 @@ function Home() {
         </div>
       </section>
 
+      {/* Positioning */}
+      <section className="mx-auto w-full max-w-5xl px-5 pb-16 sm:px-8">
+        <div className="rounded-3xl border border-dashed border-border bg-card p-6 sm:p-8">
+          <p className="max-w-3xl text-lg text-ink-soft">
+            I'm an Irish enterprise solutions engineer based in London, with a background across
+            Slack, Salesforce, consulting and finance. I work on the messy edge where business
+            problems, customer storytelling, technical architecture and commercial reality meet.
+          </p>
+        </div>
+      </section>
+
       {/* Strengths */}
       <section className="mx-auto w-full max-w-5xl px-5 pb-16 sm:px-8">
-        <SectionHeading note="the short version">What I'm good at</SectionHeading>
+        <SectionHeading note="the short version">What I do</SectionHeading>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {STRENGTHS.map((s) => (
             <Card key={s.title}>
-              <h3 className="text-lg">{s.title}</h3>
+              <h2 className="text-lg">{s.title}</h2>
               <p className="mt-2 text-sm text-ink-soft">{s.body}</p>
             </Card>
           ))}
           <Card className="flex items-center justify-center bg-secondary/70 text-center">
             <p className="text-sm text-ink-soft">
-              Accounting → consulting → Salesforce → Slack.
+              Accounting → consulting → Slack → Salesforce → Slack again.
               <br />
-              <span className="text-muted-foreground">A slightly winding route here.</span>
+              <Link to="/journey" className="text-accent underline underline-offset-4">
+                The winding version
+              </Link>
             </p>
           </Card>
         </div>
       </section>
 
-      {/* Currently exploring */}
+      {/* Currently building */}
       <section className="mx-auto w-full max-w-5xl px-5 pb-16 sm:px-8">
-        <SectionHeading note="always in progress">Currently exploring</SectionHeading>
+        <SectionHeading note="always in progress">Currently building</SectionHeading>
         <ul className="flex flex-wrap gap-3">
           {EXPLORING.map((item, i) => (
             <li
@@ -167,7 +183,7 @@ function Home() {
             className="h-28 w-full rounded-xl object-cover sm:w-36"
           />
           <div>
-            <h3 className="text-lg">Mostly a team sport</h3>
+            <h2 className="text-lg">Mostly a team sport</h2>
             <p className="mt-1.5 text-sm text-ink-soft">
               The interesting part is rarely the software. It's the people arguing about what the
               software is for.
@@ -178,12 +194,12 @@ function Home() {
         <Card className="flex flex-col gap-4 sm:flex-row sm:items-center">
           <img
             src={running.url}
-            alt="Conor with friends after a half marathon"
+            alt="Conor with friends after a running event"
             loading="lazy"
             className="h-28 w-full rounded-xl object-cover sm:w-36"
           />
           <div>
-            <h3 className="text-lg">Beyond work</h3>
+            <h2 className="text-lg">Beyond work</h2>
             <p className="mt-1.5 text-sm text-ink-soft">
               Running, rugby, and the ongoing search for a decent flat white in London.
             </p>

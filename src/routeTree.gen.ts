@@ -14,6 +14,7 @@ import { Route as BuildLogRouteImport } from './routes/build-log'
 import { Route as CaseLibraryRouteImport } from './routes/case-library'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as HowIWorkRouteImport } from './routes/how-i-work'
+import { Route as JourneyRouteImport } from './routes/journey'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +41,11 @@ const HowIWorkRoute = HowIWorkRouteImport.update({
   path: '/how-i-work',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JourneyRoute = JourneyRouteImport.update({
+  id: '/journey',
+  path: '/journey',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/case-library': typeof CaseLibraryRoute
   '/contact': typeof ContactRoute
   '/how-i-work': typeof HowIWorkRoute
+  '/journey': typeof JourneyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/case-library': typeof CaseLibraryRoute
   '/contact': typeof ContactRoute
   '/how-i-work': typeof HowIWorkRoute
+  '/journey': typeof JourneyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,12 +70,25 @@ export interface FileRoutesById {
   '/case-library': typeof CaseLibraryRoute
   '/contact': typeof ContactRoute
   '/how-i-work': typeof HowIWorkRoute
+  '/journey': typeof JourneyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/build-log' | '/case-library' | '/contact' | '/how-i-work'
+  fullPaths:
+    | '/'
+    | '/build-log'
+    | '/case-library'
+    | '/contact'
+    | '/how-i-work'
+    | '/journey'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/build-log' | '/case-library' | '/contact' | '/how-i-work'
+  to:
+    | '/'
+    | '/build-log'
+    | '/case-library'
+    | '/contact'
+    | '/how-i-work'
+    | '/journey'
   id:
     | '__root__'
     | '/'
@@ -75,6 +96,7 @@ export interface FileRouteTypes {
     | '/case-library'
     | '/contact'
     | '/how-i-work'
+    | '/journey'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -83,6 +105,7 @@ export interface RootRouteChildren {
   CaseLibraryRoute: typeof CaseLibraryRoute
   ContactRoute: typeof ContactRoute
   HowIWorkRoute: typeof HowIWorkRoute
+  JourneyRoute: typeof JourneyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -122,6 +145,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HowIWorkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/journey': {
+      id: '/journey'
+      path: '/journey'
+      fullPath: '/journey'
+      preLoaderRoute: typeof JourneyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -131,17 +161,8 @@ const rootRouteChildren: RootRouteChildren = {
   CaseLibraryRoute: CaseLibraryRoute,
   ContactRoute: ContactRoute,
   HowIWorkRoute: HowIWorkRoute,
+  JourneyRoute: JourneyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
