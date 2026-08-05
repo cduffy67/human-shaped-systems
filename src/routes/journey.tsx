@@ -5,7 +5,15 @@ import stage from "@/assets/stage.png.asset.json";
 import cambridge from "@/assets/cambridge.png.asset.json";
 import podcast from "@/assets/podcast.png.asset.json";
 
-const CHAPTERS = [
+const CHAPTERS: {
+  brand: string;
+  era: string;
+  title: string;
+  subtitle?: string;
+  years: string;
+  body: string;
+  tags: string[];
+}[] = [
   {
     brand: "UCD / Dublin",
     era: "Roots",
