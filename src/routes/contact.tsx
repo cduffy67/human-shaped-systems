@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { Page, PageHeader } from "@/components/site";
+import { Card, Page, PageHeader } from "@/components/site";
 
 const LINKS = [
   {
@@ -45,24 +45,33 @@ export function Contact() {
         intro="Always happy to chat about enterprise AI, systems thinking, solution architecture, or the odd good coffee."
       />
 
-      <div className="mt-14 max-w-2xl border-t border-border">
+      <div className="mt-14 grid max-w-3xl gap-6 sm:grid-cols-2">
         {LINKS.map((link) => (
           <a
             key={link.label}
             href={link.href}
             target={link.href.startsWith("http") ? "_blank" : undefined}
             rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-            className="row-warm flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-border px-1 py-5 sm:px-3"
+            className="block"
           >
-            <span className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground sm:w-24">
-              {link.label}
-            </span>
-            <span className="quiet-link relative flex-1 font-display text-lg text-foreground">
-              {link.value}
-            </span>
+            <Card>
+              <span className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                {link.label}
+              </span>
+              <p className="quiet-link relative mt-3 inline-block font-display text-lg text-foreground">
+                {link.value}
+              </p>
+            </Card>
           </a>
         ))}
+        <Card>
+          <span className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+            Location
+          </span>
+          <p className="mt-3 font-display text-lg text-foreground">London / Ireland</p>
+        </Card>
       </div>
+
 
       <p className="mt-10 max-w-2xl leading-relaxed text-ink-soft">
         Based in <span className="font-medium">London</span>, from{" "}

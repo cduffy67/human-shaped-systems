@@ -107,21 +107,20 @@ export function Home() {
         </div>
 
         <div className="rise">
-          <div className="rotate-[1deg] rounded-2xl border border-border bg-card p-3 shadow-[0_16px_40px_-28px_color-mix(in_oklab,var(--foreground)_75%,transparent)] transition-transform duration-500 ease-out hover:rotate-0">
-            <div className="overflow-hidden rounded-xl bg-secondary">
-              <img
-                src={headshot.url}
-                alt="Conor Duffy"
-                width={560}
-                height={700}
-                className="aspect-[4/5] w-full object-cover object-top"
-              />
-            </div>
-            <p className="mt-3 px-1 text-sm text-muted-foreground">
-              Conor Duffy — Principal Solutions Engineer, Slack.
-            </p>
+          <div className="overflow-hidden rounded-2xl bg-secondary ring-1 ring-border shadow-[0_20px_50px_-34px_color-mix(in_oklab,var(--foreground)_75%,transparent)]">
+            <img
+              src={headshot.url}
+              alt="Conor Duffy"
+              width={560}
+              height={700}
+              className="aspect-[4/5] w-full object-cover object-top"
+            />
           </div>
+          <p className="mt-3 text-sm text-muted-foreground">
+            Conor Duffy — Principal Solutions Engineer, Slack.
+          </p>
         </div>
+
 
       </section>
 
@@ -145,18 +144,23 @@ export function Home() {
           <Plate
             src={stage.url}
             alt="Conor speaking on stage at a Salesforce event"
+            ratio="aspect-[4/3]"
             caption="On stage — customer stories and live demos, demo gods permitting."
           />
           <Plate
             src={podcast.url}
             alt="Conor in conversation during a filmed interview"
+            ratio="aspect-[4/3]"
             caption="In conversation — how teams actually adopt AI, not how it demos."
           />
           <Plate
             src={cambridge.url}
             alt="Conor outside a Cambridge college during an AI course"
+            ratio="aspect-[4/3]"
+            position="object-top"
             caption="Still studying — Cambridge, and the habit of being the least expert in the room."
           />
+
         </div>
       </section>
 
