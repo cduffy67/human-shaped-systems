@@ -28,15 +28,16 @@ All photos are uploaded to the CDN as asset pointers rather than committed into 
 
 ## Pages
 
-**Home** — hero with name, "Enterprise problems, human-shaped solutions.", the subheading and intro line, portrait in a soft circular frame. Below: the 5 strength cards (Value-led Solutions, Ambiguity to Execution, Executive to Technical Fluency, Pragmatic Architecture, Measurable ROI), then a playful "Currently exploring" section with the 5 exploration cards in a looser, sticker-like layout. This page gets the most polish.
+**Home** — hero with name, "Enterprise problems, human-shaped solutions.", the subheading and intro line, headshot in a soft circular frame. Below: the 5 strength cards (Value-led Solutions, Ambiguity to Execution, Executive to Technical Fluency, Pragmatic Architecture, Measurable ROI), then a "Currently exploring" section with the 5 exploration cards in a looser, sticker-like layout, a small collaboration card using the office selfie, and a short "beyond work" strip with the running photo. This page gets the most polish.
 
-**How I Work** — the six steps as a numbered vertical framework with a connecting line, each with a plain-English paragraph.
+**How I Work** — the six steps as a numbered vertical framework with a connecting line, each with a plain-English paragraph. No photos; doodle numerals and a soft connecting rule carry it.
 
 **Build Log** — intro copy, then a v0–v6 timeline with dot markers and version chips, closing with the "point is not to build the most complex site" note in a soft callout.
 
-**Case Library** — intro and sensitivity note, a simple password input (front-end only, no auth wired up), and four locked placeholder cards with a lock motif and blurred/muted styling.
+**Case Library** — intro and sensitivity note, a thin stage-photo banner as a proof-of-work signal, a simple password input (front-end only, no auth wired up), and four locked placeholder cards with a lock motif and blurred/muted styling.
 
 **Contact** — friendly copy, cards for LinkedIn, Email, GitHub (placeholder links, clearly marked for you to fill in), and a London / Ireland location line.
+
 
 Shared top nav (Home, How I Work, Build Log, Case Library, Contact) and footer with "Built quickly, tweaked slowly."
 
