@@ -3,7 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { BrandPill, Divider, Label, Plate, SectionHeading } from "@/components/site";
 import headshot from "@/assets/headshot.png.asset.json";
 import team from "@/assets/team.png.asset.json";
-import running from "@/assets/running.png.asset.json";
+
 import stage from "@/assets/stage.png.asset.json";
 import podcast from "@/assets/podcast.png.asset.json";
 import cambridge from "@/assets/cambridge.png.asset.json";
@@ -116,24 +116,28 @@ export function Home() {
               className="aspect-[4/5] w-full object-cover object-top"
             />
           </div>
-          <p className="mt-3 text-sm text-muted-foreground">
-            Conor Duffy — Principal Solutions Engineer, Slack.
-          </p>
+          <p className="mt-3 text-sm text-muted-foreground">This is me 👋</p>
         </div>
 
 
       </section>
 
-      {/* Previously */}
+      {/* Career strip */}
       <section className="mx-auto w-full max-w-5xl px-5 sm:px-8">
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-y border-border py-4">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-3 border-y border-border py-4">
           <span className="text-[0.68rem] uppercase tracking-[0.22em] text-muted-foreground">
             Previously
           </span>
           <BrandPill label="KPMG" />
           <BrandPill label="Deloitte" />
           <BrandPill label="Salesforce" />
-          <BrandPill label="Slack" />
+          <span aria-hidden="true" className="text-border">
+            /
+          </span>
+          <span className="text-[0.68rem] uppercase tracking-[0.22em] text-muted-foreground">
+            Now
+          </span>
+          <BrandPill label="Slack, again" className="whitespace-nowrap" />
         </div>
       </section>
 
@@ -145,20 +149,23 @@ export function Home() {
             src={stage.url}
             alt="Conor speaking on stage at a Salesforce event"
             ratio="aspect-[4/3]"
-            caption="On stage — customer stories and live demos, demo gods permitting."
+            title="Evangelising"
+            caption="Making complex ideas useful in a room."
           />
           <Plate
             src={podcast.url}
             alt="Conor in conversation during a filmed interview"
             ratio="aspect-[4/3]"
-            caption="In conversation — how teams actually adopt AI, not how it demos."
+            title="In conversation"
+            caption="Adoption beats features."
           />
           <Plate
             src={cambridge.url}
             alt="Conor outside a Cambridge college during an AI course"
             ratio="aspect-[4/3]"
             position="object-top"
-            caption="Still studying — Cambridge, and the habit of being the least expert in the room."
+            title="Learning"
+            caption="Stay the least expert in the room."
           />
 
         </div>
@@ -241,18 +248,13 @@ export function Home() {
               argument with people I like.
             </p>
           </div>
-          <div className="grid gap-8 sm:grid-cols-2">
-            <Plate
-              src={running.url}
-              alt="Conor with friends after a running event"
-              caption="Post-race, mostly still talking."
-              ratio="aspect-[3/4]"
-            />
+          <div>
             <Plate
               src={team.url}
               alt="Conor with colleagues in the office"
-              caption="The other half of the work."
-              ratio="aspect-[3/4]"
+              title="People"
+              ratio="aspect-[4/3]"
+              position="object-center"
             />
           </div>
         </div>

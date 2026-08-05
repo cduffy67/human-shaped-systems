@@ -5,7 +5,15 @@ import stage from "@/assets/stage.png.asset.json";
 import cambridge from "@/assets/cambridge.png.asset.json";
 import podcast from "@/assets/podcast.png.asset.json";
 
-const CHAPTERS = [
+const CHAPTERS: {
+  brand: string;
+  era: string;
+  title: string;
+  subtitle?: string;
+  years: string;
+  body: string;
+  tags: string[];
+}[] = [
   {
     brand: "UCD / Dublin",
     era: "Roots",
@@ -47,9 +55,10 @@ const CHAPTERS = [
     tags: ["Agentforce", "Go-to-market", "AI adoption"],
   },
   {
-    brand: "Slack · AI-native",
+    brand: "Slack, again",
     era: "Now",
-    title: "Second lap, building this time",
+    title: "Slack, again",
+    subtitle: "Second lap, building this time",
     years: "Present",
     body: "Back at Slack as Principal Solutions Engineer, working where conversation, CRM and AI meet — and increasingly building things myself instead of only designing them on a whiteboard.",
     tags: ["Principal SE", "Building", "Learning in public"],
@@ -89,11 +98,11 @@ export function Journey() {
       />
 
       {/* Stage markers */}
-      <div className="mt-12 flex flex-wrap items-center gap-x-5 gap-y-2 border-y border-border py-4">
-        {["UCD", "KPMG", "Deloitte", "Slack", "Salesforce", "Cambridge", "Slack · AI-native"].map(
+      <div className="mt-12 flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-border py-4">
+        {["UCD", "KPMG", "Deloitte", "Slack", "Salesforce", "Slack, again", "Cambridge"].map(
           (label, i, arr) => (
-            <span key={label} className="flex items-center gap-5">
-              <BrandPill label={label} />
+            <span key={label} className="flex items-center gap-3">
+              <BrandPill label={label} className="whitespace-nowrap" />
               {i < arr.length - 1 ? (
                 <span aria-hidden="true" className="text-border">
                   /
@@ -112,20 +121,23 @@ export function Journey() {
             src={stage.url}
             alt="Conor speaking on stage at a Salesforce event"
             ratio="aspect-[4/3]"
-            caption="Presenting — customer stories and live demos, demo gods permitting."
+            title="Evangelising"
+            caption="Making complex ideas useful in a room."
           />
           <Plate
             src={podcast.url}
             alt="Conor in conversation during a filmed interview"
             ratio="aspect-[4/3]"
-            caption="In conversation — usually about adoption, not features."
+            title="In conversation"
+            caption="Adoption beats features."
           />
           <Plate
             src={cambridge.url}
             alt="Conor outside a Cambridge college during an AI course"
             ratio="aspect-[4/3]"
             position="object-top"
-            caption="Learning — Cambridge, for an AI programme. Being the least expert in the room is a good habit."
+            title="Learning"
+            caption="Stay the least expert in the room."
           />
         </div>
 
@@ -152,6 +164,9 @@ export function Journey() {
             </div>
             <div>
               <h2 className="text-2xl leading-snug">{c.title}</h2>
+              {c.subtitle ? (
+                <p className="mt-1 text-base italic text-muted-foreground">{c.subtitle}</p>
+              ) : null}
               <p className="mt-3 max-w-2xl leading-relaxed text-ink-soft">{c.body}</p>
               <p className="mt-4 text-sm italic text-muted-foreground">{c.tags.join(" · ")}</p>
             </div>
