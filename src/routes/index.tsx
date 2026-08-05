@@ -105,7 +105,7 @@ function Home() {
           </div>
 
           <div className="rise relative mx-auto w-full max-w-[280px]">
-            <div className="absolute inset-0 -rotate-6 rounded-full border-2 border-dashed border-accent/40" />
+            <div className="absolute -inset-3 rounded-full border-2 border-dashed border-accent/40" />
             <img
               src={headshot.url}
               alt="Conor Duffy"
@@ -114,7 +114,7 @@ function Home() {
               className="relative aspect-square w-full rounded-full object-cover shadow-[0_24px_60px_-30px_var(--foreground)]"
             />
             <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-border bg-card px-3 py-1 text-xs text-ink-soft">
-              hello 👋
+              well, hello
             </span>
           </div>
         </div>

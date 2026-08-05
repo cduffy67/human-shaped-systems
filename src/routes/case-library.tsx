@@ -95,9 +95,19 @@ function CaseLibrary() {
           <Card key={title} className="bg-secondary/50">
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-lg">{title}</h2>
-              <span aria-hidden="true" className="text-accent">
-                🔒
-              </span>
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="h-4 w-4 flex-none text-accent"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              >
+                <rect x="4" y="10" width="16" height="10" rx="2.5" />
+                <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+              </svg>
+
             </div>
             <div className="mt-3 space-y-2" aria-hidden="true">
               <div className="h-2 w-full rounded-full bg-muted" />
