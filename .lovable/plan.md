@@ -48,7 +48,10 @@ Shared top nav (Home, How I Work, Build Log, Case Library, Contact) and footer w
 - Copy strings kept at the top of each route file as plain arrays/objects so they're easy to edit.
 - A few small shared components (`SectionHeading`, `Card`, `Doodle`) rather than one big file.
 - Case Library password input is presentational only — it does not gate real content. Real gating can be added later with a server-side check.
+- Photos uploaded via the assets CLI as `.asset.json` pointers, imported and rendered with proper `alt` text and lazy loading below the fold.
+- The homepage headshot doubles as the social share image (og:image / twitter:image) so links look right when shared.
 
 ## Left for later
 
-Swapping in the real portrait, real contact links, actual case-study content and real password gating.
+Real contact links, actual case-study content, real password gating, and the two unused photos if you want them in.
+
