@@ -16,6 +16,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as HowIWorkRouteImport } from './routes/how-i-work'
 import { Route as JourneyRouteImport } from './routes/journey'
 import { Route as PrintRouteImport } from './routes/print'
+import { Route as ApiPublicJobsSnapshotStatsRouteImport } from './routes/api/public/jobs/snapshot-stats'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +53,12 @@ const PrintRoute = PrintRouteImport.update({
   path: '/print',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicJobsSnapshotStatsRoute =
+  ApiPublicJobsSnapshotStatsRouteImport.update({
+    id: '/api/public/jobs/snapshot-stats',
+    path: '/api/public/jobs/snapshot-stats',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +68,7 @@ export interface FileRoutesByFullPath {
   '/how-i-work': typeof HowIWorkRoute
   '/journey': typeof JourneyRoute
   '/print': typeof PrintRoute
+  '/api/public/jobs/snapshot-stats': typeof ApiPublicJobsSnapshotStatsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +78,7 @@ export interface FileRoutesByTo {
   '/how-i-work': typeof HowIWorkRoute
   '/journey': typeof JourneyRoute
   '/print': typeof PrintRoute
+  '/api/public/jobs/snapshot-stats': typeof ApiPublicJobsSnapshotStatsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +89,7 @@ export interface FileRoutesById {
   '/how-i-work': typeof HowIWorkRoute
   '/journey': typeof JourneyRoute
   '/print': typeof PrintRoute
+  '/api/public/jobs/snapshot-stats': typeof ApiPublicJobsSnapshotStatsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +101,7 @@ export interface FileRouteTypes {
     | '/how-i-work'
     | '/journey'
     | '/print'
+    | '/api/public/jobs/snapshot-stats'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +111,7 @@ export interface FileRouteTypes {
     | '/how-i-work'
     | '/journey'
     | '/print'
+    | '/api/public/jobs/snapshot-stats'
   id:
     | '__root__'
     | '/'
@@ -109,6 +121,7 @@ export interface FileRouteTypes {
     | '/how-i-work'
     | '/journey'
     | '/print'
+    | '/api/public/jobs/snapshot-stats'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,6 +132,7 @@ export interface RootRouteChildren {
   HowIWorkRoute: typeof HowIWorkRoute
   JourneyRoute: typeof JourneyRoute
   PrintRoute: typeof PrintRoute
+  ApiPublicJobsSnapshotStatsRoute: typeof ApiPublicJobsSnapshotStatsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -172,6 +186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrintRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/jobs/snapshot-stats': {
+      id: '/api/public/jobs/snapshot-stats'
+      path: '/api/public/jobs/snapshot-stats'
+      fullPath: '/api/public/jobs/snapshot-stats'
+      preLoaderRoute: typeof ApiPublicJobsSnapshotStatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -183,6 +204,7 @@ const rootRouteChildren: RootRouteChildren = {
   HowIWorkRoute: HowIWorkRoute,
   JourneyRoute: JourneyRoute,
   PrintRoute: PrintRoute,
+  ApiPublicJobsSnapshotStatsRoute: ApiPublicJobsSnapshotStatsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

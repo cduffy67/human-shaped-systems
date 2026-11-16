@@ -380,3 +380,11 @@ html[data-mode="engine"] .paper-card { border-color: rgb(239 230 216 / 0.22); }
 @media (prefers-reduced-motion: reduce) { .live-dot::after { animation: none; } }
 /* logos stay legible on espresso: pills get a parchment chip */
 html[data-mode="engine"] .brand-pill:has(img) { background: oklch(0.964 0.014 79); color: #2d241f; }
+.soon-dot { width: 7px; height: 7px; border-radius: 9999px; background: var(--muted-foreground); opacity: 0.5; animation: soon-pulse 2.4s ease-in-out infinite; }
+@keyframes soon-pulse { 50% { opacity: 0.15; } }
+.tile-tip { opacity: 0; transform: translate(-50%, -4px); transition: opacity 180ms ease, transform 180ms ease; }
+@media (hover: hover) {
+  button:hover > .tile-tip, button:focus-visible > .tile-tip { opacity: 1; transform: translate(-50%, 0); }
+}
+@media (hover: none) { .tile-tip { display: none; } }
+@media (prefers-reduced-motion: reduce) { .soon-dot { animation: none; } }

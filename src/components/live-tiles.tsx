@@ -1,170 +1,445 @@
 import { useQuery } from "@tanstack/react-query";
-import type { ReactNode } from "react";
+import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { siDuolingo, siLetterboxd, siSpotify, siStrava, type SimpleIcon } from "simple-icons";
-import { getDuolingoStats, getLetterboxdLatest, getStravaStats } from "@/lib/live/stats.functions";
+import {
+  getDuolingoHistory,
+  getDuolingoStats,
+  getLetterboxd,
+  getSpotifyStats,
+  getStravaStats,
+  type LetterboxdFilm,
+} from "@/lib/live/stats.functions";
 import { useSiteMode } from "@/lib/mode";
 
 const HOUR = 60 * 60 * 1000;
 const fmt = (n: number) => n.toLocaleString("en-GB");
-const londonToday = () =>
-  new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/London" }).format(new Date());
+const londonToday = () => new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/London" }).format(new Date());
+const shortDate = (iso: string) =>
+  new Date(iso + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+function relTime(ms: number) {
+  const m = Math.max(0, Math.round((Date.now() - ms) / 60000));
+  return m < 1 ? "just now" : m < 60 ? `${m}m ago` : `${Math.round(m / 60)}h ago`;
+}
 
-function BrandMark({ icon, color }: { icon: SimpleIcon; color?: string }) {
-  const c = color ?? `#${icon.hex}`;
+type Key = "strava" | "letterboxd" | "spotify" | "duolingo";
+const APPS: { key: Key; icon: SimpleIcon; color: string; app: string; label: string }[] = [
+  { key: "strava", icon: siStrava, color: `#${siStrava.hex}`, app: "Strava", label: "Running" },
+  { key: "letterboxd", icon: siLetterboxd, color: "#ff8000", app: "Letterboxd", label: "Watching" },
+  { key: "spotify", icon: siSpotify, color: `#${siSpotify.hex}`, app: "Spotify", label: "Listening" },
+  { key: "duolingo", icon: siDuolingo, color: `#${siDuolingo.hex}`, app: "Duolingo", label: "Learning" },
+];
+
+/* ---------- data hooks ---------- */
+const useStrava = () => useQuery({ queryKey: ["strava"], queryFn: () => getStravaStats(), staleTime: HOUR });
+const useSpotify = () => useQuery({ queryKey: ["spotify"], queryFn: () => getSpotifyStats(), staleTime: HOUR });
+const useLetterboxd = () => useQuery({ queryKey: ["letterboxd"], queryFn: () => getLetterboxd(), staleTime: HOUR });
+const useDuolingo = () => useQuery({ queryKey: ["duolingo"], queryFn: () => getDuolingoStats(), staleTime: HOUR });
+
+function useTileMeta(key: Key): { live: boolean; preview: string | null } {
+  const s = useStrava(), l = useLetterboxd(), sp = useSpotify(), d = useDuolingo();
+  switch (key) {
+    case "strava":
+      return { live: s.data?.data.source === "strava", preview: s.data ? `${s.data.data.month_km} km this month` : null };
+    case "letterboxd": {
+      const f = l.data?.data?.recent[0];
+      return { live: !!f, preview: f ? `Last watched: ${f.title}` : null };
+    }
+    case "spotify":
+      return { live: sp.data?.data.source === "spotify", preview: "On repeat this month" };
+    case "duolingo":
+      return { live: !!d.data?.data, preview: d.data?.data ? `🔥 ${fmt(d.data.data.streak)} days` : null };
+  }
+}
+
+/* ---------- small pieces ---------- */
+function Chip({ app, size = 40 }: { app: (typeof APPS)[number]; size?: number }) {
   return (
     <span
-      className="grid h-9 w-9 shrink-0 place-items-center rounded-lg"
-      style={{ background: `color-mix(in oklab, ${c} 14%, transparent)` }}
+      className="grid shrink-0 place-items-center rounded-xl"
+      style={{ width: size, height: size, background: `color-mix(in oklab, ${app.color} 14%, transparent)` }}
     >
-      <svg role="img" aria-label={icon.title} viewBox="0 0 24 24" width={20} height={20} style={{ fill: c }}>
-        <path d={icon.path} />
+      <svg aria-hidden viewBox="0 0 24 24" width={size / 2} height={size / 2} style={{ fill: app.color }}>
+        <path d={app.icon.path} />
       </svg>
     </span>
   );
 }
 
-function LiveBadge({ on }: { on: boolean }) {
-  return on ? (
-    <span className="mode-mono flex items-center gap-1.5 text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
+function Badge({ live }: { live: boolean }) {
+  return live ? (
+    <span className="mode-mono flex items-center gap-1.5 text-[0.62rem] uppercase tracking-[0.2em] text-muted-foreground">
       <span className="live-dot" aria-hidden /> Live
     </span>
   ) : (
-    <span className="mode-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground/70">Soon</span>
-  );
-}
-
-function Card({
-  icon, color, app, label, live, children, footer,
-}: {
-  icon: SimpleIcon; color?: string; app: string; label: string; live: boolean; children: ReactNode; footer?: ReactNode;
-}) {
-  return (
-    <article className="paper-card flex min-h-[12.5rem] flex-col">
-      <header className="flex items-center gap-3">
-        <BrandMark icon={icon} {...(color ? { color } : {})} />
-        <div className="min-w-0 flex-1 leading-tight">
-          <p className="mode-mono text-[0.68rem] uppercase tracking-[0.2em] text-muted-foreground">{label}</p>
-          <p className="font-display text-base">{app}</p>
-        </div>
-        <LiveBadge on={live} />
-      </header>
-      <div className="mt-5 flex-1">{children}</div>
-      {footer ? <div className="mt-4 border-t border-border pt-3 text-sm">{footer}</div> : null}
-    </article>
+    <span className="mode-mono flex items-center gap-1.5 text-[0.62rem] uppercase tracking-[0.2em] text-muted-foreground/70">
+      <span className="soon-dot" aria-hidden /> Soon
+    </span>
   );
 }
 
 const Figure = ({ children }: { children: ReactNode }) => (
-  <p className="mode-mono font-display text-3xl leading-tight">{children}</p>
+  <p className="mode-mono font-display text-4xl leading-tight sm:text-5xl">{children}</p>
 );
 const Detail = ({ children }: { children: ReactNode }) => (
   <p className="mode-mono mt-2 text-sm text-muted-foreground">{children}</p>
 );
-const Ext = ({ href, children }: { href: string; children: ReactNode }) => (
-  <a href={href} target="_blank" rel="noreferrer" className="quiet-link text-accent">{children}</a>
+const SubHead = ({ children }: { children: ReactNode }) => (
+  <p className="mode-mono mb-3 text-[0.68rem] uppercase tracking-[0.2em] text-muted-foreground">{children}</p>
 );
-const Skeleton = () => <div className="h-16 animate-pulse rounded bg-secondary/60" aria-hidden />;
-
-function RunningCard() {
+const Ext = ({ href, children }: { href: string; children: ReactNode }) => (
+  <a href={href} target="_blank" rel="noreferrer" className="quiet-link text-sm text-accent">{children}</a>
+);
+const Skeleton = () => <div className="h-40 animate-pulse rounded bg-secondary/60" aria-hidden />;
+function Updated({ at }: { at?: number | undefined }) {
   const engine = useSiteMode() === "engine";
-  const { data, isLoading } = useQuery({ queryKey: ["strava"], queryFn: () => getStravaStats(), staleTime: HOUR });
-  if (!isLoading && !data) return null;
-  const l = data?.latest;
-  const via = l?.device_name ? ` via ${l.device_name}` : "";
-  const link = data && data.source !== "stub" && l?.url ? l.url : null;
+  if (!engine || !at) return null;
+  return <p className="mode-mono mt-6 text-xs text-muted-foreground">updated {relTime(at)}</p>;
+}
+
+/* ---------- tile (resting) ---------- */
+function Tile({ app, onOpen, btnRef }: { app: (typeof APPS)[number]; onOpen: () => void; btnRef: (el: HTMLButtonElement | null) => void }) {
+  const { live, preview } = useTileMeta(app.key);
   return (
-    <Card icon={siStrava} app="Strava" label="Running" live={data?.source === "strava"}
-      footer={link ? <Ext href={link}>View on Strava</Ext> : undefined}>
-      {!data || !l ? <Skeleton /> : (
-        <>
-          <Figure>{engine ? `month_km: ${data.month_km}` : `${data.month_km} km this month`}</Figure>
-          <Detail>{engine
-            ? `last: ${l.distance_km}km @ ${l.pace_min_per_km}/km · ${l.weekday}${via}`
-            : `Last run: ${l.distance_km} km on ${l.weekday} · ${l.pace_min_per_km}/km${via}`}</Detail>
-        </>
-      )}
-    </Card>
+    <motion.button
+      ref={btnRef}
+      layoutId={`tile-${app.key}`}
+      type="button"
+      aria-expanded={false}
+      aria-label={`${app.label} — ${app.app}`}
+      onClick={onOpen}
+      className="paper-card group relative flex aspect-square flex-col items-center justify-center gap-3 text-center"
+      transition={{ type: "spring", duration: 0.45, bounce: 0.15 }}
+    >
+      <span className="absolute right-3 top-3"><Badge live={live} /></span>
+      <motion.span layoutId={`chip-${app.key}`}><Chip app={app} size={52} /></motion.span>
+      <span>
+        <span className="mode-mono block text-[0.68rem] uppercase tracking-[0.2em] text-muted-foreground">{app.label}</span>
+        <span className="block font-display text-base">{app.app}</span>
+      </span>
+      {preview ? (
+        <span role="tooltip" className="tile-tip mode-mono pointer-events-none absolute left-1/2 top-full z-10 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-foreground px-2.5 py-1 text-xs text-background">
+          {preview}
+        </span>
+      ) : null}
+    </motion.button>
+  );
+}
+
+/* ---------- panel contents ---------- */
+function StravaPanel() {
+  const engine = useSiteMode() === "engine";
+  const { data } = useStrava();
+  if (!data) return <Skeleton />;
+  const s = data.data;
+  return (
+    <div className="grid gap-8 md:grid-cols-[1fr_1.2fr]">
+      <div>
+        <Figure>{engine ? `month_km: ${s.month_km}` : `${s.month_km} km`}</Figure>
+        <Detail>{engine ? "// this month" : "this month, so far"}</Detail>
+        <div className="mt-6">
+          <SubHead>Weekly km</SubHead>
+          <div className="flex h-24 items-end gap-2 rounded border border-dashed border-border p-3" aria-label="Weekly km chart placeholder">
+            {[40, 65, 30, 80, 55, 70, 45, 60].map((h, i) => (
+              <span key={i} className="flex-1 rounded-sm bg-secondary" style={{ height: `${h}%` }} />
+            ))}
+          </div>
+          <Detail>Chart fills in once Strava is connected.</Detail>
+        </div>
+      </div>
+      <div>
+        <SubHead>Last 5 runs</SubHead>
+        <ul className="border-t border-border">
+          {s.runs.map((r) => (
+            <li key={r.date} className="mode-mono grid grid-cols-3 border-b border-border py-2.5 text-sm">
+              <span className="text-muted-foreground">{engine ? r.date : shortDate(r.date)}</span>
+              <span>{r.distance_km} km</span>
+              <span className="text-right text-muted-foreground">{r.pace_min_per_km}/km</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="md:col-span-2"><Updated at={data.fetchedAt} /></div>
+    </div>
   );
 }
 
 function Stars({ rating }: { rating: number }) {
-  const full = Math.floor(rating);
   return (
-    <span className="tracking-tight" style={{ color: "#00a828" }} aria-label={`${rating} stars`}>
-      {"★".repeat(full)}{rating % 1 ? "½" : ""}
+    <span style={{ color: "#00a828" }} aria-label={`${rating} stars`}>
+      {"★".repeat(Math.floor(rating))}{rating % 1 ? "½" : ""}
     </span>
   );
 }
-
-function WatchingCard() {
-  const engine = useSiteMode() === "engine";
-  const { data, isLoading } = useQuery({ queryKey: ["letterboxd"], queryFn: () => getLetterboxdLatest(), staleTime: HOUR });
-  if (!isLoading && !data) return null;
-  const date = data?.watchedDate
-    ? new Date(data.watchedDate + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" })
-    : null;
+function Poster({ f, wide = false }: { f: LetterboxdFilm; wide?: boolean }) {
   return (
-    <Card icon={siLetterboxd} color="#ff8000" app="Letterboxd" label="Watching" live={!!data}
-      footer={<Ext href="https://letterboxd.com/cduffy67/films/">See all films →</Ext>}>
-      {!data ? <Skeleton /> : (
-        <a href={data.url} target="_blank" rel="noreferrer" className="group flex gap-4">
-          {data.poster ? (
-            <img src={data.poster} alt={`${data.title} poster`} loading="lazy"
-              className="aspect-[2/3] w-16 shrink-0 rounded object-cover ring-1 ring-border" style={{ borderRadius: 4 }} />
-          ) : null}
-          <div className="min-w-0">
-            <p className="mode-mono font-display text-xl leading-snug group-hover:text-accent">
-              {data.title}{data.year ? <span className="text-muted-foreground"> {engine ? `(${data.year})` : data.year}</span> : null}
-            </p>
-            {data.rating ? <p className="mt-1 text-lg"><Stars rating={data.rating} /></p> : null}
-            {date ? <Detail>{engine ? `watched: ${data.watchedDate}` : `Watched ${date}`}</Detail> : null}
+    <a href={f.url} target="_blank" rel="noreferrer" className="poster group block" title={f.watchedDate ? `Watched ${shortDate(f.watchedDate)}` : f.title}>
+      <span className="relative block overflow-hidden ring-1 ring-border" style={{ borderRadius: 4 }}>
+        {f.poster ? (
+          <img src={f.poster} alt={`${f.title} poster`} loading="lazy" className="aspect-[2/3] w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
+        ) : <span className="block aspect-[2/3] bg-secondary" />}
+        {f.watchedDate ? (
+          <span className="mode-mono absolute inset-x-0 bottom-0 bg-foreground/80 px-1.5 py-1 text-[0.65rem] text-background opacity-0 transition-opacity group-hover:opacity-100">
+            {shortDate(f.watchedDate)}
+          </span>
+        ) : null}
+      </span>
+      <span className={`mt-1.5 block truncate ${wide ? "text-sm" : "text-xs"}`}>{f.title}</span>
+      <span className="flex items-center gap-1.5 text-xs">
+        {f.rating ? <Stars rating={f.rating} /> : null}
+        {f.liked ? <span className="text-accent" aria-label="liked">♥</span> : null}
+      </span>
+    </a>
+  );
+}
+function LetterboxdPanel() {
+  const { data } = useLetterboxd();
+  if (!data) return <Skeleton />;
+  if (!data.data) return <Detail>Couldn't reach Letterboxd just now.</Detail>;
+  const { recent, top } = data.data;
+  return (
+    <div className="grid gap-10">
+      <div>
+        <SubHead>Recently watched</SubHead>
+        <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
+          {recent.map((f) => <Poster key={f.url + f.watchedDate} f={f} />)}
+        </div>
+      </div>
+      {top.length ? (
+        <div>
+          <SubHead>Top 4</SubHead>
+          <div className="grid max-w-xl grid-cols-4 gap-3">
+            {top.map((f) => <Poster key={f.url} f={f} wide />)}
           </div>
-        </a>
-      )}
-    </Card>
+        </div>
+      ) : null}
+      <div className="flex items-center justify-between">
+        <Ext href="https://letterboxd.com/cduffy67/films/">All films on Letterboxd →</Ext>
+        <Updated at={data.fetchedAt} />
+      </div>
+    </div>
   );
 }
 
-function ListeningCard() {
+function SpotifyPanel() {
+  const { data } = useSpotify();
+  if (!data) return <Skeleton />;
+  const s = data.data;
   return (
-    <Card icon={siSpotify} app="Spotify" label="Listening" live={false}>
-      <p className="font-display text-xl italic text-muted-foreground">What's on repeat?</p>
-      <Detail>Not connected yet.</Detail>
-    </Card>
+    <div className="grid gap-8 md:grid-cols-[1.4fr_1fr]">
+      <div>
+        <SubHead>On repeat this month</SubHead>
+        <ol className="border-t border-border">
+          {s.tracks.map((t, i) => (
+            <li key={i} className="flex items-center gap-3 border-b border-border py-2.5">
+              <span className="mode-mono w-5 text-xs text-muted-foreground">{i + 1}</span>
+              {t.art ? <img src={t.art} alt="" className="h-10 w-10 rounded" /> : <span className="h-10 w-10 rounded bg-secondary" aria-hidden />}
+              <span className="min-w-0">
+                <span className="block truncate text-sm">{t.title}</span>
+                <span className="block truncate text-xs text-muted-foreground">{t.artist}</span>
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div>
+        <SubHead>Top artists</SubHead>
+        <ul className="grid gap-3">
+          {s.artists.map((a, i) => (
+            <li key={a} className="flex items-center gap-3">
+              <span className="h-12 w-12 rounded-full bg-secondary" aria-hidden />
+              <span className="mode-mono font-display text-lg">{i + 1}. {a}</span>
+            </li>
+          ))}
+        </ul>
+        <Detail>Placeholder — Spotify isn't connected yet.</Detail>
+      </div>
+      <div className="md:col-span-2"><Updated at={data.fetchedAt} /></div>
+    </div>
   );
 }
 
-function LearningCard() {
+function StreakCalendar({ days }: { days: string[] }) {
+  const set = new Set(days);
+  const today = new Date(londonToday() + "T12:00:00");
+  const WEEKS = 26;
+  // start on the Monday WEEKS-1 weeks ago
+  const start = new Date(today);
+  start.setDate(start.getDate() - ((start.getDay() + 6) % 7) - (WEEKS - 1) * 7);
+  const cols: { iso: string; future: boolean }[][] = [];
+  for (let w = 0; w < WEEKS; w++) {
+    const col = [];
+    for (let d = 0; d < 7; d++) {
+      const dt = new Date(start);
+      dt.setDate(start.getDate() + w * 7 + d);
+      col.push({ iso: dt.toISOString().slice(0, 10), future: dt > today });
+    }
+    cols.push(col);
+  }
+  return (
+    <div className="overflow-x-auto">
+      <div className="flex gap-[3px]">
+        {cols.map((col, i) => (
+          <div key={i} className="flex flex-col gap-[3px]">
+            {col.map((c) => (
+              <span
+                key={c.iso}
+                title={c.iso}
+                className="h-3 w-3 rounded-[2px]"
+                style={{
+                  background: c.future ? "transparent" : set.has(c.iso) ? `#${siDuolingo.hex}` : "var(--secondary)",
+                }}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DuolingoPanel() {
   const engine = useSiteMode() === "engine";
-  const { data, isLoading } = useQuery({ queryKey: ["duolingo"], queryFn: () => getDuolingoStats(), staleTime: HOUR });
-  if (!isLoading && !data) return null;
-  const done = data ? !data.endDate || data.endDate >= londonToday() : false;
-  const joinYear = data?.creationDate ? new Date(data.creationDate * 1000).getFullYear() : null;
+  const { data } = useDuolingo();
+  const hist = useQuery({ queryKey: ["duolingo-history"], queryFn: () => getDuolingoHistory(), staleTime: HOUR });
+  if (!data) return <Skeleton />;
+  const d = data.data;
+  if (!d) return <Detail>Duolingo isn't answering right now.</Detail>;
+  const done = !d.endDate || d.endDate >= londonToday();
+  const joinYear = d.creationDate ? new Date(d.creationDate * 1000).getFullYear() : null;
   return (
-    <Card icon={siDuolingo} app="Duolingo" label="Learning" live={!!data}
-      footer={<Ext href="https://www.duolingo.com/profile/ConorDuffy575519">Duolingo profile →</Ext>}>
-      {!data ? <Skeleton /> : (
-        <>
-          <Figure>{engine ? `streak: ${fmt(data.streak)}d` : `🔥 ${fmt(data.streak)} days`}</Figure>
-          <Detail>{engine
-            ? `es_ES · xp: ${fmt(data.totalXp)}`
-            : data.streak === 0
-              ? "Learning Spanish · streak resetting, as streaks do"
-              : `Learning Spanish${joinYear ? ` · since ${joinYear}` : ""}`}</Detail>
-          <Detail>today's lesson: {done ? "done ✓" : "pending"}</Detail>
-        </>
-      )}
-    </Card>
+    <div className="grid gap-8">
+      <div className="grid gap-6 sm:grid-cols-[auto_1fr] sm:items-end">
+        <Figure>{engine ? `streak: ${fmt(d.streak)}d` : `🔥 ${fmt(d.streak)} days`}</Figure>
+        <div className="mode-mono grid grid-cols-3 gap-4 text-sm">
+          <div><SubHead>Course</SubHead>{engine ? "es_ES" : "Spanish"}</div>
+          <div><SubHead>Total XP</SubHead>{fmt(d.totalXp)}</div>
+          <div><SubHead>Since</SubHead>{joinYear ?? "—"}</div>
+        </div>
+      </div>
+      <Detail>
+        {d.streak === 0 ? "streak resetting, as streaks do · " : ""}today's lesson: {done ? "done ✓" : "pending"}
+      </Detail>
+      <div>
+        <SubHead>Streak calendar</SubHead>
+        <StreakCalendar days={hist.data?.data ?? []} />
+        <p className="mt-3 text-sm italic text-muted-foreground">
+          history my site has been keeping since Nov 2026 — the API doesn't keep it for me
+        </p>
+      </div>
+      <div className="flex items-center justify-between">
+        <Ext href="https://www.duolingo.com/profile/ConorDuffy575519">Duolingo profile →</Ext>
+        <Updated at={data.fetchedAt} />
+      </div>
+    </div>
+  );
+}
+
+const PANELS: Record<Key, () => ReactNode> = {
+  strava: StravaPanel,
+  letterboxd: LetterboxdPanel,
+  spotify: SpotifyPanel,
+  duolingo: DuolingoPanel,
+};
+
+/* ---------- panel shell ---------- */
+function Panel({ active, onSwitch, onClose }: { active: Key; onSwitch: (k: Key) => void; onClose: () => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  const app = APPS.find((a) => a.key === active)!;
+  const { live } = useTileMeta(active);
+  const Body = PANELS[active];
+  useEffect(() => {
+    ref.current?.focus({ preventScroll: true });
+  }, []);
+  return (
+    <motion.div
+      ref={ref}
+      tabIndex={-1}
+      role="region"
+      aria-label={`${app.label} — ${app.app}`}
+      {...(reduce ? {} : { layoutId: `tile-${active}` })}
+      transition={{ type: "spring", duration: 0.45, bounce: 0.12 }}
+      className="paper-card !transform-none outline-none"
+    >
+      <div className="flex flex-wrap items-center gap-3 border-b border-border pb-4">
+        <motion.span {...(reduce ? {} : { layoutId: `chip-${active}` })}><Chip app={app} size={44} /></motion.span>
+        <div className="mr-auto leading-tight">
+          <p className="mode-mono text-[0.68rem] uppercase tracking-[0.2em] text-muted-foreground">{app.label}</p>
+          <p className="font-display text-xl">{app.app}</p>
+        </div>
+        <Badge live={live} />
+        <div className="flex items-center gap-1.5" role="group" aria-label="Switch app">
+          {APPS.map((a) => (
+            <motion.button
+              key={a.key}
+              type="button"
+              {...(a.key !== active && !reduce ? { layoutId: `tile-${a.key}` } : {})}
+              aria-label={a.key === active ? `Close ${a.app}` : `Show ${a.app}`}
+              aria-pressed={a.key === active}
+              onClick={() => (a.key === active ? onClose() : onSwitch(a.key))}
+              className={`rounded-xl p-0.5 transition-opacity ${a.key === active ? "ring-1 ring-foreground/30" : "opacity-60 hover:opacity-100"}`}
+            >
+              <Chip app={a} size={30} />
+            </motion.button>
+          ))}
+        </div>
+        <button type="button" onClick={onClose} aria-label="Close panel" className="ml-1 grid h-8 w-8 place-items-center rounded-full text-lg text-muted-foreground hover:bg-secondary hover:text-foreground">
+          ✕
+        </button>
+      </div>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={active}
+          initial={reduce ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={reduce ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: reduce ? 0 : 0.2 }}
+          className="pt-6"
+        >
+          <Body />
+        </motion.div>
+      </AnimatePresence>
+    </motion.div>
   );
 }
 
 export function LiveTiles() {
+  const [open, setOpen] = useState<Key | null>(null);
+  const tileRefs = useRef<Partial<Record<Key, HTMLButtonElement | null>>>({});
+  const lastOpened = useRef<Key | null>(null);
+  const reduce = useReducedMotion();
+
+  const close = () => {
+    const k = lastOpened.current;
+    setOpen(null);
+    requestAnimationFrame(() => k && tileRefs.current[k]?.focus({ preventScroll: true }));
+  };
+  const openKey = (k: Key) => {
+    lastOpened.current = k;
+    setOpen(k);
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
-    <div className="mb-12 grid gap-5 sm:grid-cols-2">
-      <RunningCard />
-      <WatchingCard />
-      <ListeningCard />
-      <LearningCard />
-    </div>
+    <LayoutGroup>
+      <motion.div id="live-tiles" layout={!reduce} className="mb-12 scroll-mt-24" transition={{ type: "spring", duration: 0.45, bounce: 0.12 }}>
+        {open ? (
+          <Panel active={open} onSwitch={openKey} onClose={close} />
+        ) : (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {APPS.map((a) => (
+              <Tile key={a.key} app={a} onOpen={() => openKey(a.key)} btnRef={(el) => (tileRefs.current[a.key] = el)} />
+            ))}
+          </div>
+        )}
+      </motion.div>
+    </LayoutGroup>
   );
 }
