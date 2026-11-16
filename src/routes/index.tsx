@@ -145,8 +145,8 @@ export function Home() {
         <div className="grid gap-10 md:grid-cols-[1.35fr_1fr] md:items-start">
           <div>
             <p className="beat max-w-2xl text-lg leading-relaxed text-ink-soft">
-              I started in accounting, ended up in consulting, then spent years in enterprise
-              software watching good ideas die of vagueness. Now I work on the messy edge where
+              I started in accounting, ended up in consulting, then moved into enterprise
+              software, translating ambitious ideas into working systems. Now I work on the messy edge where
               business problems, architecture and budgets have to agree.
             </p>
           </div>
