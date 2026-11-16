@@ -12,6 +12,7 @@ import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { initSiteMode, setSiteMode, useSiteMode, type SiteMode } from "../lib/mode";
 
 const NAV = [
   { to: "/", label: "Home" },
@@ -101,7 +102,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Karla:wght@400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Karla:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
@@ -123,6 +124,45 @@ function RootShell({ children }: { children: ReactNode }) {
         <Scripts />
       </body>
     </html>
+  );
+}
+
+function ModeToggle() {
+  const mode = useSiteMode();
+  const choose = (m: SiteMode) => {
+    if (m === mode) return;
+    const root = document.documentElement;
+    root.classList.add("mode-anim");
+    setSiteMode(m);
+    window.setTimeout(() => root.classList.remove("mode-anim"), 450);
+  };
+  const opts: { id: SiteMode; label: string }[] = [
+    { id: "boardroom", label: "Boardroom" },
+    { id: "engine", label: "Engine room" },
+  ];
+  return (
+    <div
+      role="radiogroup"
+      aria-label="Site mode"
+      className="mode-mono inline-flex shrink-0 overflow-hidden rounded-full border border-border text-[0.7rem] sm:text-xs"
+    >
+      {opts.map((o, i) => (
+        <button
+          key={o.id}
+          type="button"
+          role="radio"
+          aria-checked={mode === o.id}
+          onClick={() => choose(o.id)}
+          className={`whitespace-nowrap px-2.5 py-1 transition-colors sm:px-3 ${i ? "border-l border-border" : ""} ${
+            mode === o.id
+              ? "bg-foreground text-background"
+              : "text-ink-soft hover:text-foreground"
+          }`}
+        >
+          {o.label}
+        </button>
+      ))}
+    </div>
   );
 }
 
@@ -152,7 +192,8 @@ function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-4">
+          <ModeToggle />
           <Link
             to="/print"
             className="quiet-link relative inline-flex items-center gap-1.5 py-1 text-sm text-ink-soft transition-colors hover:text-foreground"
@@ -207,6 +248,9 @@ function Footer() {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useEffect(() => {
+    initSiteMode();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

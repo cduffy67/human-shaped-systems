@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { BrandPill, Divider, Label, Plate, SectionHeading } from "@/components/site";
+import { CONTENT, sectionNo } from "@/lib/content";
+import { useSiteMode } from "@/lib/mode";
 import headshot from "@/assets/headshot.png.asset.json";
 import team from "@/assets/team.png.asset.json";
 
@@ -71,23 +73,26 @@ export const Route = createFileRoute("/")({
 });
 
 export function Home() {
+  const mode = useSiteMode();
+  const engine = mode === "engine";
+  const lines = CONTENT.hero.headline[mode].split("|");
   return (
     <div>
       {/* Hero */}
       <section className="mx-auto grid w-full max-w-5xl gap-12 px-5 py-16 sm:px-8 sm:py-24 md:grid-cols-[1.25fr_0.75fr] md:items-end">
-        <div className="rise">
-          <Label>Conor Duffy · London / Ireland</Label>
+        <div className="rise mode-fade" key={mode}>
+          <Label className="mode-mono">{CONTENT.hero.label[mode]}</Label>
           <h1 className="mt-6 text-[2.6rem] leading-[1.04] sm:text-[4rem]">
-            Enterprise problems,
-            <br />
-            human-shaped
-            <br />
-            solutions.
+            {lines.map((l, i) => (
+              <span key={i}>
+                {l}
+                {i < lines.length - 1 ? <br /> : null}
+              </span>
+            ))}
+            {engine ? <span className="block-cursor" aria-hidden="true" /> : null}
           </h1>
           <p className="mt-8 max-w-xl text-lg leading-relaxed text-ink-soft">
-            I help turn messy business problems into systems people can actually use, buy and
-            trust — usually somewhere between enterprise software, AI adoption and a whiteboard
-            nobody has rubbed out yet.
+            {CONTENT.hero.sub[mode]}
           </p>
           <p className="mt-4 max-w-xl leading-relaxed text-muted-foreground">
             Part storyteller, part systems thinker, part practical builder. Irish, based in London,
@@ -195,14 +200,14 @@ export function Home() {
       <section className="mx-auto w-full max-w-5xl px-5 pt-24 sm:px-8">
         <SectionHeading note="the short version">What I do</SectionHeading>
         <div className="border-t border-border">
-          {STRENGTHS.map((s) => (
+          {STRENGTHS.map((s, i) => (
             <article
-              key={s.title}
+              key={s.no}
               className="row-warm grid gap-2 border-b border-border px-1 py-6 sm:grid-cols-[3.5rem_1fr_1.35fr] sm:gap-6 sm:px-3"
             >
-              <span className="font-display text-sm text-accent/80">{s.no}</span>
-              <h3 className="text-xl leading-snug">{s.title}</h3>
-              <p className="leading-relaxed text-ink-soft">{s.body}</p>
+              <span className="mode-mono font-display text-sm text-accent/80">{sectionNo(i + 1, mode)}</span>
+              <h3 key={mode + "t"} className="mode-fade text-xl leading-snug">{CONTENT.strengths[i].title[mode]}</h3>
+              <p key={mode + "b"} className="mode-fade leading-relaxed text-ink-soft">{CONTENT.strengths[i].body[mode]}</p>
             </article>
           ))}
         </div>
@@ -223,8 +228,8 @@ export function Home() {
               key={item.title}
               className="flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-border/70 py-3.5"
             >
-              <span className="w-6 font-display text-sm text-muted-foreground">
-                {String(i + 1).padStart(2, "0")}
+              <span className="mode-mono w-12 font-display text-sm text-muted-foreground">
+                {sectionNo(i + 1, mode)}
               </span>
               <span className="text-lg">{item.title}</span>
               <span className="text-sm italic text-muted-foreground">{item.note}</span>

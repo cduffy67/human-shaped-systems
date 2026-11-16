@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { CONTENT, sectionNo } from "@/lib/content";
+import { useSiteMode } from "@/lib/mode";
 import { Divider, Label, Page, PageHeader, SectionHeading } from "@/components/site";
 
 const PHASES = [
@@ -67,6 +69,7 @@ export const Route = createFileRoute("/how-i-work")({
 });
 
 export function HowIWork() {
+  const mode = useSiteMode();
   return (
     <Page>
       <PageHeader
@@ -93,19 +96,21 @@ export function HowIWork() {
           <section key={p.phase}>
             <div className="flex flex-wrap items-baseline gap-x-5 border-b border-border pb-3">
               <Label>{p.phase}</Label>
-              <span className="ml-auto font-display text-sm text-muted-foreground">
-                0{pi + 1} / 03
+              <span className="mode-mono ml-auto font-display text-sm text-muted-foreground">
+                {mode === "engine" ? sectionNo(pi + 1, mode) : `0${pi + 1} / 03`}
               </span>
             </div>
 
             <div className="grid gap-x-12 sm:grid-cols-2">
               {p.steps.map((s, si) => (
                 <article key={s.title} className="border-b border-border/70 py-6">
-                  <span className="font-display text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                  <span className="mode-mono font-display text-xs uppercase tracking-[0.2em] text-muted-foreground">
                     Step {pi * 2 + si + 1}
                   </span>
                   <h2 className="mt-2 text-xl leading-snug">{s.title}</h2>
-                  <p className="mt-2 leading-relaxed text-ink-soft">{s.body}</p>
+                  <p key={mode} className="mode-fade mt-2 leading-relaxed text-ink-soft">
+                    {CONTENT.method[pi * 2 + si][mode]}
+                  </p>
                 </article>
               ))}
             </div>

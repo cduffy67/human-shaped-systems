@@ -39,6 +39,7 @@
 
   --font-display: "Newsreader", Georgia, serif;
   --font-sans: "Karla", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 :root {
@@ -251,4 +252,98 @@
     transform: translateY(-3px);
     box-shadow: 0 12px 30px -18px color-mix(in oklab, var(--foreground) 55%, transparent);
   }
+}
+
+/* ============ Engine room mode ============ */
+:root {
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+html[data-mode="engine"] {
+  --background: #1a1411;
+  --paper: #211915;
+  --foreground: #efe6d8;
+  --ink-soft: color-mix(in oklab, #efe6d8 78%, #1a1411);
+  --card: #221a16;
+  --card-foreground: #efe6d8;
+  --popover: #221a16;
+  --popover-foreground: #efe6d8;
+  --primary: oklch(0.66 0.13 45);
+  --primary-foreground: #1a1411;
+  --secondary: #2a211c;
+  --secondary-foreground: #efe6d8;
+  --muted: #2a211c;
+  --muted-foreground: color-mix(in oklab, #efe6d8 55%, #1a1411);
+  --accent: oklch(0.66 0.13 45);
+  --accent-foreground: #1a1411;
+  --sage: oklch(0.72 0.08 140);
+  --border: rgb(239 230 216 / 0.15);
+  --input: rgb(239 230 216 / 0.15);
+  color-scheme: dark;
+}
+html[data-mode="engine"] body {
+  /* faint blueprint grid */
+  background-image:
+    linear-gradient(rgb(239 230 216 / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(239 230 216 / 0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+html[data-mode="engine"] .border,
+html[data-mode="engine"] .border-b,
+html[data-mode="engine"] .border-t,
+html[data-mode="engine"] .border-y,
+html[data-mode="engine"] .border-l {
+  border-width: 0;
+}
+html[data-mode="engine"] .border { border-width: 0.5px; }
+html[data-mode="engine"] .border-b { border-bottom-width: 0.5px; }
+html[data-mode="engine"] .border-t { border-top-width: 0.5px; }
+html[data-mode="engine"] .border-y { border-block-width: 0.5px; }
+html[data-mode="engine"] .border-l { border-left-width: 0.5px; }
+html[data-mode="engine"] .mode-mono,
+html[data-mode="engine"] .uppercase {
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+}
+html[data-mode="engine"] .grain::after {
+  display: none;
+}
+html[data-mode="engine"] ::selection {
+  background: color-mix(in oklab, var(--accent) 45%, transparent);
+}
+
+/* crossfade colours on switch, no layout change */
+html.mode-anim,
+html.mode-anim * {
+  transition:
+    background-color 400ms ease,
+    color 400ms ease,
+    border-color 400ms ease,
+    opacity 400ms ease !important;
+}
+.mode-fade {
+  animation: mode-fade 400ms ease both;
+}
+@keyframes mode-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.block-cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.85em;
+  margin-left: 0.12em;
+  vertical-align: -0.05em;
+  background: var(--accent);
+  animation: blink 1.05s steps(1) infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .block-cursor { animation: none; }
+  html.mode-anim, html.mode-anim * { transition: none !important; }
+}
+@media print {
+  html[data-mode="engine"] body { background-image: none; }
 }

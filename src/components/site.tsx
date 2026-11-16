@@ -18,7 +18,7 @@ export function Page({
 export function Label({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <span
-      className={`text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-accent ${className}`}
+      className={`mode-mono text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-accent ${className}`}
     >
       {children}
     </span>
