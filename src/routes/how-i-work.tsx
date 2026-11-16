@@ -2,21 +2,12 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { CONTENT, sectionNo } from "@/lib/content";
 import { useSiteMode } from "@/lib/mode";
-import { Divider, Label, Page, PageHeader, Plate, SectionHeading } from "@/components/site";
+import { Divider, Label, Page, PageHeader, SectionHeading } from "@/components/site";
 
-import { motion, useReducedMotion } from "framer-motion";
 import { MethodDiagram } from "@/components/method-diagram";
+import { PhaseIllustration } from "@/components/phase-illustration";
 import { CaseCTA } from "@/components/case-cta";
 import { CASES, METHOD_STEPS } from "@/lib/cases";
-import podcast from "@/assets/podcast.png.asset.json";
-import cambridge from "@/assets/cambridge.png.asset.json";
-import stage from "@/assets/stage.png.asset.json";
-
-const PHOTOS = [
-  { src: podcast.url, alt: "Conor in conversation during a filmed interview", caption: "Adoption beats features.", position: "object-center" },
-  { src: cambridge.url, alt: "Conor outside a Cambridge college during an AI course", caption: "Stay the least expert in the room.", position: "object-bottom" },
-  { src: stage.url, alt: "Conor speaking on stage at a Salesforce event", caption: "Making complex ideas useful in a room.", position: "object-center" },
-];
 
 const PHASES = [
   {
@@ -84,7 +75,6 @@ export const Route = createFileRoute("/how-i-work")({
 
 export function HowIWork() {
   const mode = useSiteMode();
-  const reduce = useReducedMotion();
   return (
     <Page>
       <PageHeader
@@ -97,8 +87,6 @@ export function HowIWork() {
 
       <div className="mt-16 space-y-16">
         {PHASES.map((p, pi) => {
-          const photo = PHOTOS[pi];
-          if (!photo) return null;
           return (
           <section key={p.phase}>
             <div className="flex flex-wrap items-baseline gap-x-5 border-b border-border pb-3">
@@ -108,10 +96,9 @@ export function HowIWork() {
               </span>
             </div>
 
-            <motion.div className="my-7" initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: reduce ? 0 : 0.55 }}>
-              <Plate {...photo} ratio="aspect-[16/7]" />
-            </motion.div>
-            <div className="grid gap-x-12 sm:grid-cols-2">
+            <div className="mt-7 grid items-center gap-5 lg:grid-cols-[minmax(240px,0.85fr)_2fr] lg:gap-10">
+              <PhaseIllustration phase={pi} />
+              <div className="grid gap-x-8 sm:grid-cols-2">
               {p.steps.map((s, si) => (
                 <article key={s.title} id={METHOD_STEPS[pi * 2 + si]?.id} className="scroll-mt-28 border-b border-border/70 py-6">
                   <span className="mode-mono font-display text-xs uppercase tracking-[0.2em] text-muted-foreground">
@@ -126,6 +113,7 @@ export function HowIWork() {
                   </Link>
                 </article>
               ))}
+              </div>
             </div>
           </section>
           );
