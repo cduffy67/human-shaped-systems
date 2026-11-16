@@ -48,7 +48,7 @@ export const CONTENT = {
     {
       title: { boardroom: "Commercially grounded", engine: "Cost-aware by default" },
       body: {
-        boardroom: "Chartered management accountant (CGMA). I'll build the business case alongside the solution: what it costs, and what it's genuinely worth.",
+        boardroom: "As a chartered accountant (CGMA), I'll build the business case alongside the solution.",
         engine: "Chartered accountant (CGMA). Token spend, licence tiers, latency budgets: I'll price the design before you fall in love with it.",
       },
     },

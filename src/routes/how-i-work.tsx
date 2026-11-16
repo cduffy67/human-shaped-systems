@@ -42,7 +42,7 @@ const PHASES = [
     phase: "Credible solution",
     steps: [
       {
-        title: "Build the smallest credible version",
+        title: "Show it working, not on a slide",
         body: "Small enough to ship, real enough to prove the value. A demo that dodges the hard part convinces nobody.",
       },
       {
