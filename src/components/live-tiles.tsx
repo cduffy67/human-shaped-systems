@@ -494,6 +494,12 @@ export function LiveTiles() {
   };
 
   useEffect(() => {
+    const onOpen = () => openKey("strava");
+    window.addEventListener("cd-open-tile", onOpen);
+    return () => window.removeEventListener("cd-open-tile", onOpen);
+  }, []);
+
+  useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
     window.addEventListener("keydown", onKey);

@@ -74,7 +74,7 @@ async function runEgg(cmd: string, ctx: { streak: string; go: ReturnType<typeof 
     case "seance": case "séance": return { text: "no séance required. the seams are documented in ~/build-log.", link: { to: "/build-log", label: "~/build-log" } };
     case "nyc": case "gap year": case "fraunces": revealGapYear(); ctx.go("/journey", "gap-year"); return { text: "found it. a year behind the bar, now back on the record." };
     case "demo": return { text: DEMO[Math.floor(Math.random() * DEMO.length)]! };
-    case "medal": setOffClock(true); ctx.go("/", "beyond"); return { text: "off the clock. medal earned, pint also earned." };
+    case "medal": setOffClock(true); ctx.go("/", "beyond"); window.setTimeout(() => window.dispatchEvent(new Event("cd-open-tile")), 400); window.setTimeout(() => document.getElementById("off-clock")?.scrollIntoView({ behavior: "smooth", block: "center" }), 1100); return { text: "Work hard. Celebrate the wins." };
     default: return null;
   }
 }

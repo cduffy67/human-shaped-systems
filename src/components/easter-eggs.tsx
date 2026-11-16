@@ -177,33 +177,25 @@ export function EasterEggs() {
   return <RainCanvas />;
 }
 
-export const OFF_CLOCK_CAPTION = "off the clock. medal earned, pint also earned.";
+export const OFF_CLOCK_CAPTION = "Work hard. Celebrate the wins.";
 export const OFF_CLOCK_SRC = offClockPhoto.url;
 
-/** Small flipping Polaroid for Beyond work. */
+/** Quiet on/off-the-clock photo swap for Beyond work panels. */
 export function OffClockPolaroid() {
   const on = useOffClock();
   return (
-    <figure className="mx-auto w-[190px]">
-      <div className="polaroid-wrap" style={{ perspective: 900 }}>
-        <div className={`polaroid ${on ? "is-flipped" : ""}`}>
-          {[{ src: headshot.url, alt: "Conor at work", cap: "on the clock." }, { src: offClockPhoto.url, alt: "Conor off the clock", cap: OFF_CLOCK_CAPTION }].map((f, i) => (
-            <div key={i} className={`polaroid-face ${i ? "polaroid-back" : ""}`} aria-hidden={i ? !on : on}>
-              <img src={f.src} alt={f.alt} className="aspect-square w-full object-cover object-top" />
-              <p className="no-slash font-hand mt-2 min-h-[3.6em] text-center text-[0.95rem] leading-tight text-ink">{f.cap}</p>
-            </div>
-          ))}
-          <span aria-hidden="true" className="magnet" />
-        </div>
+    <figure id="off-clock" className="mx-auto w-full max-w-[200px] scroll-mt-24">
+      <div className="relative aspect-square overflow-hidden rounded-[4px] bg-secondary">
+        {[{ src: headshot.url, alt: "Conor at work", show: !on }, { src: offClockPhoto.url, alt: "Conor off the clock", show: on }].map((f) => (
+          <img key={f.src} src={f.src} alt={f.alt} aria-hidden={!f.show}
+            className={`absolute inset-0 h-full w-full object-cover object-top transition-opacity duration-[400ms] motion-reduce:transition-none ${f.show ? "opacity-100" : "opacity-0"}`} />
+        ))}
       </div>
-      <label className="mode-mono mt-4 flex cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap text-[0.62rem] text-muted-foreground">
-        <span className={on ? "" : "text-foreground"}>on the clock</span>
-        <button type="button" role="switch" aria-checked={on} aria-label="on the clock / off the clock" onClick={() => setOffClock(!on)}
-          className="relative h-5 w-9 rounded-full border border-border bg-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">
-          <span className={`absolute top-0.5 h-3.5 w-3.5 rounded-full bg-accent transition-[left] ${on ? "left-[18px]" : "left-0.5"}`} />
-        </button>
-        <span className={on ? "text-foreground" : ""}>⇄ off the clock</span>
-      </label>
+      <figcaption className="mt-2 min-h-[1.4em] text-xs text-muted-foreground">{on ? OFF_CLOCK_CAPTION : ""}</figcaption>
+      <button type="button" onClick={() => setOffClock(!on)}
+        className="mode-mono mt-1 rounded-sm text-[0.68rem] text-muted-foreground/70 transition-colors hover:text-accent focus-visible:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        {on ? "↻ on the clock" : "↻ off the clock"}
+      </button>
     </figure>
   );
 }

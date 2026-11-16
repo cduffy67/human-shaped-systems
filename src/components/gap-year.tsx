@@ -14,13 +14,12 @@ export function GapYear() {
   const reduce = useReducedMotion();
   if (!open) {
     return (
-      <li id="gap-year" className="flex justify-center py-3">
-        <button type="button" aria-label="Reveal hidden chapter" onClick={revealGapYear}
-          className="group relative flex items-center gap-2 rounded-sm px-2 py-1 text-xs text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring">
-          <span aria-hidden className="w-10 border-t border-dashed border-border" />
-          <span aria-hidden>{mode === "engine" ? "# 1 stashed change" : "⋯"}</span>
-          <span aria-hidden className="w-10 border-t border-dashed border-border" />
-          <span role="tooltip" className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-sm border border-border bg-card px-2 py-0.5 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">hang on, a year's missing.</span>
+      <li id="gap-year" className="border-b border-border py-4">
+        <button type="button" aria-label="Reveal hidden chapter" title="hang on, a year's missing." onClick={revealGapYear}
+          className="group flex w-full items-center gap-4 rounded-[4px] border border-dashed border-border px-4 py-3 text-left text-sm text-muted-foreground transition-colors hover:border-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+          <span className="mode-mono text-xs text-accent">{mode === "engine" ? "# 1 stashed change" : "02.5"}</span>
+          <span className="flex-1">{mode === "engine" ? "$ git stash pop  // a year's missing" : "Hang on, a year's missing. 2017–2018"}</span>
+          <span aria-hidden className="mode-mono text-xs transition-transform group-hover:translate-y-0.5">{mode === "engine" ? "[ unstash ↓ ]" : "Unfold ↓"}</span>
         </button>
       </li>
     );

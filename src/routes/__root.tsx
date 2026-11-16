@@ -13,6 +13,7 @@ import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { ToggleNudge } from "../components/toggle-nudge";
 import { initSiteMode, setSiteMode, useSiteMode, type SiteMode } from "../lib/mode";
 import { CommandPalette, openPalette } from "../components/command-palette";
 import { EasterEggs, MuteToggle, SnailFooterLine } from "../components/easter-eggs";
@@ -201,7 +202,7 @@ function Header() {
           <button type="button" onClick={openPalette} aria-label="Open command menu" title="Command menu (⌘K)" className={`mode-mono hidden rounded-[4px] border border-border px-1.5 py-0.5 text-xs transition-colors hover:text-foreground sm:inline ${engine ? "text-accent" : "text-muted-foreground"}`}>
             ⌘K
           </button>
-          <ModeToggle />
+          <div className="relative"><ModeToggle /><ToggleNudge /></div>
           <Link
             to="/print"
             className="quiet-link relative inline-flex items-center gap-1.5 py-1 text-sm text-ink-soft transition-colors hover:text-foreground"

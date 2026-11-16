@@ -139,7 +139,7 @@ export function HowIWork() {
               <article key={i} className="beat row-warm flex flex-col gap-2 border-b border-border px-1 py-5 lg:border-b-0 lg:px-0">
                 <span className="mode-mono text-sm text-accent">{sectionNo(i + 1, mode)}</span>
                 <h3 className="text-base font-bold leading-snug">{strength.title[mode]}</h3>
-                <p className="line-clamp-2 text-sm leading-snug text-ink-soft lg:line-clamp-3">{strength.body[mode]}</p>
+                <p className="text-sm leading-snug text-ink-soft">{strength.body[mode]}</p>
               </article>
             ))}
           </div>
