@@ -18,7 +18,7 @@ export async function handleOAuthCallback(provider: Provider, request: Request) 
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
-  const expected = process.env.OAUTH_STATE_SECRET;
+  const expected = process.env['OAUTH_STATE_SECRET'];
   if (!expected || !state || !safeEqual(state, expected)) return page("Invalid state", 403);
   if (!code || code.length > 2048) return page("Missing code", 400);
 
@@ -28,14 +28,14 @@ export async function handleOAuthCallback(provider: Provider, request: Request) 
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
-        client_id: process.env.STRAVA_CLIENT_ID ?? "",
-        client_secret: process.env.STRAVA_CLIENT_SECRET ?? "",
+        client_id: process.env['STRAVA_CLIENT_ID'] ?? "",
+        client_secret: process.env['STRAVA_CLIENT_SECRET'] ?? "",
         code,
         grant_type: "authorization_code",
       }),
     });
   } else {
-    const basic = btoa(`${process.env.SPOTIFY_CLIENT_ID ?? ""}:${process.env.SPOTIFY_CLIENT_SECRET ?? ""}`);
+    const basic = btoa(`${process.env['SPOTIFY_CLIENT_ID'] ?? ""}:${process.env['SPOTIFY_CLIENT_SECRET'] ?? ""}`);
     res = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded", Authorization: `Basic ${basic}` },
