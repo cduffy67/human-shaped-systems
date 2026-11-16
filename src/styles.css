@@ -570,4 +570,4 @@ html[data-mode="engine"] .engine-caption { text-transform: none; letter-spacing:
 .snail { position: absolute; bottom: -2.4rem; left: 0; font-size: 2rem; font-style: normal; animation: snail-crawl linear forwards; }
 @keyframes snail-crawl { from { transform: translateX(0); } to { transform: translateX(min(80vw, 900px)); } }
 .hero-flip { transition: transform 500ms ease; transform-style: preserve-3d; }
-@media (prefers-reduced-motion: reduce) { 
+@media (prefers-reduced-motion: reduce) { .snail, .hero-flip { animation: none; transition: none; } }
