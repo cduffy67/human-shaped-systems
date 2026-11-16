@@ -6,9 +6,9 @@ import { CASES } from "@/lib/cases";
 export const Route = createFileRoute("/case-library")({
   head: () => ({
     meta: [
-      { title: "Case Library — Conor Duffy" },
+      { title: "Case Library · Conor Duffy" },
       { name: "description", content: "Enterprise AI, workflow design and practical architecture: Conor Duffy’s case library, from messy problem to credible solution." },
-      { property: "og:title", content: "Case Library — Conor Duffy" },
+      { property: "og:title", content: "Case Library · Conor Duffy" },
       { property: "og:description", content: "Selected work in enterprise AI adoption and value-led solution design. Case write-ups coming soon." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

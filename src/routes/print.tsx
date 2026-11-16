@@ -12,13 +12,13 @@ import { Contact } from "./contact";
 export const Route = createFileRoute("/print")({
   head: () => ({
     meta: [
-      { title: "Conor Duffy — Printable site (PDF export)" },
+      { title: "Conor Duffy · Printable site (PDF export)" },
       {
         name: "description",
         content:
           "A single printable page containing every section of Conor Duffy's site: home, how I work, journey, build log, case library and contact.",
       },
-      { property: "og:title", content: "Conor Duffy — Printable site" },
+      { property: "og:title", content: "Conor Duffy · Printable site" },
       {
         property: "og:description",
         content: "Every page of the site on one sheet, ready to save as a PDF.",
@@ -51,7 +51,7 @@ function PrintPage() {
       <div className="no-print mx-auto w-full max-w-5xl px-5 pt-8 sm:px-8">
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-4">
           <p className="text-sm text-ink-soft">
-            The whole site on one page. Your print dialog should open — choose{" "}
+            The whole site on one page. Your print dialog should open, so choose{" "}
             <em>Save as PDF</em>.
           </p>
           <button

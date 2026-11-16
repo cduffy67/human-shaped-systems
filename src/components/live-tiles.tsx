@@ -109,7 +109,7 @@ function Tile({ app, onOpen, btnRef }: { app: (typeof APPS)[number]; onOpen: () 
       layoutId={`tile-${app.key}`}
       type="button"
       aria-expanded={false}
-      aria-label={`${app.label} — ${app.app}`}
+      aria-label={`${app.label}: ${app.app}`}
       onClick={onOpen}
       className="paper-card group relative flex aspect-square flex-col items-center justify-center gap-3 text-center"
       transition={{ type: "spring", duration: 0.45, bounce: 0.15 }}
@@ -376,7 +376,7 @@ function DuolingoPanel() {
         <div className="mode-mono grid grid-cols-3 gap-4 text-sm">
           <div><SubHead>Course</SubHead>{engine ? "es_ES" : "Spanish"}</div>
           <div><SubHead>Total XP</SubHead>{fmt(d.totalXp)}</div>
-          <div><SubHead>Since</SubHead>{joinYear ?? "—"}</div>
+          <div><SubHead>Since</SubHead>{joinYear ?? "-"}</div>
         </div>
       </div>
       <Detail>
@@ -386,7 +386,7 @@ function DuolingoPanel() {
         <SubHead>Streak calendar</SubHead>
         <StreakCalendar days={hist.data?.data ?? []} />
         <p className="mt-3 text-sm italic text-muted-foreground">
-          history my site has been keeping since Nov 2026 — the API doesn't keep it for me
+          history my site has been keeping since Nov 2026, because the API doesn't keep it for me
         </p>
       </div>
       <div className="flex items-center justify-between">
@@ -419,7 +419,7 @@ function Panel({ active, onSwitch, onClose }: { active: Key; onSwitch: (k: Key) 
       ref={ref}
       tabIndex={-1}
       role="region"
-      aria-label={`${app.label} — ${app.app}`}
+      aria-label={`${app.label}: ${app.app}`}
       {...(reduce ? {} : { layoutId: `tile-${active}` })}
       transition={{ type: "spring", duration: 0.45, bounce: 0.12 }}
       className="paper-card !transform-none outline-none"

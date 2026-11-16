@@ -30,7 +30,7 @@ const PHASES = [
     steps: [
       {
         title: "Expose the trade-offs",
-        body: "Every option costs something — time, flexibility, licence spend, someone's patience. Say it out loud early.",
+        body: "Every option costs something: time, flexibility, licence spend, someone's patience. Say it out loud early.",
       },
       {
         title: "Tie choices to business value",
@@ -43,7 +43,7 @@ const PHASES = [
     steps: [
       {
         title: "Build the smallest credible version",
-        body: "Small enough to ship, real enough to judge. A demo that dodges the hard part convinces nobody.",
+        body: "Small enough to ship, real enough to prove the value. A demo that dodges the hard part convinces nobody.",
       },
       {
         title: "Make it extensible later",
@@ -56,13 +56,13 @@ const PHASES = [
 export const Route = createFileRoute("/how-i-work")({
   head: () => ({
     meta: [
-      { title: "How I Work — Conor Duffy" },
+      { title: "How I Work · Conor Duffy" },
       {
         name: "description",
         content:
-          "A working framework in three moves: messy problem, mapped system, credible solution — user journeys, trade-offs, business value and room to extend.",
+          "A working framework in three moves: messy problem, mapped system, credible solution. User journeys, trade-offs, business value and room to extend.",
       },
-      { property: "og:title", content: "How I Work — Conor Duffy" },
+      { property: "og:title", content: "How I Work · Conor Duffy" },
       {
         property: "og:description",
         content: "A plain-English operating model for turning messy problems into working systems.",

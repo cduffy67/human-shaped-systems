@@ -71,7 +71,7 @@ export const CONTENT = {
       engine: "Every component maps to a metric, so nothing ships just because it was fun to build.",
     },
     {
-      boardroom: "A pilot real enough to judge and small enough to approve.",
+      boardroom: "A working solution that makes the value obvious.",
       engine: "A working slice against real data and the hardest edge case. No happy-path demos.",
     },
     {

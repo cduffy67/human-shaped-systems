@@ -117,6 +117,7 @@ const BRAND_LOGOS: { match: (l: string) => boolean; src: string; wordmark: boole
   { match: (l) => l === "Deloitte", src: deloitteLogo.url, wordmark: true, h: "h-3" },
   { match: (l) => l === "Salesforce", src: salesforceLogo.url, wordmark: true, h: "h-7 -my-1.5" },
   { match: (l) => l.startsWith("Slack"), src: slackLogo.url, wordmark: false, h: "h-3.5" },
+  { match: (l) => l === "UCD", src: "/logos/ucd-crest.png", wordmark: false, h: "h-5 -my-1" },
 ];
 
 export function BrandPill({ label, className = "" }: { label: string; className?: string }) {

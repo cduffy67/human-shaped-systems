@@ -48,13 +48,13 @@ const ICON_CHIP =
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — Conor Duffy" },
+      { title: "Contact · Conor Duffy" },
       {
         name: "description",
         content:
           "Get in touch about enterprise AI, systems thinking, solution architecture, or coffee. Based in London, from Ireland.",
       },
-      { property: "og:title", content: "Contact — Conor Duffy" },
+      { property: "og:title", content: "Contact · Conor Duffy" },
       {
         property: "og:description",
         content:

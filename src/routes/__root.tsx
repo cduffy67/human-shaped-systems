@@ -36,7 +36,7 @@ function NotFoundComponent() {
         <h1 className="text-6xl">404</h1>
         <h2 className="mt-4 text-xl">This page wandered off</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Nothing here yet — which, in a garden, is fair enough.
+          Nothing here yet. In a garden, that's fair enough.
         </p>
         <div className="mt-6">
           <Link
@@ -92,7 +92,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Conor Duffy — Enterprise problems, human-shaped solutions" },
+      { title: "Conor Duffy · Enterprise problems, human-shaped solutions" },
       {
         name: "description",
         content:

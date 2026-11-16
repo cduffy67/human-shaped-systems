@@ -35,17 +35,17 @@ const kebab = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace
 export const Route = createFileRoute("/build-log")({
   head: () => ({
     meta: [
-      { title: "Build Log — Conor Duffy" },
+      { title: "Build Log · Conor Duffy" },
       {
         name: "description",
         content:
           "A running log of how this site gets built, version by version: fast to ship, AI-assisted, versioned, and tweaked slowly in public.",
       },
-      { property: "og:title", content: "Build Log — Conor Duffy" },
+      { property: "og:title", content: "Build Log · Conor Duffy" },
       {
         property: "og:description",
         content:
-          "How this site gets built, version by version — a small learning project in public.",
+          "How this site gets built, version by version. A small learning project in public.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

@@ -18,11 +18,11 @@ const CHAPTERS: {
   tags: string[];
 }[] = [
   {
-    brand: "UCD / Dublin",
+    brand: "UCD",
     era: "Roots",
     title: "Numbers first",
-    years: "Commerce, then a training contract",
-    body: "Dublin, a commerce degree, and an audit training contract at KPMG — insurance, SaaS and an Irish pillar bank. Learning to read a business through its accounts turned out to be a quiet superpower later.",
+    years: "Commerce degree",
+    body: "A commerce degree at UCD, majoring in finance and accounting. It gave me the commercial grounding to understand how a business makes money before proposing how to change it.",
     tags: ["Irish roots", "ACMA, CGMA", "Audit"],
   },
   {
@@ -30,7 +30,7 @@ const CHAPTERS: {
     era: "Audit",
     title: "Learning how businesses actually run",
     years: "Training contract",
-    body: "Three years of looking at companies from the inside out. You stop being impressed by strategy decks quite quickly when you've reconciled the numbers behind them.",
+    body: "Three years of audit across insurance, high tech and financial services. It taught me to read a business through its accounts, so the solutions I design stay grounded in what they cost and what they're worth.",
     tags: ["Financial services", "Assurance", "Detail"],
   },
   {
@@ -38,7 +38,7 @@ const CHAPTERS: {
     era: "Consulting",
     title: "Transformation, at scale",
     years: "2018 – 2022",
-    body: "Four years in financial digital transformation: SAP S/4HANA finance programmes for FTSE 100 clients, design through deployment, plus CFO labs and workshops. This is where messy stakeholder reality became the interesting part.",
+    body: "Four years in financial digital transformation: SAP S/4HANA finance programmes for FTSE 100 clients, from design through to deployment, plus CFO labs and workshops. Hands-on delivery of transformational technology for some of the UK's biggest names.",
     tags: ["Finance transformation", "Programme delivery", "Executive rooms"],
   },
   {
@@ -46,7 +46,7 @@ const CHAPTERS: {
     era: "Enterprise",
     title: "Solutions engineering, first lap",
     years: "2022 – 2025",
-    body: "Enterprise financial services and fintech. Rookie of the Year, then #1 in EMEA. Built the UKI Partner Network and designed Slack Campfires, an enablement programme that ended up running globally.",
+    body: "Enterprise financial services and fintech. Grew into one of the leading SEs in EMEA, built the UKI Partner Network from scratch, and designed Slack Campfires, an enablement programme that went on to run globally.",
     tags: ["Solution design", "Zero-to-one", "Storytelling"],
   },
   {
@@ -63,7 +63,7 @@ const CHAPTERS: {
     title: "Slack, again",
     subtitle: "Second lap, building this time",
     years: "Present",
-    body: "Back at Slack as Principal Solutions Engineer, working where conversation, CRM and AI meet — and increasingly building things myself instead of only designing them on a whiteboard.",
+    body: "Back at Slack as Principal Solutions Engineer, working where conversation, CRM and AI meet, and increasingly building things myself instead of only designing them on a whiteboard.",
     tags: ["Principal SE", "Building", "Learning in public"],
   },
 ];
@@ -71,17 +71,17 @@ const CHAPTERS: {
 export const Route = createFileRoute("/journey")({
   head: () => ({
     meta: [
-      { title: "Journey — Conor Duffy" },
+      { title: "Journey · Conor Duffy" },
       {
         name: "description",
         content:
-          "From Dublin audit to Deloitte consulting to Slack and Salesforce — the winding route into enterprise solutions engineering and AI-native work.",
+          "From Dublin audit to Deloitte consulting to Slack and Salesforce: the winding route into enterprise solutions engineering and AI-native work.",
       },
-      { property: "og:title", content: "Journey — Conor Duffy" },
+      { property: "og:title", content: "Journey · Conor Duffy" },
       {
         property: "og:description",
         content:
-          "Accounting, consulting, Slack, Salesforce and what comes next — a short career story, told properly.",
+          "Accounting, consulting, Slack, Salesforce and what comes next. A short career story, told properly.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -97,7 +97,7 @@ export function Journey() {
       <PageHeader
         eyebrow="A bit about me"
         title="Journey"
-        intro="A slightly winding route: accounting, consulting, then enterprise software. Each step added a language — numbers, systems, customers — and I still use all three."
+        intro="A slightly winding route: accounting, consulting, then enterprise software. Each step added a language (numbers, systems, customers) and I still use all three."
         opener="journey"
       >
       {/* Stage markers */}

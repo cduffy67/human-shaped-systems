@@ -24,7 +24,7 @@ const kebab = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Conor Duffy — Enterprise problems, human-shaped solutions" },
+      { title: "Conor Duffy · Enterprise problems, human-shaped solutions" },
       {
         name: "description",
         content:
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/")({
       },
       {
         property: "og:title",
-        content: "Conor Duffy — Enterprise problems, human-shaped solutions",
+        content: "Conor Duffy · Enterprise problems, human-shaped solutions",
       },
       {
         property: "og:description",
@@ -111,7 +111,7 @@ export function Home() {
             <span aria-hidden="true" className="magnet" />
           </div>
           <p className={`no-slash mode-mono engine-caption mt-3 text-xs text-muted-foreground ${engine ? "" : "uppercase tracking-[0.18em]"}`}>
-            {heroOff ? (engine ? `// ${OFF_CLOCK_CAPTION}` : OFF_CLOCK_CAPTION) : engine ? "// conor · principal_se · ldn" : "Conor Duffy · Principal SE · London"}
+            {heroOff ? (engine ? `// ${OFF_CLOCK_CAPTION}` : OFF_CLOCK_CAPTION) : engine ? "// conor · principal_se" : "Conor Duffy · Principal SE"}
           </p>
         </div>
       </Beats>
