@@ -15,6 +15,8 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { initSiteMode, setSiteMode, useSiteMode, type SiteMode } from "../lib/mode";
 import { CommandPalette, openPalette } from "../components/command-palette";
+import { EasterEggs, MuteToggle, SnailFooterLine } from "../components/easter-eggs";
+import { Toaster } from "../components/ui/sonner";
 
 const NAV = [
   { to: "/", label: "Home", path: "~/home" },
@@ -245,8 +247,8 @@ function Footer() {
   return (
     <footer className="border-t border-border">
       <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-5 py-10 text-sm text-muted-foreground sm:px-8">
-        <p className="italic">Built quickly, tweaked slowly.</p>
-        <p>London / Ireland</p>
+        <SnailFooterLine />
+        <div className="flex items-center gap-4"><p>London / Ireland</p><MuteToggle /></div>
       </div>
     </footer>
   );
@@ -269,6 +271,8 @@ function RootComponent() {
         <Footer />
       </div>
       <CommandPalette />
+      <EasterEggs />
+      <Toaster position="bottom-center" />
     </QueryClientProvider>
   );
 }

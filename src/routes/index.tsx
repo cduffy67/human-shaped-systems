@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { BeatSection, BrandPill, Divider, Plate, PullQuote } from "@/components/site";
@@ -7,6 +8,7 @@ import { CaseCTA } from "@/components/case-cta";
 import { setSiteMode, useSiteMode } from "@/lib/mode";
 import { LiveTiles, useLiveUpdatedLabel } from "@/components/live-tiles";
 import headshot from "@/assets/headshot.png.asset.json";
+import { OFF_CLOCK_CAPTION, OFF_CLOCK_SRC, OffClockPolaroid } from "@/components/easter-eggs";
 import team from "@/assets/team.png.asset.json";
 
 
@@ -48,6 +50,17 @@ export const Route = createFileRoute("/")({
 export function Home() {
   const mode = useSiteMode();
   const engine = mode === "engine";
+  const [heroOff, setHeroOff] = useState(false);
+  const clicks = useRef<number[]>([]);
+  const heroClick = () => {
+    const now = Date.now();
+    clicks.current = [...clicks.current.filter((t) => now - t < 3000), now];
+    if (clicks.current.length >= 5 && !heroOff) {
+      clicks.current = [];
+      setHeroOff(true);
+      window.setTimeout(() => setHeroOff(false), 6000);
+    }
+  };
   const liveLabel = useLiveUpdatedLabel();
   return (
     <div>
@@ -87,8 +100,9 @@ export function Home() {
           <div className="relative">
             <div className="overflow-hidden rounded-[4px] bg-secondary ring-1 ring-border shadow-[0_20px_50px_-34px_color-mix(in_oklab,var(--foreground)_75%,transparent)]">
               <img
-                src={headshot.url}
-                alt="Conor Duffy"
+                onClick={heroClick}
+                src={heroOff ? OFF_CLOCK_SRC : headshot.url}
+                alt={heroOff ? "Conor off the clock" : "Conor Duffy"}
                 width={560}
                 height={700}
                 className="aspect-[4/5] w-full object-cover object-top"
@@ -97,7 +111,7 @@ export function Home() {
             <span aria-hidden="true" className="magnet" />
           </div>
           <p className={`no-slash mode-mono engine-caption mt-3 text-xs text-muted-foreground ${engine ? "" : "uppercase tracking-[0.18em]"}`}>
-            {engine ? "// conor · principal_se · ldn" : "Conor Duffy · Principal SE · London"}
+            {heroOff ? (engine ? `// ${OFF_CLOCK_CAPTION}` : OFF_CLOCK_CAPTION) : engine ? "// conor · principal_se · ldn" : "Conor Duffy · Principal SE · London"}
           </p>
         </div>
       </Beats>
@@ -163,6 +177,7 @@ export function Home() {
       {/* Beyond work */}
       <BeatSection id="home-beyond" opener="tiles" openerText={liveLabel} title="Beyond work" note="the rest of it" className="mx-auto w-full max-w-5xl scroll-mt-24 px-5 pt-20 sm:px-8">
         <div id="beyond" className="beat"><LiveTiles /></div>
+        <div className="beat mt-12"><OffClockPolaroid /></div>
       </BeatSection>
       <Beats id="home-about" opener="about" className="mx-auto w-full max-w-5xl px-5 pb-16 pt-12 sm:px-8">
         <div className="space-y-8">

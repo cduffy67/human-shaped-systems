@@ -7,6 +7,7 @@ import { BeatSection, Divider, Label, Page, PageHeader } from "@/components/site
 
 import { MethodDiagram } from "@/components/method-diagram";
 import { PhaseIllustration } from "@/components/phase-illustration";
+import { withWet } from "@/components/easter-eggs";
 import { CaseCTA } from "@/components/case-cta";
 import { CASES, METHOD_STEPS } from "@/lib/cases";
 
@@ -108,7 +109,7 @@ export function HowIWork() {
                   </span>
                   <h2 className="mt-2 text-xl leading-snug">{s.title}</h2>
                   <p key={mode} className="mode-fade mt-2 leading-relaxed text-ink-soft">
-                    {CONTENT.method[pi * 2 + si]?.[mode]}
+                    {withWet(CONTENT.method[pi * 2 + si]?.[mode], "Tuesday afternoon")}
                   </p>
                   <Link to="/case-library/$slug" params={{ slug: METHOD_STEPS[pi * 2 + si]?.caseSlug ?? CASES[0].slug }} className="quiet-link mode-mono mt-5 inline-block text-xs leading-relaxed text-link">
                     SEEN IN → {CASES.find((study) => study.slug === METHOD_STEPS[pi * 2 + si]?.caseSlug)?.title}

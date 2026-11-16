@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { WetTrigger } from "@/components/easter-eggs";
 import { BrandPill, Divider, Page, PageHeader, Plate, PullQuote, BeatSection } from "@/components/site";
 import stage from "@/assets/stage.png.asset.json";
 import cambridge from "@/assets/cambridge.png.asset.json";
@@ -176,7 +177,7 @@ export function Journey() {
       <PullQuote className="beat mt-16 max-w-2xl">
         The through-line: numbers taught me what a business cares about, consulting taught me how
         change actually lands, and enterprise software taught me how to build something people will
-        still use on a wet Tuesday.
+        still use on a <WetTrigger>wet Tuesday</WetTrigger>.
       </PullQuote>
       </BeatSection>
     </Page>

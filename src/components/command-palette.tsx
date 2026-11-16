@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { getHomeWeather } from "@/lib/live/weather.functions";
+import { setOffClock } from "@/components/easter-eggs";
 import { getDuolingoStats, getLetterboxd, getStravaStats } from "@/lib/live/stats.functions";
 import { setSiteMode, useSiteMode } from "@/lib/mode";
 
@@ -52,9 +54,33 @@ function useActions() {
 
 type Line = { kind: "in" | "out"; text: string };
 
+const DEMO = ["it worked five minutes ago, i swear.", "the demo gods have been consulted.", "this is the bit where the wifi drops."];
+type EggResult = { text: string; link?: { to: "/build-log"; label: string } };
+
+/** Shared easter-egg commands; same replies in both rooms. Returns null when not an egg. */
+async function runEgg(cmd: string, ctx: { streak: string; go: ReturnType<typeof useActions>["go"] }): Promise<EggResult | null> {
+  if (cmd.startsWith("sudo ") || cmd === "sudo") return { text: "nice try. this incident has been reported." };
+  switch (cmd) {
+    case "coffee": window.setTimeout(() => ctx.go("/contact"), 900); return { text: "always up for one. bring a good question." };
+    case "dublin": {
+      try {
+        const w = await getHomeWeather();
+        if (!w.ok) throw new Error();
+        return { text: `dublin: ${w.dublin.time}, ${w.dublin.temp}°C ${w.dublin.conditions} · london: ${w.london.time}, ${w.london.temp}°C ${w.london.conditions}. home vs here.` };
+      } catch { return { text: "weather's unavailable. assume rain." }; }
+    }
+    case "hola": return { text: `¡hola! llevo ${ctx.streak.replace(/ days$/, "")} días seguidos aprendiendo español.` };
+    case "seance": case "séance": return { text: "no séance required. the seams are documented in ~/build-log.", link: { to: "/build-log", label: "~/build-log" } };
+    case "demo": return { text: DEMO[Math.floor(Math.random() * DEMO.length)]! };
+    case "medal": setOffClock(true); ctx.go("/", "beyond"); return { text: "off the clock. medal earned, pint also earned." };
+    default: return null;
+  }
+}
+const RM_FILES = ["./src", "./src/routes", "./src/components", "./public", "./node_modules", "./ideas.txt", "./slides_final_v7.key", "./career", "./coffee_budget.csv", "./pipeline", "./confidence", "./README.md"];
+
 function Terminal({ close }: { close: () => void }) {
   const live = useLive();
-  const { go, mail } = useActions();
+  const { go } = useActions();
   const [lines, setLines] = useState<Line[]>([{ kind: "out", text: "type 'help' for commands · esc to close" }]);
   const [value, setValue] = useState("");
   const input = useRef<HTMLInputElement>(null);
@@ -66,7 +92,7 @@ function Terminal({ close }: { close: () => void }) {
     const cmd = raw.trim().toLowerCase().replace(/\s+/g, " ");
     switch (cmd) {
       case "": return null;
-      case "help": return "help whoami cases method journey stats films run streak contact boardroom clear · sudo hire conor";
+      case "help": return "help whoami cases method journey stats films run streak contact coffee dublin hola seance demo medal boardroom clear";
       case "whoami": return "conor duffy · principal solutions engineer @ slack · london / ireland";
       case "cases": go("/case-library"); return "→ ~/cases";
       case "method": go("/how-i-work"); return "→ ~/how-i-work";
@@ -77,17 +103,25 @@ function Terminal({ close }: { close: () => void }) {
       case "streak": return `duolingo es_ES streak: ${live.streak}`;
       case "contact": go("/contact"); return `→ ~/contact · ${EMAIL}`;
       case "boardroom": setSiteMode("boardroom"); return "switching to boardroom…";
-      case "hire conor": return "permission denied. try 'sudo hire conor'";
-      case "sudo hire conor": mail(); return "permission granted. opening mail…";
       default: return `command not found: ${cmd}. try 'help'`;
     }
   };
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (value.trim().toLowerCase() === "clear") { setLines([]); setValue(""); return; }
-    const out = run(value);
-    setLines((l) => [...l, { kind: "in", text: value }, ...(out ? [{ kind: "out" as const, text: out }] : [])]);
+    const cmd = value.trim().toLowerCase().replace(/\s+/g, " ");
+    const push = (text: string) => setLines((l) => [...l, { kind: "out", text }]);
+    setLines((l) => [...l, { kind: "in", text: value }]);
     setValue("");
+    if (cmd === "rm -rf /" || cmd === "sudo rm -rf /") {
+      RM_FILES.forEach((f, i) => window.setTimeout(() => push(`deleting ${f}…`), (i + 1) * 40));
+      window.setTimeout(() => push("just kidding. everything's versioned."), (RM_FILES.length + 1) * 40 + 300);
+      return;
+    }
+    void runEgg(cmd, { streak: live.streak, go }).then((egg) => {
+      const out = egg ? egg.text : run(cmd);
+      if (out) push(out);
+    });
   };
   return (
     <div role="dialog" aria-label="Terminal" className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background text-sm shadow-[0_-12px_30px_-20px_rgb(0_0_0/0.8)]">
@@ -110,8 +144,9 @@ function Terminal({ close }: { close: () => void }) {
 
 function Palette({ close }: { close: () => void }) {
   const live = useLive();
-  const { go, mail } = useActions();
+  const { go } = useActions();
   const [q, setQ] = useState("");
+  const [card, setCard] = useState<EggResult | null>(null);
   const [sel, setSel] = useState(0);
   const [note, setNote] = useState<string | null>(null);
   const done = (fn: () => void) => () => { fn(); close(); };
@@ -127,20 +162,25 @@ function Palette({ close }: { close: () => void }) {
     { group: "Do", label: "Contact", run: done(() => go("/contact")) },
     { group: "Do", label: "Switch to Engine room", run: done(() => setSiteMode("engine")) },
     { group: "Do", label: "Copy email", hint: EMAIL, run: () => { void navigator.clipboard?.writeText(EMAIL); setNote("Email copied ✓"); } },
-    { group: "Do", label: "Hire Conor", hint: "Opens email", run: () => { setNote("Opening mail…"); mail(); window.setTimeout(close, 700); } },
+    ...["coffee", "dublin", "hola", "seance", "demo", "medal"].map((c) => ({ group: "Try", label: c, run: () => void runEgg(c, { streak: live.streak, go }).then((r) => r && setCard(r)) })),
     // eslint-disable-next-line react-hooks/exhaustive-deps
   ], [live.film, live.run, live.streak]);
+  useEffect(() => setCard(null), [q]);
   const shown = items.filter((i) => `${i.label} ${i.group}`.toLowerCase().includes(q.toLowerCase()));
   useEffect(() => setSel(0), [q]);
   const key = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") { e.preventDefault(); setSel((s) => Math.min(s + 1, shown.length - 1)); }
     else if (e.key === "ArrowUp") { e.preventDefault(); setSel((s) => Math.max(s - 1, 0)); }
-    else if (e.key === "Enter") shown[sel]?.run();
+    else if (e.key === "Enter") {
+      const cmd = q.trim().toLowerCase();
+      if (cmd.startsWith("sudo") || !shown.length) void runEgg(cmd, { streak: live.streak, go }).then((r) => setCard(r ?? { text: "nothing matches that." }));
+      else shown[sel]?.run();
+    }
   };
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-foreground/10 px-4 pt-[15vh]" onMouseDown={(e) => e.target === e.currentTarget && close()}>
       <div role="dialog" aria-label="Command palette" className="w-full max-w-lg overflow-hidden rounded-[6px] border border-border bg-card shadow-[0_24px_60px_-30px_rgb(17_17_17/0.45)]">
-        <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={key} placeholder="Jump to, or try ‘hire conor’…" aria-label="Search commands" className="w-full border-b border-border bg-transparent px-4 py-3.5 text-base outline-none placeholder:text-muted-foreground" />
+        <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={key} placeholder="Jump to, or try ‘coffee’…" aria-label="Search commands" className="w-full border-b border-border bg-transparent px-4 py-3.5 text-base outline-none placeholder:text-muted-foreground" />
         <ul role="listbox" className="max-h-[50vh] overflow-y-auto py-2">
           {shown.map((item, i) => (
             <li key={item.label} role="option" aria-selected={i === sel}>
@@ -152,6 +192,12 @@ function Palette({ close }: { close: () => void }) {
           ))}
           {shown.length === 0 ? <li className="px-4 py-3 text-sm text-muted-foreground">Nothing matches that.</li> : null}
         </ul>
+        {card ? (
+          <div role="status" className="m-3 rounded-[4px] border border-border bg-background px-4 py-3 text-sm">
+            <p>{card.text}</p>
+            {card.link ? <button type="button" onClick={() => { go(card.link!.to); close(); }} className="quiet-link mt-2 text-xs text-link">{card.link.label} →</button> : null}
+          </div>
+        ) : null}
         {note ? <p className="border-t border-border px-4 py-2 text-xs text-accent">{note}</p> : null}
       </div>
     </div>
