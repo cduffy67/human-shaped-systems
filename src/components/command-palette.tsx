@@ -5,6 +5,7 @@ import { getHomeWeather } from "@/lib/live/weather.functions";
 import { setOffClock } from "@/components/easter-eggs";
 import { getDuolingoStats, getLetterboxd, getStravaStats } from "@/lib/live/stats.functions";
 import { setSiteMode, useSiteMode } from "@/lib/mode";
+import { revealGapYear } from "@/lib/gap-year";
 
 const HOUR = 60 * 60 * 1000;
 export const EMAIL = "conor_duffy@me.com";
@@ -71,6 +72,7 @@ async function runEgg(cmd: string, ctx: { streak: string; go: ReturnType<typeof 
     }
     case "hola": return { text: `¡hola! llevo ${ctx.streak.replace(/ days$/, "")} días seguidos aprendiendo español.` };
     case "seance": case "séance": return { text: "no séance required. the seams are documented in ~/build-log.", link: { to: "/build-log", label: "~/build-log" } };
+    case "nyc": case "gap year": case "fraunces": revealGapYear(); ctx.go("/journey", "gap-year"); return { text: "found it. a year behind the bar, now back on the record." };
     case "demo": return { text: DEMO[Math.floor(Math.random() * DEMO.length)]! };
     case "medal": setOffClock(true); ctx.go("/", "beyond"); return { text: "off the clock. medal earned, pint also earned." };
     default: return null;

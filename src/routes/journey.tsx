@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { GapYear } from "@/components/gap-year";
+import { Fragment } from "react";
 import { WetTrigger } from "@/components/easter-eggs";
 import { BrandPill, Divider, Page, PageHeader, Plate, PullQuote, BeatSection } from "@/components/site";
 import stage from "@/assets/stage.png.asset.json";
@@ -151,6 +153,8 @@ export function Journey() {
 
       <ol className="border-t border-border">
         {CHAPTERS.map((c, i) => (
+          <Fragment key={c.brand}>
+          {i === 2 ? <GapYear /> : null}
           <li
             key={c.brand}
             className="beat grid gap-x-10 gap-y-3 border-b border-border py-9 md:grid-cols-[10rem_1fr]"
@@ -171,6 +175,7 @@ export function Journey() {
               <p className="mt-4 text-sm italic text-muted-foreground">{c.tags.join(" · ")}</p>
             </div>
           </li>
+          </Fragment>
         ))}
       </ol>
 
