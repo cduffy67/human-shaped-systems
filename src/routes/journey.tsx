@@ -16,6 +16,7 @@ const CHAPTERS: {
   years: string;
   body: string;
   tags: string[];
+  credential?: { label: string; logo: string; title: string };
 }[] = [
   {
     brand: "UCD",
@@ -23,7 +24,7 @@ const CHAPTERS: {
     title: "Numbers first",
     years: "Commerce degree",
     body: "A commerce degree at UCD, majoring in finance and accounting. It gave me the commercial grounding to understand how a business makes money before proposing how to change it.",
-    tags: ["Irish roots", "ACMA, CGMA", "Audit"],
+    tags: ["Irish roots", "Finance", "Accounting"],
   },
   {
     brand: "KPMG",
@@ -40,6 +41,11 @@ const CHAPTERS: {
     years: "2018 – 2022",
     body: "Four years in financial digital transformation: SAP S/4HANA finance programmes for FTSE 100 clients, from design through to deployment, plus CFO labs and workshops. Hands-on delivery of transformational technology for some of the UK's biggest names.",
     tags: ["Finance transformation", "Programme delivery", "Executive rooms"],
+    credential: {
+      label: "Chartered (CGMA)",
+      logo: "/logos/cgma.png",
+      title: "Chartered Global Management Accountant (ACMA, CGMA), qualified while at Deloitte",
+    },
   },
   {
     brand: "Slack",
@@ -165,6 +171,12 @@ export function Journey() {
               </span>
               <BrandPill label={c.brand} className="self-start" />
               <span className="text-sm text-muted-foreground">{c.years}</span>
+              {c.credential ? (
+                <span title={c.credential.title} className="mt-1 inline-flex items-center gap-1.5 self-start text-xs font-medium text-ink-soft">
+                  <img src={c.credential.logo} alt="" className="h-4 w-4 rounded-full" />
+                  {c.credential.label}
+                </span>
+              ) : null}
             </div>
             <div>
               <h2 className="text-2xl leading-snug">{c.title}</h2>
