@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { BrandPill, Divider, Page, PageHeader, Plate, SectionHeading } from "@/components/site";
+import { BrandPill, Divider, Page, PageHeader, Plate, PullQuote, SectionHeading } from "@/components/site";
 import stage from "@/assets/stage.png.asset.json";
 import cambridge from "@/assets/cambridge.png.asset.json";
 import podcast from "@/assets/podcast.png.asset.json";
@@ -156,7 +156,7 @@ export function Journey() {
             className="grid gap-x-10 gap-y-3 border-b border-border py-9 md:grid-cols-[10rem_1fr]"
           >
             <div className="flex flex-col gap-1.5">
-              <span className="font-display text-sm text-accent/80">
+              <span className="mode-mono text-sm text-accent">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <BrandPill label={c.brand} className="self-start" />
@@ -174,11 +174,11 @@ export function Journey() {
         ))}
       </ol>
 
-      <p className="mt-16 max-w-2xl border-l border-accent/50 pl-5 text-lg leading-relaxed text-ink-soft">
+      <PullQuote className="mt-16 max-w-2xl">
         The through-line: numbers taught me what a business cares about, consulting taught me how
         change actually lands, and enterprise software taught me how to build something people will
         still use on a wet Tuesday.
-      </p>
+      </PullQuote>
     </Page>
   );
 }

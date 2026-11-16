@@ -98,13 +98,13 @@ function BoardroomLog() {
               className="row-warm grid w-full gap-x-8 gap-y-2 px-1 py-6 text-left sm:grid-cols-[6rem_1fr_auto] sm:px-3"
             >
               <span className="flex items-baseline gap-3 sm:flex-col sm:gap-1">
-                <span className="font-display text-lg text-accent">{e.version}</span>
+                <span className="mode-mono text-lg text-accent">{e.version}</span>
                 <span className={`text-[0.62rem] uppercase tracking-[0.2em] ${e.status === "ongoing" ? "text-tobacco" : "text-muted-foreground"}`}>
                   {e.status}
                 </span>
               </span>
               <span>
-                <span className="block font-display text-lg leading-snug">{e.title}</span>
+                <span className="block font-display text-lg font-semibold leading-snug">{e.title}</span>
                 <span className="mt-1.5 block max-w-2xl leading-relaxed text-ink-soft">{e.summary}</span>
               </span>
               <span

@@ -89,7 +89,7 @@ const SubHead = ({ children }: { children: ReactNode }) => (
   <p className="mode-mono mb-3 text-[0.68rem] uppercase tracking-[0.2em] text-muted-foreground">{children}</p>
 );
 const Ext = ({ href, children }: { href: string; children: ReactNode }) => (
-  <a href={href} target="_blank" rel="noreferrer" className="quiet-link text-sm text-accent">{children}</a>
+  <a href={href} target="_blank" rel="noreferrer" className="quiet-link text-sm text-link">{children}</a>
 );
 const Skeleton = () => <div className="h-40 animate-pulse rounded bg-secondary/60" aria-hidden />;
 function Updated({ at }: { at?: number | undefined }) {

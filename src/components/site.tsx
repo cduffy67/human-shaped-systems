@@ -22,7 +22,7 @@ export function Page({
 export function Label({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <span
-      className={`mode-mono text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-accent ${className}`}
+      className={`mode-mono text-[0.68rem] uppercase tracking-[0.22em] text-accent ${className}`}
     >
       {children}
     </span>
@@ -53,7 +53,7 @@ export function SectionHeading({ children, note }: { children: ReactNode; note?:
     <div className="mb-8 flex flex-wrap items-baseline gap-x-5 gap-y-1 border-b border-border pb-3">
       <h2 className="text-2xl sm:text-[1.65rem]">{children}</h2>
       {note ? (
-        <span className="text-sm italic text-muted-foreground">{note}</span>
+        <span className="text-sm italic font-medium text-accent">{note}</span>
       ) : null}
     </div>
   );
@@ -69,7 +69,7 @@ export function Card({
 }) {
   return (
     <div
-      className={`card-lift rounded-2xl border border-border bg-card p-6 shadow-[0_1px_0_color-mix(in_oklab,var(--foreground)_7%,transparent)] ${className}`}
+      className={`card-lift rounded-[4px] border border-card-border bg-card p-6 ${className}`}
     >
       {children}
     </div>
@@ -100,7 +100,7 @@ export function BrandPill({ label, className = "" }: { label: string; className?
   const logo = BRAND_LOGOS.find((b) => b.match(label));
   return (
     <span
-      className={`brand-pill inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-display text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-foreground/75 transition-colors hover:border-accent/50 hover:text-foreground ${className}`}
+      className={`brand-pill inline-flex items-center gap-2 rounded-full border border-card-border bg-card px-3 py-1 font-display text-[0.72rem] uppercase tracking-[0.18em] text-foreground/75 transition-colors hover:border-card-border-hover hover:text-foreground ${className}`}
     >
       {logo ? <img src={logo.src} alt={logo.wordmark ? label : ""} className={`${logo.h} w-auto`} /> : null}
       {logo?.wordmark ? null : label}
@@ -127,9 +127,10 @@ export function Plate({
   position?: string;
 }) {
   return (
-    <figure className={`group ${className}`}>
+    <figure className={`group relative ${className}`}>
+      <span aria-hidden="true" className="magnet" />
       <div
-        className={`relative overflow-hidden rounded-xl bg-secondary ring-1 ring-border transition-shadow duration-500 ease-out group-hover:shadow-[0_18px_44px_-26px_color-mix(in_oklab,var(--foreground)_60%,transparent)] ${ratio}`}
+        className={`relative overflow-hidden rounded-[4px] bg-secondary ring-1 ring-border transition-shadow duration-500 ease-out group-hover:shadow-[0_18px_44px_-26px_color-mix(in_oklab,var(--foreground)_60%,transparent)] ${ratio}`}
       >
         <img
           src={src}
@@ -145,6 +146,22 @@ export function Plate({
         {caption ? <span className="block">{caption}</span> : null}
       </figcaption>
     </figure>
+  );
+}
+
+/** Pull quote: heavy type, short marker line down the left instead of a rule. */
+export function PullQuote({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <blockquote className={`pull-quote ${className}`}>
+      <span aria-hidden="true" className="pull-mark" />
+      <p>{children}</p>
+    </blockquote>
   );
 }
 

@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { BrandPill, Divider, Label, Plate, SectionHeading } from "@/components/site";
+import { BrandPill, Divider, Label, Plate, PullQuote, SectionHeading } from "@/components/site";
 import { CONTENT, sectionNo } from "@/lib/content";
 import { useSiteMode } from "@/lib/mode";
 import { LiveTiles } from "@/components/live-tiles";
@@ -83,7 +83,7 @@ export function Home() {
       <section className="mx-auto grid w-full max-w-5xl gap-12 px-5 py-16 sm:px-8 sm:py-24 md:grid-cols-[1.25fr_0.75fr] md:items-end">
         <div className="rise mode-fade" key={mode}>
           <Label className="mode-mono">{CONTENT.hero.label[mode]}</Label>
-          <h1 className="mt-6 text-[2.6rem] leading-[1.04] sm:text-[4rem]">
+          <h1 className="mt-6 text-[2.75rem] leading-[1.02] sm:text-[4.25rem]">
             {lines.map((l, i) => (
               <span key={i}>
                 {l}
@@ -92,19 +92,12 @@ export function Home() {
             ))}
             {engine ? <span className="block-cursor" aria-hidden="true" /> : null}
           </h1>
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-ink-soft">
+          <p className="mt-7 max-w-xl text-lg leading-relaxed text-ink-soft">
             {CONTENT.hero.sub[mode]}
           </p>
-          <p className="mt-4 max-w-xl leading-relaxed text-muted-foreground">
-            Part storyteller, part systems thinker, part practical builder. Irish, based in London,
-            still learning out loud.
-          </p>
           <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 text-sm">
-            <Link to="/how-i-work" className="quiet-link font-medium text-foreground">
+            <Link to="/how-i-work" className="quiet-link font-medium text-link">
               How I work →
-            </Link>
-            <Link to="/journey" className="quiet-link font-medium text-foreground">
-              My journey →
             </Link>
             <Link to="/contact" className="quiet-link text-ink-soft">
               Say hello
@@ -113,16 +106,21 @@ export function Home() {
         </div>
 
         <div className="rise">
-          <div className="overflow-hidden rounded-2xl bg-secondary ring-1 ring-border shadow-[0_20px_50px_-34px_color-mix(in_oklab,var(--foreground)_75%,transparent)]">
-            <img
-              src={headshot.url}
-              alt="Conor Duffy"
-              width={560}
-              height={700}
-              className="aspect-[4/5] w-full object-cover object-top"
-            />
+          <div className="relative">
+            <div className="overflow-hidden rounded-[4px] bg-secondary ring-1 ring-border shadow-[0_20px_50px_-34px_color-mix(in_oklab,var(--foreground)_75%,transparent)]">
+              <img
+                src={headshot.url}
+                alt="Conor Duffy"
+                width={560}
+                height={700}
+                className="aspect-[4/5] w-full object-cover object-top"
+              />
+            </div>
+            <span aria-hidden="true" className="magnet" />
           </div>
-          <p className="mt-3 text-sm text-muted-foreground">This is me 👋</p>
+          <p className="mode-mono mt-3 text-xs uppercase tracking-[0.18em] text-muted-foreground">
+            Conor Duffy · Principal SE · London
+          </p>
         </div>
 
 
@@ -184,16 +182,22 @@ export function Home() {
       {/* Positioning */}
       <section className="mx-auto w-full max-w-5xl px-5 sm:px-8">
         <div className="grid gap-10 md:grid-cols-[1.35fr_1fr] md:items-start">
-          <p className="max-w-2xl text-lg leading-relaxed text-ink-soft">
-            I started in accounting, ended up in consulting, and then spent years in enterprise
-            software watching good ideas die of vagueness. Most of my work now happens on that messy
-            edge where a business problem, a customer story, an architecture diagram and a budget
-            all have to agree with each other.
-          </p>
-          <blockquote className="border-l border-accent/50 pl-5 font-display text-lg italic leading-relaxed text-foreground/80">
+          <div>
+            <p className="max-w-2xl text-lg leading-relaxed text-ink-soft">
+              Part storyteller, part systems thinker, part practical builder. Irish, based in
+              London, still learning out loud.
+            </p>
+            <p className="mt-4 max-w-2xl leading-relaxed text-ink-soft">
+              I started in accounting, ended up in consulting, and then spent years in enterprise
+              software watching good ideas die of vagueness. Most of my work now happens on that
+              messy edge where a business problem, a customer story, an architecture diagram and a
+              budget all have to agree with each other.
+            </p>
+          </div>
+          <PullQuote>
             “The interesting part is rarely the software. It's the people arguing about what the
             software is for.”
-          </blockquote>
+          </PullQuote>
         </div>
       </section>
 
@@ -214,7 +218,7 @@ export function Home() {
         </div>
         <p className="mt-6 text-sm text-muted-foreground">
           Accounting → consulting → Slack → Salesforce → Slack again.{" "}
-          <Link to="/journey" className="quiet-link text-accent">
+          <Link to="/journey" className="quiet-link text-link">
             The winding version
           </Link>
         </p>

@@ -70,7 +70,7 @@ export function CaseLibrary() {
         </div>
         <button
           type="submit"
-          className="quiet-link relative pb-2 font-display text-base text-accent"
+          className="quiet-link relative pb-2 font-display text-base text-link"
         >
           Unlock →
         </button>
@@ -91,7 +91,7 @@ export function CaseLibrary() {
         {LOCKED.map((title, i) => (
           <Card key={title} className="relative overflow-hidden">
             <div className="flex items-start justify-between gap-4">
-              <span className="font-display text-sm text-accent/80">
+              <span className="mode-mono text-sm text-accent">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <svg
@@ -110,7 +110,7 @@ export function CaseLibrary() {
             <p className="mt-2 select-none text-sm leading-relaxed text-ink-soft blur-[3px]">
               Context, approach and outcome — written up properly, shared on request.
             </p>
-            <span className="mt-5 inline-flex items-center rounded-full border border-border bg-secondary px-3 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            <span className="mt-5 inline-flex items-center rounded-full border border-card-border bg-secondary px-3 py-1 text-[0.62rem] uppercase tracking-[0.2em] text-muted-foreground">
               Locked
             </span>
           </Card>
