@@ -119,19 +119,20 @@ export function Home() {
       {/* Career strip */}
       <section className="mx-auto w-full max-w-5xl px-5 sm:px-8">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-3 border-y border-border py-4">
-          <span className="text-[0.68rem] uppercase tracking-[0.22em] text-muted-foreground">
+          <span className="text-[0.75rem] font-medium uppercase tracking-[0.22em] text-ink-soft">
             Previously
           </span>
           <BrandPill label="KPMG" />
           <BrandPill label="Deloitte" />
+          <BrandPill label="Slack" />
           <BrandPill label="Salesforce" />
-          <span aria-hidden="true" className="text-border">
+          <span aria-hidden="true" className="text-muted-foreground">
             /
           </span>
-          <span className="text-[0.68rem] uppercase tracking-[0.22em] text-muted-foreground">
+          <span className="text-[0.75rem] font-medium uppercase tracking-[0.22em] text-ink-soft">
             Now
           </span>
-          <BrandPill label="Slack, again" className="whitespace-nowrap" />
+          <BrandPill label="Slack" />
         </div>
       </section>
 

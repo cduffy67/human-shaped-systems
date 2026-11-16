@@ -124,7 +124,7 @@ export function BrandPill({ label, className = "" }: { label: string; className?
   const logo = BRAND_LOGOS.find((b) => b.match(label));
   return (
     <span
-      className={`brand-pill inline-flex items-center gap-2 rounded-full border border-card-border bg-card px-3 py-1 font-display text-[0.72rem] uppercase tracking-[0.18em] text-foreground/75 transition-colors hover:border-card-border-hover hover:text-foreground ${className}`}
+      className={`brand-pill ${label === "KPMG" ? "brand-pill--kpmg " : ""}inline-flex items-center gap-2 rounded-full border border-card-border bg-card px-3 py-1 font-display text-[0.72rem] uppercase tracking-[0.18em] text-foreground/75 transition-colors hover:border-card-border-hover hover:text-foreground ${className}`}
     >
       {logo ? <img src={logo.src} alt={logo.wordmark ? label : ""} className={`${logo.h} w-auto`} /> : null}
       {label === "KPMG" ? (

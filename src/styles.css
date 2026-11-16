@@ -572,4 +572,5 @@ html[data-mode="engine"] .engine-caption { text-transform: none; letter-spacing:
 .hero-flip { transition: transform 500ms ease; transform-style: preserve-3d; }
 @media (prefers-reduced-motion: reduce) { .snail, .hero-flip { animation: none; transition: none; } }
 
-html[data-mode="engine"] { --kpmg-ink: #EFE6D8; }
+/* Engine room: KPMG gets the same light pill and navy wordmark as Boardroom, like the other logos. */
+html[data-mode="engine"] .brand-pill--kpmg { background: oklch(0.964 0.014 79); }
