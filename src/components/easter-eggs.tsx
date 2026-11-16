@@ -3,8 +3,7 @@ import { toast } from "sonner";
 import { Volume2, VolumeX } from "lucide-react";
 import { setSiteMode } from "@/lib/mode";
 import headshot from "@/assets/headshot.png.asset.json";
-// Placeholder until the marathon medal + pint photo is uploaded.
-import offClockPhoto from "@/assets/running.png.asset.json";
+import offClockPhoto from "@/assets/marathon_pint.png.asset.json";
 
 /* ---------- tiny stores ---------- */
 function store<T>(initial: T) {
@@ -170,7 +169,7 @@ export function EasterEggs() {
       const k = e.key.toLowerCase();
       seq = [...seq, k].slice(-KONAMI.length);
       if (seq.join() === KONAMI.join()) { seq = []; startRain(); return; }
-      if (k === "e" && !e.metaKey && !e.ctrlKey && !e.altKey) setSiteMode("engine");
+      if (!e.metaKey && !e.ctrlKey && !e.altKey) { if (k === "e") setSiteMode("engine"); else if (k === "b" && seq.at(-2) !== "arrowright") setSiteMode("boardroom"); }
     };
     window.addEventListener("keydown", key);
     return () => window.removeEventListener("keydown", key);
@@ -185,7 +184,7 @@ export const OFF_CLOCK_SRC = offClockPhoto.url;
 export function OffClockPolaroid() {
   const on = useOffClock();
   return (
-    <figure className="mx-auto w-[220px]">
+    <figure className="mx-auto w-[190px]">
       <div className="polaroid-wrap" style={{ perspective: 900 }}>
         <div className={`polaroid ${on ? "is-flipped" : ""}`}>
           {[{ src: headshot.url, alt: "Conor at work", cap: "on the clock." }, { src: offClockPhoto.url, alt: "Conor off the clock", cap: OFF_CLOCK_CAPTION }].map((f, i) => (
@@ -197,7 +196,7 @@ export function OffClockPolaroid() {
           <span aria-hidden="true" className="magnet" />
         </div>
       </div>
-      <label className="mode-mono mt-4 flex cursor-pointer items-center justify-center gap-2 text-xs text-muted-foreground">
+      <label className="mode-mono mt-4 flex cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap text-[0.62rem] text-muted-foreground">
         <span className={on ? "" : "text-foreground"}>on the clock</span>
         <button type="button" role="switch" aria-checked={on} aria-label="on the clock / off the clock" onClick={() => setOffClock(!on)}
           className="relative h-5 w-9 rounded-full border border-border bg-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">

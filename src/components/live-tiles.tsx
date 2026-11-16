@@ -1,3 +1,4 @@
+import { OffClockPolaroid } from "@/components/easter-eggs";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -458,7 +459,10 @@ function Panel({ active, onSwitch, onClose }: { active: Key; onSwitch: (k: Key) 
           transition={{ duration: reduce ? 0 : 0.2 }}
           className="pt-6"
         >
-          <Body />
+          <div className="grid gap-8 md:grid-cols-[1fr_200px] md:items-start">
+            <div className="min-w-0"><Body /></div>
+            <OffClockPolaroid />
+          </div>
         </motion.div>
       </AnimatePresence>
     </motion.div>

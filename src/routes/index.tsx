@@ -8,7 +8,7 @@ import { CaseCTA } from "@/components/case-cta";
 import { setSiteMode, useSiteMode } from "@/lib/mode";
 import { LiveTiles, useLiveUpdatedLabel } from "@/components/live-tiles";
 import headshot from "@/assets/headshot.png.asset.json";
-import { OFF_CLOCK_CAPTION, OFF_CLOCK_SRC, OffClockPolaroid } from "@/components/easter-eggs";
+import { OFF_CLOCK_CAPTION, OFF_CLOCK_SRC } from "@/components/easter-eggs";
 import team from "@/assets/team.png.asset.json";
 
 
@@ -177,7 +177,6 @@ export function Home() {
       {/* Beyond work */}
       <BeatSection id="home-beyond" opener="tiles" openerText={liveLabel} title="Beyond work" note="the rest of it" className="mx-auto w-full max-w-5xl scroll-mt-24 px-5 pt-20 sm:px-8">
         <div id="beyond" className="beat"><LiveTiles /></div>
-        <div className="beat mt-12"><OffClockPolaroid /></div>
       </BeatSection>
       <Beats id="home-about" opener="about" className="mx-auto w-full max-w-5xl px-5 pb-16 pt-12 sm:px-8">
         <div className="space-y-8">
