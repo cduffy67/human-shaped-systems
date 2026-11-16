@@ -206,8 +206,8 @@ export function Home() {
               className="row-warm grid gap-2 border-b border-border px-1 py-6 sm:grid-cols-[3.5rem_1fr_1.35fr] sm:gap-6 sm:px-3"
             >
               <span className="mode-mono font-display text-sm text-accent/80">{sectionNo(i + 1, mode)}</span>
-              <h3 key={mode + "t"} className="mode-fade text-xl leading-snug">{CONTENT.strengths[i].title[mode]}</h3>
-              <p key={mode + "b"} className="mode-fade leading-relaxed text-ink-soft">{CONTENT.strengths[i].body[mode]}</p>
+              <h3 key={mode + "t"} className="mode-fade text-xl leading-snug">{CONTENT.strengths[i]?.title[mode]}</h3>
+              <p key={mode + "b"} className="mode-fade leading-relaxed text-ink-soft">{CONTENT.strengths[i]?.body[mode]}</p>
             </article>
           ))}
         </div>

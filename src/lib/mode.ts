@@ -7,7 +7,7 @@ const listeners = new Set<() => void>();
 
 function apply(mode: SiteMode) {
   current = mode;
-  if (typeof document !== "undefined") document.documentElement.dataset.mode = mode;
+  if (typeof document !== "undefined") document.documentElement.dataset["mode"] = mode;
   listeners.forEach((l) => l());
 }
 

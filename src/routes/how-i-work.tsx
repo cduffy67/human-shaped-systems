@@ -109,7 +109,7 @@ export function HowIWork() {
                   </span>
                   <h2 className="mt-2 text-xl leading-snug">{s.title}</h2>
                   <p key={mode} className="mode-fade mt-2 leading-relaxed text-ink-soft">
-                    {CONTENT.method[pi * 2 + si][mode]}
+                    {CONTENT.method[pi * 2 + si]?.[mode]}
                   </p>
                 </article>
               ))}
