@@ -36,8 +36,10 @@ export function PageHeader({
   title,
   intro,
   opener,
+  openerText,
   children,
 }: {
+  openerText?: string | undefined;
   eyebrow: string;
   title: string;
   intro?: string;
@@ -46,7 +48,7 @@ export function PageHeader({
   children?: ReactNode;
 }) {
   return (
-    <Beats id={`page-${title}`} opener={opener} heading={title} as="div">
+    <Beats id={`page-${title}`} opener={opener} openerText={openerText} heading={title} as="div">
       <header className="max-w-2xl">
         <BeatHeading as="h1" text={title} className="text-4xl leading-[1.08] sm:text-[3.25rem]" />
         <Label className="beat mt-4 block">{eyebrow}</Label>
@@ -70,9 +72,9 @@ export function SectionHeading({ children, note }: { children: ReactNode; note?:
 }
 
 /** A section entering with the shared beats: optional opener, typed/risen heading, `.beat` content. */
-export function BeatSection({ id, opener, title, note, className = "", children }: { id: string; opener?: OpenerKey | undefined; title: string; note?: string; className?: string; children: ReactNode }) {
+export function BeatSection({ id, opener, openerText, title, note, className = "", children }: { id: string; opener?: OpenerKey | undefined; openerText?: string | undefined; title: string; note?: string; className?: string; children: ReactNode }) {
   return (
-    <Beats id={id} opener={opener} heading={title} className={className}>
+    <Beats id={id} opener={opener} openerText={openerText} heading={title} className={className}>
       <div className="mb-8 flex flex-wrap items-baseline gap-x-5 gap-y-1 border-b border-border pb-3">
         <BeatHeading text={title} className="text-2xl sm:text-[1.65rem]" />
         {note ? <span className="beat text-sm italic font-medium text-accent">{note}</span> : null}
@@ -166,7 +168,7 @@ export function Plate({
         {title ? (
           <span className="block font-display text-base text-foreground">{title}</span>
         ) : null}
-        {caption ? <span className="block">{caption}</span> : null}
+        {caption ? <span className="cap-line block">{caption}</span> : null}
       </figcaption>
     </figure>
   );

@@ -12,3 +12,8 @@
 - [x] Shared beat timings, openers, headings, content lines in both modes
 - [x] Engine room JetBrains Mono, green accent, // body, path nav, ls lists
 - [x] Cmd-K terminal (Engine) and palette (Boardroom)
+
+# Motion fixes + typed eyebrows
+- [x] Never-blank sections, earlier trigger, finish on scroll-past / fast scroll
+- [x] Typed openers on every section in both rooms
+- [x] Engine hero cursor, caption //, CTA underline width

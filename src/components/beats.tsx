@@ -2,8 +2,19 @@ import { Fragment, createContext, useContext, useEffect, useLayoutEffect, useRef
 import { useSiteMode } from "@/lib/mode";
 import { HEADING_CHAR_MS, HEADING_WORD_STAGGER_MS, LINE_STAGGER_MS, OPENERS, OPENER_CHAR_MS, planSection, type OpenerKey } from "@/lib/motion";
 
+/* Fast-scroll detector: more than one viewport in under 300ms flushes every section in view. */
+const FLUSH = "cd-beats-flush";
+let samples: { t: number; y: number }[] = [];
+if (typeof window !== "undefined") {
+  window.addEventListener("scroll", () => {
+    const t = performance.now();
+    samples = [...samples.filter((s) => t - s.t < 300), { t, y: window.scrollY }];
+    if (Math.abs(samples[samples.length - 1]!.y - samples[0]!.y) > window.innerHeight) { samples = []; window.dispatchEvent(new Event(FLUSH)); }
+  }, { passive: true });
+}
+
 type State = "idle" | "play" | "done" | "instant";
-type Ctx = { state: State; ready: boolean; headStart: number; opener?: OpenerKey | undefined };
+type Ctx = { state: State; ready: boolean; headStart: number; opener?: OpenerKey | undefined; openerText?: string | undefined };
 const BeatsCtx = createContext<Ctx>({ state: "instant", ready: true, headStart: 0 });
 const InstantCtx = createContext(false);
 
@@ -21,12 +32,12 @@ const markSeen = (id: string) => { try { sessionStorage.setItem(SEEN, JSON.strin
  * One section entrance: opener (typed or drawn) → heading (typed or word rise) → `.beat` lines.
  * Once per session per id; click to finish; reduced motion shows everything at once.
  */
-export function Beats({ id, opener, heading, as: Tag = "section", className = "", placeOpener = true, children }: { id: string; opener?: OpenerKey | undefined; heading?: string | undefined; as?: ElementType; className?: string; /** false: render <BeatOpener /> yourself (e.g. inside a grid column). */ placeOpener?: boolean; children: ReactNode }) {
+export function Beats({ id, opener, openerText, heading, as: Tag = "section", className = "", placeOpener = true, children }: { id: string; opener?: OpenerKey | undefined; /** Overrides the opener text (e.g. a live timestamp). */ openerText?: string | undefined; heading?: string | undefined; as?: ElementType; className?: string; /** false: render <BeatOpener /> yourself (e.g. inside a grid column). */ placeOpener?: boolean; children: ReactNode }) {
   const mode = useSiteMode();
   const instantAll = useContext(InstantCtx);
   const ref = useRef<HTMLElement>(null);
   const [state, setState] = useState<State>("idle");
-  const plan = useRef(planSection({ opener, heading, lines: 0, mode }));
+  const plan = useRef(planSection({ opener, openerText, heading, lines: 0, mode }));
 
   useIso(() => {
     if (instantAll || seen().includes(id) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) setState("instant");
@@ -37,12 +48,12 @@ export function Beats({ id, opener, heading, as: Tag = "section", className = ""
     const root = ref.current;
     if (!root) return;
     const lines = [...root.querySelectorAll<HTMLElement>(".beat")].filter((el) => el.closest("[data-beats]") === root);
-    const p = planSection({ opener, heading, lines: lines.length, mode });
+    const p = planSection({ opener, openerText, heading, lines: lines.length, mode });
     plan.current = p;
     lines.forEach((el, i) => el.style.setProperty("--d", String(p.contentStart + i * LINE_STAGGER_MS)));
     root.querySelectorAll<HTMLElement>("[data-beat-last]").forEach((el) => el.style.setProperty("--d", String(p.lastLine + LINE_STAGGER_MS)));
     root.style.setProperty("--k", String(p.scale));
-  }, [mode, opener, heading, children]);
+  }, [mode, opener, openerText, heading, children]);
 
   useEffect(() => {
     if (state !== "idle" || !ref.current) return;
@@ -51,9 +62,23 @@ export function Beats({ id, opener, heading, as: Tag = "section", className = ""
       io.disconnect();
       markSeen(id);
       setState("play");
-    }, { threshold: 0.15 });
+    }, { threshold: 0.05, rootMargin: "0px 0px -5% 0px" });
     io.observe(ref.current);
     return () => io.disconnect();
+  }, [state, id]);
+
+  // Never leave a section half-shown: finish it if it scrolls off the top, or on a fast scroll while in view.
+  useEffect(() => {
+    if (state === "done" || state === "instant") return;
+    const el = ref.current;
+    if (!el) return;
+    const finish = () => { markSeen(id); setState("instant"); };
+    const onScroll = () => { if (el.getBoundingClientRect().bottom < 0) finish(); };
+    const onFlush = () => { const r = el.getBoundingClientRect(); if (r.top < window.innerHeight && r.bottom > 0) finish(); };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener(FLUSH, onFlush);
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener(FLUSH, onFlush); };
   }, [state, id]);
 
   useEffect(() => {
@@ -64,9 +89,9 @@ export function Beats({ id, opener, heading, as: Tag = "section", className = ""
 
   const ready = state === "done" || state === "instant";
   return (
-    <BeatsCtx.Provider value={{ state, ready, headStart: plan.current.headStart, opener }}>
+    <BeatsCtx.Provider value={{ state, ready, headStart: plan.current.headStart, opener, openerText }}>
       <Tag ref={ref} data-beats="" data-state={state} className={className} onClick={() => state === "play" && setState("instant")}>
-        {opener && placeOpener ? <Opener k={opener} /> : null}
+        {opener && placeOpener ? <Opener k={opener} text={openerText} /> : null}
         {children}
       </Tag>
     </BeatsCtx.Provider>
@@ -74,25 +99,20 @@ export function Beats({ id, opener, heading, as: Tag = "section", className = ""
 }
 
 export function BeatOpener() {
-  const { opener } = useContext(BeatsCtx);
-  return opener ? <Opener k={opener} /> : null;
+  const { opener, openerText } = useContext(BeatsCtx);
+  return opener ? <Opener k={opener} text={openerText} /> : null;
 }
 
-function Opener({ k }: { k: OpenerKey }) {
+/** Typed letter by letter in both rooms: a green command in Engine room, a blue mono eyebrow in Boardroom. */
+function Opener({ k, text: override }: { k: OpenerKey; text?: string | undefined }) {
   const mode = useSiteMode();
-  const text = OPENERS[k][mode];
-  if (mode === "engine") {
-    return (
-      <p className="beat-opener mb-4 text-sm font-medium text-accent" aria-label={text}>
-        <span aria-hidden="true">{[...text].map((c, i) => <span key={i} className="beat-char" style={{ "--d": i * OPENER_CHAR_MS } as CSSProperties}>{c}</span>)}</span>
-      </p>
-    );
-  }
+  const text = (mode === "boardroom" ? override : undefined) ?? OPENERS[k][mode];
+  const cls = mode === "engine"
+    ? "beat-opener no-slash mb-4 text-sm font-medium text-accent"
+    : "beat-opener no-slash mode-mono mb-4 text-[0.72rem] font-medium uppercase tracking-[0.22em] text-accent";
   return (
-    <p className="beat-opener mb-3" aria-label={text}>
-      <svg aria-hidden="true" className="beat-draw overflow-visible text-accent" width={`${[...text].length * 0.62 + 0.4}em`} height="1.5em" style={{ fontSize: "1.45rem" }}>
-        <text x="2" y="1.1em" className="font-hand" fill="currentColor" stroke="currentColor" strokeWidth="0.7">{text}</text>
-      </svg>
+    <p className={cls} aria-label={text}>
+      <span aria-hidden="true">{[...text].map((c, i) => <span key={i} className="beat-char" style={{ "--d": i * OPENER_CHAR_MS } as CSSProperties}>{c}</span>)}</span>
     </p>
   );
 }
@@ -133,7 +153,7 @@ export function BeatHeading({ text, as: Tag = "h2", className = "", circle, curs
             {li < lines.length - 1 ? <br /> : null}
           </span>
         ))}
-        {cursor && mode === "engine" ? <span className="block-cursor" /> : null}
+        {cursor && mode === "engine" ? <span className="block-cursor" style={{ "--d": headStart + ci * HEADING_CHAR_MS } as CSSProperties} /> : null}
       </span>
     </Tag>
   );

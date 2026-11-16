@@ -5,7 +5,7 @@ import { Beats, BeatHeading, BeatOpener } from "@/components/beats";
 import { CONTENT } from "@/lib/content";
 import { CaseCTA } from "@/components/case-cta";
 import { useSiteMode } from "@/lib/mode";
-import { LiveTiles } from "@/components/live-tiles";
+import { LiveTiles, useLiveUpdatedLabel } from "@/components/live-tiles";
 import headshot from "@/assets/headshot.png.asset.json";
 import team from "@/assets/team.png.asset.json";
 
@@ -48,6 +48,7 @@ export const Route = createFileRoute("/")({
 export function Home() {
   const mode = useSiteMode();
   const engine = mode === "engine";
+  const liveLabel = useLiveUpdatedLabel();
   return (
     <div>
       {/* Hero */}
@@ -128,7 +129,7 @@ export function Home() {
       </Beats>
 
       {/* Currently exploring */}
-      <BeatSection id="home-exploring" title="Currently exploring" className="mx-auto w-full max-w-5xl px-5 pt-20 sm:px-8">
+      <BeatSection id="home-exploring" opener="exploring" title="Currently exploring" className="mx-auto w-full max-w-5xl px-5 pt-20 sm:px-8">
         {engine ? (
           <ul className="border-t border-border">
             {EXPLORING.map(({ topic, note }) => (
@@ -146,8 +147,10 @@ export function Home() {
       </BeatSection>
 
       {/* Beyond work */}
-      <BeatSection id="home-beyond" opener="tiles" title="Beyond work" note="the rest of it" className="mx-auto w-full max-w-5xl scroll-mt-24 px-5 pb-16 pt-20 sm:px-8">
+      <BeatSection id="home-beyond" opener="tiles" openerText={liveLabel} title="Beyond work" note="the rest of it" className="mx-auto w-full max-w-5xl scroll-mt-24 px-5 pt-20 sm:px-8">
         <div id="beyond" className="beat"><LiveTiles /></div>
+      </BeatSection>
+      <Beats id="home-about" opener="about" className="mx-auto w-full max-w-5xl px-5 pb-16 pt-12 sm:px-8">
         <div className="space-y-8">
           <div>
             <p className="beat max-w-xl text-lg leading-relaxed text-ink-soft">
@@ -171,8 +174,10 @@ export function Home() {
             />
           </div>
         </div>
-      </BeatSection>
-      <section className="mx-auto w-full max-w-5xl px-5 pb-24 sm:px-8"><CaseCTA>See the work</CaseCTA></section>
+      </Beats>
+      <Beats id="home-cta" opener="cta" className="mx-auto w-full max-w-5xl px-5 pb-24 sm:px-8">
+        <div className="beat"><CaseCTA>See the work</CaseCTA></div>
+      </Beats>
     </div>
   );
 }

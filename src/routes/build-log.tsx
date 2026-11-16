@@ -58,6 +58,7 @@ export function BuildLog() {
   return (
     <Page>
       <PageHeader
+        opener="buildlog"
         eyebrow="Working in public"
         title="Build Log"
         intro="Built quickly, refined with AI, versioned over time, tweaked slowly. This page is the receipts."

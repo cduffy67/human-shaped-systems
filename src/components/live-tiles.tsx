@@ -465,6 +465,14 @@ function Panel({ active, onSwitch, onClose }: { active: Key; onSwitch: (k: Key) 
   );
 }
 
+/** Newest fetch time across the live sources, for the "LIVE · UPDATED …" eyebrow. */
+export function useLiveUpdatedLabel() {
+  const times = [useStrava().data, useSpotify().data, useLetterboxd().data, useDuolingo().data]
+    .map((d) => (d as { fetchedAt?: number } | undefined)?.fetchedAt ?? 0);
+  const at = Math.max(...times);
+  return at ? `LIVE · UPDATED ${relTime(at).toUpperCase()}` : undefined;
+}
+
 export function LiveTiles() {
   const [open, setOpen] = useState<Key | null>(null);
   const tileRefs = useRef<Partial<Record<Key, HTMLButtonElement | null>>>({});

@@ -10,21 +10,26 @@ export const OPENER_DRAW_MS = 400;
 export const FADE_MS = 400;
 
 export const OPENERS = {
-  hero: { engine: "$ whoami", boardroom: "① who" },
-  what: { engine: "$ ls ./capabilities", boardroom: "② what" },
-  how: { engine: "$ ./method --run", boardroom: "③ how" },
-  journey: { engine: "$ git log --oneline career", boardroom: "④ so far" },
-  tiles: { engine: "$ curl -s conor.dev/api/stats", boardroom: "⑤ right now" },
-  cases: { engine: "$ ls cases/", boardroom: "⑥ proof" },
-  contact: { engine: "$ mail conor", boardroom: "⑦ next steps" },
+  hero: { engine: "$ whoami", boardroom: "CONOR DUFFY · LONDON / IRELAND" },
+  exploring: { engine: "$ ls ./exploring", boardroom: "ON MY DESK" },
+  tiles: { engine: "$ curl -s conor.dev/api/stats", boardroom: "LIVE · UPDATED" },
+  about: { engine: "$ cat about.txt", boardroom: "OFF THE CLOCK" },
+  cta: { engine: "$ cd ~/cases", boardroom: "THE PROOF" },
+  what: { engine: "$ ls ./capabilities", boardroom: "IN SHORT" },
+  how: { engine: "$ ./method --run", boardroom: "OPERATING MODEL" },
+  journey: { engine: "$ git log --oneline career", boardroom: "THE WINDING VERSION" },
+  buildlog: { engine: "$ git log --stat", boardroom: "BUILT IN PUBLIC" },
+  cases: { engine: "$ ls cases/", boardroom: "SELECTED WORK" },
+  contact: { engine: "$ mail conor", boardroom: "NEXT STEPS" },
 } as const;
 export type OpenerKey = keyof typeof OPENERS;
 
 export type BeatMode = "engine" | "boardroom";
 
-export function openerMs(key: OpenerKey | undefined, mode: BeatMode) {
+/** Both rooms type their opener letter by letter. `text` overrides the default (e.g. live timestamps). */
+export function openerMs(key: OpenerKey | undefined, mode: BeatMode, text?: string) {
   if (!key) return 0;
-  return mode === "engine" ? OPENERS[key].engine.length * OPENER_CHAR_MS : OPENER_DRAW_MS;
+  return [...(text ?? OPENERS[key][mode])].length * OPENER_CHAR_MS;
 }
 
 export function headingMs(text: string, mode: BeatMode) {
@@ -35,8 +40,8 @@ export function headingMs(text: string, mode: BeatMode) {
 }
 
 /** Delay plan for one section; `scale` compresses everything to fit MAX_SECTION_MS. */
-export function planSection(opts: { opener?: OpenerKey | undefined; heading?: string | undefined; lines: number; mode: BeatMode }) {
-  const o = openerMs(opts.opener, opts.mode);
+export function planSection(opts: { opener?: OpenerKey | undefined; openerText?: string | undefined; heading?: string | undefined; lines: number; mode: BeatMode }) {
+  const o = openerMs(opts.opener, opts.mode, opts.openerText);
   const headStart = o ? o + BEAT_GAP_MS : 0;
   const h = opts.heading ? headingMs(opts.heading, opts.mode) : 0;
   const contentStart = h ? headStart + h + BEAT_GAP_MS : headStart;

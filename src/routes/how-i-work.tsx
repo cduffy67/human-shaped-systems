@@ -154,8 +154,10 @@ export function HowIWork() {
         None of this is rigid. Some projects need three of these and a whiteboard. Some need all six
         twice, and a difficult conversation in the middle.
       </p>
-      <div className="beat mt-16"><CaseCTA>See it in practice</CaseCTA></div>
       </BeatSection>
+      <Beats id="how-cta" opener="cta" className="mt-16">
+        <div className="beat"><CaseCTA>See it in practice</CaseCTA></div>
+      </Beats>
     </Page>
   );
 }
