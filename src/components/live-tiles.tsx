@@ -1,95 +1,183 @@
 import { useQuery } from "@tanstack/react-query";
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { siDuolingo, siLetterboxd, siSpotify, siStrava, type SimpleIcon } from "simple-icons";
 import { getDuolingoStats, getStravaStats } from "@/lib/live/stats.functions";
 import { useSiteMode } from "@/lib/mode";
 
 const HOUR = 60 * 60 * 1000;
 const fmt = (n: number) => n.toLocaleString("en-GB");
+const londonToday = () =>
+  new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/London" }).format(new Date());
 
-function londonToday() {
-  return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/London" }).format(new Date());
-}
-
-function Tile({ label, href, children }: { label: string; href?: string | undefined; children: ReactNode }) {
-  const body = (
-    <>
-      <p className="mode-mono text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground">{label}</p>
-      <div className="mt-3">{children}</div>
-    </>
-  );
-  const cls = "block h-full border-[0.5px] border-border bg-card p-5 transition-colors";
-  return href ? (
-    <a href={href} target="_blank" rel="noreferrer" className={cls + " hover:bg-secondary/40"}>{body}</a>
-  ) : (
-    <div className={cls}>{body}</div>
+function Logo({ icon }: { icon: SimpleIcon }) {
+  return (
+    <svg role="img" aria-label={icon.title} viewBox="0 0 24 24" width={20} height={20} className="fill-foreground">
+      <path d={icon.path} />
+    </svg>
   );
 }
 
-function Placeholder() {
-  return <div className="h-36 animate-pulse border-[0.5px] border-border bg-secondary/50" aria-hidden />;
+function stop(e: React.SyntheticEvent) {
+  e.stopPropagation();
+}
+function CardLink({ href, children, external = true }: { href: string; children: ReactNode; external?: boolean }) {
+  return (
+    <a
+      href={href}
+      {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+      onClick={stop}
+      onKeyDown={stop}
+      className="quiet-link mt-3 inline-block text-sm text-accent"
+    >
+      {children}
+    </a>
+  );
 }
 
-function Headline({ children }: { children: ReactNode }) {
-  return <p className="mode-mono font-display text-2xl leading-tight">{children}</p>;
+function Figure({ children }: { children: ReactNode }) {
+  return <p className="mode-mono font-display text-3xl leading-tight">{children}</p>;
 }
 function Detail({ children }: { children: ReactNode }) {
   return <p className="mode-mono mt-2 text-sm text-muted-foreground">{children}</p>;
 }
 
-export function LearningTile() {
-  const mode = useSiteMode();
-  const { data, isLoading } = useQuery({ queryKey: ["duolingo"], queryFn: () => getDuolingoStats(), staleTime: HOUR });
-  if (isLoading) return <Placeholder />;
-  if (!data) return null;
-  const done = !data.endDate || data.endDate >= londonToday();
-  const joinYear = data.creationDate ? new Date(data.creationDate * 1000).getFullYear() : null;
+type CardProps = {
+  icon: SimpleIcon;
+  label: string;
+  teaser: string;
+  back: ReactNode;
+  index: number;
+  hinted: boolean;
+};
+
+function FlipCard({ icon, label, teaser, back, index, hinted }: CardProps) {
+  const engine = useSiteMode() === "engine";
+  const [flipped, setFlipped] = useState(false);
+  const showBack = engine || flipped;
+  const toggle = () => !engine && setFlipped((f) => !f);
+
+  const header = (
+    <div className="flex items-center gap-3">
+      <Logo icon={icon} />
+      <span className="mode-mono text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground">{label}</span>
+    </div>
+  );
+
   return (
-    <Tile label="Learning" href="https://www.duolingo.com/profile/ConorDuffy575519">
-      {mode === "engine" ? (
-        <Headline>es_ES · streak: {fmt(data.streak)}d · xp: {fmt(data.totalXp)}</Headline>
-      ) : (
-        <Headline>🔥 {fmt(data.streak)} days</Headline>
-      )}
-      {mode !== "engine" && (
-        <Detail>
-          {data.streak === 0
-            ? "Learning Spanish · streak resetting, as streaks do"
-            : `Learning Spanish${joinYear ? ` · since ${joinYear}` : ""}`}
-        </Detail>
-      )}
-      <Detail>today's lesson: {done ? "done ✓" : "pending"}</Detail>
-    </Tile>
+    <div
+      role="button"
+      tabIndex={engine ? -1 : 0}
+      aria-pressed={showBack}
+      aria-label={`${label}: ${teaser}`}
+      onClick={toggle}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggle();
+        }
+      }}
+      className={`flip-card ${engine ? "" : "cursor-pointer"} ${hinted ? "flip-hint" : ""}`}
+      style={{ animationDelay: `${index * 140}ms` }}
+    >
+      <div className={`flip-inner ${showBack ? "is-flipped" : ""}`}>
+        <div className="flip-face flip-front paper-card" aria-hidden={showBack}>
+          {header}
+          <p className="mt-6 font-display text-2xl italic leading-snug">{teaser}</p>
+          <span className="absolute bottom-4 right-5 text-xs text-muted-foreground">tap to flip ↻</span>
+        </div>
+        <div className="flip-face flip-back paper-card" aria-hidden={!showBack}>
+          {header}
+          <div className="mt-5">{back}</div>
+        </div>
+      </div>
+    </div>
   );
 }
 
-export function RunningTile() {
-  const mode = useSiteMode();
+function RunningBack() {
+  const engine = useSiteMode() === "engine";
   const { data, isLoading } = useQuery({ queryKey: ["strava"], queryFn: () => getStravaStats(), staleTime: HOUR });
-  if (isLoading) return <Placeholder />;
-  if (!data) return null;
+  if (isLoading) return <Detail>loading…</Detail>;
+  if (!data) return <Detail>Out for a run. Back soon.</Detail>;
   const l = data.latest;
   const via = l.device_name ? ` via ${l.device_name}` : "";
-  const link = data.source !== "stub" && l.url ? l.url : undefined;
+  const link = data.source !== "stub" && l.url ? l.url : null;
   return (
-    <Tile label="Running" href={link}>
-      {mode === "engine" ? (
-        <Headline>month_km: {data.month_km} · last: {l.distance_km}km @ {l.pace_min_per_km}/km · {l.weekday}{via}</Headline>
+    <>
+      {engine ? (
+        <Figure>month_km: {data.month_km}</Figure>
       ) : (
-        <>
-          <Headline>{data.month_km} km this month</Headline>
-          <Detail>Last run: {l.distance_km} km on {l.weekday} · {l.pace_min_per_km}/km{via}</Detail>
-        </>
+        <Figure>{data.month_km} km this month</Figure>
       )}
-      {link && <Detail>View on Strava</Detail>}
-    </Tile>
+      <Detail>
+        {engine
+          ? `last: ${l.distance_km}km @ ${l.pace_min_per_km}/km · ${l.weekday}${via}`
+          : `Last run: ${l.distance_km} km on ${l.weekday} · ${l.pace_min_per_km}/km${via}`}
+      </Detail>
+      {link && <CardLink href={link}>View on Strava</CardLink>}
+    </>
+  );
+}
+
+function LearningBack() {
+  const engine = useSiteMode() === "engine";
+  const { data, isLoading } = useQuery({ queryKey: ["duolingo"], queryFn: () => getDuolingoStats(), staleTime: HOUR });
+  if (isLoading) return <Detail>loading…</Detail>;
+  if (!data) return <Detail>Practising quietly. Check back later.</Detail>;
+  const done = !data.endDate || data.endDate >= londonToday();
+  const joinYear = data.creationDate ? new Date(data.creationDate * 1000).getFullYear() : null;
+  return (
+    <>
+      <Figure>{engine ? `streak: ${fmt(data.streak)}d` : `🔥 ${fmt(data.streak)} days`}</Figure>
+      <Detail>
+        {engine
+          ? `es_ES · xp: ${fmt(data.totalXp)}`
+          : data.streak === 0
+            ? "Learning Spanish · streak resetting, as streaks do"
+            : `Learning Spanish${joinYear ? ` · since ${joinYear}` : ""}`}
+      </Detail>
+      <Detail>today's lesson: {done ? "done ✓" : "pending"}</Detail>
+      <CardLink href="https://www.duolingo.com/profile/ConorDuffy575519">Duolingo profile</CardLink>
+    </>
+  );
+}
+
+function ComingSoon({ what }: { what: string }) {
+  return (
+    <>
+      <Figure>Soon.</Figure>
+      <Detail>{what} isn't connected yet.</Detail>
+    </>
   );
 }
 
 export function LiveTiles() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [hinted, setHinted] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e?.isIntersecting) {
+        setHinted(true);
+        io.disconnect();
+      }
+    }, { threshold: 0.4 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const cards = [
+    { icon: siStrava, label: "Running", teaser: "How far this month?", back: <RunningBack /> },
+    { icon: siLetterboxd, label: "Watching", teaser: "What did I watch last?", back: <ComingSoon what="Letterboxd" /> },
+    { icon: siSpotify, label: "Listening", teaser: "What's on repeat?", back: <ComingSoon what="Spotify" /> },
+    { icon: siDuolingo, label: "Learning", teaser: "How many days in a row?", back: <LearningBack /> },
+  ];
   return (
-    <div className="mb-12 grid gap-4 sm:grid-cols-[repeat(auto-fit,minmax(14rem,1fr))]">
-      <RunningTile />
-      <LearningTile />
+    <div ref={ref} className="mb-12 grid gap-5 sm:grid-cols-2">
+      {cards.map((c, i) => (
+        <FlipCard key={c.label} {...c} index={i} hinted={hinted} />
+      ))}
     </div>
   );
 }

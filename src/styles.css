@@ -347,3 +347,72 @@ html.mode-anim * {
 @media print {
   html[data-mode="engine"] body { background-image: none; }
 }
+
+/* ============ Beyond work flip cards ============ */
+:root {
+  --paper-card: oklch(0.982 0.010 82);
+  --shadow-paper: 0 1px 2px rgb(60 40 20 / 0.08), 0 8px 24px rgb(60 40 20 / 0.06);
+  --shadow-paper-lift: 0 2px 4px rgb(60 40 20 / 0.1), 0 14px 32px rgb(60 40 20 / 0.09);
+}
+html[data-mode="engine"] {
+  --paper-card: #221a16;
+  --shadow-paper: inset 0 0 24px rgb(239 230 216 / 0.04);
+  --shadow-paper-lift: inset 0 0 28px rgb(239 230 216 / 0.07);
+}
+.flip-card {
+  perspective: 1000px;
+  min-height: 12rem;
+  border-radius: 8px;
+  outline: none;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.flip-card:hover { transform: translateY(-2px); }
+.flip-card:hover .paper-card { box-shadow: var(--shadow-paper-lift); }
+.flip-card:focus-visible { box-shadow: 0 0 0 2px var(--ring); }
+.flip-inner {
+  position: relative;
+  height: 100%;
+  min-height: 12rem;
+  transform-style: preserve-3d;
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.flip-inner.is-flipped { transform: rotateY(180deg); }
+.flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-back { transform: rotateY(180deg); }
+.paper-card {
+  padding: 1.25rem 1.4rem;
+  border-radius: 8px;
+  border: 0.5px solid color-mix(in oklab, var(--foreground) 18%, transparent);
+  background: var(--paper-card);
+  box-shadow: var(--shadow-paper);
+  transition: box-shadow 300ms ease;
+}
+html[data-mode="engine"] .paper-card { border-color: rgb(239 230 216 / 0.22); }
+/* Engine room: backs shown directly, no 3D */
+html[data-mode="engine"] .flip-inner,
+html[data-mode="engine"] .flip-inner.is-flipped { transform: none; transition: none; }
+html[data-mode="engine"] .flip-front { display: none; }
+html[data-mode="engine"] .flip-back { position: relative; transform: none; min-height: 12rem; }
+
+.flip-hint { animation: flip-wiggle 700ms ease-in-out both; }
+@keyframes flip-wiggle {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-1.2deg); }
+  50% { transform: rotate(1deg); }
+  75% { transform: rotate(-0.5deg); }
+}
+html[data-mode="engine"] .flip-hint { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-inner, .flip-inner.is-flipped { transform: none !important; }
+  .flip-face { transform: none !important; transition: opacity 300ms ease !important; }
+  .flip-inner .flip-back { opacity: 0; }
+  .flip-inner.is-flipped .flip-front { opacity: 0; }
+  .flip-inner.is-flipped .flip-back { opacity: 1; }
+  .flip-hint { animation: none; }
+}
