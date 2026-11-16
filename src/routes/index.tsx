@@ -4,7 +4,7 @@ import { BeatSection, BrandPill, Divider, Plate, PullQuote } from "@/components/
 import { Beats, BeatHeading, BeatOpener } from "@/components/beats";
 import { CONTENT } from "@/lib/content";
 import { CaseCTA } from "@/components/case-cta";
-import { useSiteMode } from "@/lib/mode";
+import { setSiteMode, useSiteMode } from "@/lib/mode";
 import { LiveTiles, useLiveUpdatedLabel } from "@/components/live-tiles";
 import headshot from "@/assets/headshot.png.asset.json";
 import team from "@/assets/team.png.asset.json";
@@ -67,6 +67,20 @@ export function Home() {
               {engine ? "[ say_hello ]" : "Say hello"}
             </Link>
           </div>
+          <button
+            type="button"
+            onClick={() => setSiteMode(engine ? "boardroom" : "engine")}
+            className="mode-invite beat group mt-5 inline-flex flex-wrap items-baseline gap-x-1.5 rounded-sm text-left text-sm text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+          >
+            <span>{engine ? <><span className="text-[#6f675d]">// </span>Want to get out of the weeds?</> : "Want to see under the hood?"}</span>
+            <span className="relative inline-flex items-baseline gap-1 text-accent">
+              <span aria-hidden="true" className="inline-block transition-transform duration-200 group-hover:translate-x-[3px] group-focus-visible:translate-x-[3px]">→</span>
+              <span>{engine ? "Boardroom" : "Engine room"}</span>
+              <svg aria-hidden="true" viewBox="0 0 100 8" preserveAspectRatio="none" className="pointer-events-none absolute -bottom-1.5 left-0 h-2 w-full fill-none">
+                <path d="M 2 5 Q 25 2 50 4.5 T 98 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" pathLength={1} className="invite-line" />
+              </svg>
+            </span>
+          </button>
         </div>
 
         <div className="beat">

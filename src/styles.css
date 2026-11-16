@@ -557,3 +557,8 @@ html[data-mode="engine"] main p:not(.no-slash, .beat-opener, .pull-quote p, .pap
 }
 html[data-mode="engine"] figcaption .cap-line::before { content: "// "; color: #6f675d; }
 html[data-mode="engine"] .engine-caption { text-transform: none; letter-spacing: 0; }
+
+/* Hero mode invitation: hand-drawn underline draws under the destination on hover/focus. */
+.mode-invite .invite-line { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 350ms ease-out; }
+.mode-invite:is(:hover, :focus-visible) .invite-line { stroke-dashoffset: 0; }
+@media (prefers-reduced-motion: reduce) { .mode-invite .invite-line { transition: none; } }
