@@ -164,8 +164,9 @@ export function Home() {
             <Plate
               src={team.url}
               alt="Conor with colleagues in the office"
-              title="People"
-              ratio="aspect-[16/7]"
+              caption="The true driver of the work."
+              className="mx-auto max-w-[720px]"
+              ratio="aspect-[3/2]"
               position="object-center"
             />
           </div>

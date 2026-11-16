@@ -24,7 +24,7 @@ export function PhaseIllustration({ phase }: { phase: number }) {
   const labels = [
     "Six overlapping sticky notes, scribbles and a question mark: a messy problem.",
     "Four boxes connected by arrows, with a dashed dependency held together with hope: a mapped system.",
-    "A crisp accent-filled card with a tick: a credible solution.",
+    "A crisp document card with three lines of text and a bold tick: a credible solution.",
   ];
 
   return (
@@ -63,9 +63,14 @@ export function PhaseIllustration({ phase }: { phase: number }) {
         <motion.text x="118" y="179" textAnchor="middle" stroke="none" fill="currentColor" className="font-[cursive] text-[16px] italic" variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: reduce ? 0 : 0.9 } } }}>held together with hope</motion.text>
       </> : null}
       {phase === 2 ? <>
-        <motion.path d="M 100 30 H 260 V 190 H 100 Z" className="fill-accent stroke-accent" pathLength={1} strokeDasharray="1 1" variants={{ hidden: { strokeDashoffset: 1, fillOpacity: 0 }, visible: { strokeDashoffset: 0, fillOpacity: 1, transition: { duration: reduce ? 0 : 0.9, ease: "easeInOut" } } }} />
-        <g className={mode === "engine" ? "text-foreground" : "text-accent-foreground"} strokeWidth="5">
-          {line("M 143 111 L 169 137 L 219 84")}
+        <motion.path d="M 110 22 H 236 L 256 42 V 198 H 110 Z M 236 22 V 42 H 256" className="stroke-accent" fill="var(--accent)" pathLength={1} strokeDasharray="1 1" variants={{ hidden: { strokeDashoffset: 1, fillOpacity: 0 }, visible: { strokeDashoffset: 0, fillOpacity: 0.15, transition: { duration: reduce ? 0 : 0.9, ease: "easeInOut" } } }} />
+        <g className="stroke-accent" strokeWidth="3">
+          {line("M 130 62 H 214")}
+          {line("M 130 86 H 232")}
+          {line("M 130 110 H 190")}
+        </g>
+        <g className="stroke-accent" strokeWidth="7">
+          {line("M 196 166 L 213 182 L 244 146")}
         </g>
       </> : null}
     </motion.svg>

@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { motion, useReducedMotion } from "framer-motion";
 
 import { CONTENT, sectionNo } from "@/lib/content";
 import { useSiteMode } from "@/lib/mode";
@@ -75,6 +76,7 @@ export const Route = createFileRoute("/how-i-work")({
 
 export function HowIWork() {
   const mode = useSiteMode();
+  const reduce = useReducedMotion();
   return (
     <Page>
       <PageHeader
@@ -98,9 +100,9 @@ export function HowIWork() {
 
             <div className="mt-7 grid items-center gap-5 lg:grid-cols-[minmax(240px,0.85fr)_2fr] lg:gap-10">
               <PhaseIllustration phase={pi} />
-              <div className="grid gap-x-8 sm:grid-cols-2">
+              <motion.div className="grid gap-x-8 sm:grid-cols-2" initial={reduce ? "show" : "hide"} whileInView="show" viewport={{ once: true, amount: 0.3 }} transition={{ staggerChildren: reduce ? 0 : 0.08 }}>
               {p.steps.map((s, si) => (
-                <article key={s.title} id={METHOD_STEPS[pi * 2 + si]?.id} className="scroll-mt-28 border-b border-border/70 py-6">
+                <motion.article key={s.title} id={METHOD_STEPS[pi * 2 + si]?.id} className="scroll-mt-28 border-b border-border/70 py-6" variants={{ hide: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: reduce ? 0 : 0.45, ease: "easeOut" } } }}>
                   <span className="mode-mono font-display text-xs uppercase tracking-[0.2em] text-muted-foreground">
                     Step {pi * 2 + si + 1}
                   </span>
@@ -111,9 +113,9 @@ export function HowIWork() {
                   <Link to="/case-library/$slug" params={{ slug: METHOD_STEPS[pi * 2 + si]?.caseSlug ?? CASES[0].slug }} className="quiet-link mode-mono mt-5 inline-block text-xs leading-relaxed text-link">
                     SEEN IN → {CASES.find((study) => study.slug === METHOD_STEPS[pi * 2 + si]?.caseSlug)?.title}
                   </Link>
-                </article>
+                </motion.article>
               ))}
-              </div>
+              </motion.div>
             </div>
           </section>
           );
@@ -122,12 +124,12 @@ export function HowIWork() {
 
       <section className="mt-20">
         <SectionHeading>What that adds up to</SectionHeading>
-        <div className="border-t border-border">
+        <div className="grid border-t border-border lg:grid-cols-5 lg:gap-6">
           {CONTENT.strengths.map((strength, i) => (
-            <article key={i} className="row-warm grid gap-2 border-b border-border px-1 py-6 sm:grid-cols-[3.5rem_1fr_1.35fr] sm:gap-6 sm:px-3">
+            <article key={i} className="row-warm flex flex-col gap-2 border-b border-border px-1 py-5 lg:border-b-0 lg:px-0">
               <span className="mode-mono text-sm text-accent">{sectionNo(i + 1, mode)}</span>
-              <h3 key={mode + "t"} className="mode-fade text-xl leading-snug">{strength.title[mode]}</h3>
-              <p key={mode + "b"} className="mode-fade leading-relaxed text-ink-soft">{strength.body[mode]}</p>
+              <h3 key={mode + "t"} className="mode-fade text-base font-bold leading-snug">{strength.title[mode]}</h3>
+              <p key={mode + "b"} className="mode-fade line-clamp-2 text-sm leading-snug text-ink-soft lg:line-clamp-3">{strength.body[mode]}</p>
             </article>
           ))}
         </div>

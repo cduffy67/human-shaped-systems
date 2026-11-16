@@ -12,6 +12,7 @@ import {
   type SpotifyArtist,
 } from "@/lib/live/stats.functions";
 import { useSiteMode } from "@/lib/mode";
+import { CountUp } from "@/components/count-up";
 
 const HOUR = 60 * 60 * 1000;
 const fmt = (n: number) => n.toLocaleString("en-GB");
@@ -37,11 +38,11 @@ const useSpotify = () => useQuery({ queryKey: ["spotify"], queryFn: () => getSpo
 const useLetterboxd = () => useQuery({ queryKey: ["letterboxd"], queryFn: () => getLetterboxd(), staleTime: HOUR });
 const useDuolingo = () => useQuery({ queryKey: ["duolingo"], queryFn: () => getDuolingoStats(), staleTime: HOUR });
 
-function useTileMeta(key: Key): { live: boolean; preview: string | null } {
+function useTileMeta(key: Key): { live: boolean; preview: ReactNode } {
   const s = useStrava(), l = useLetterboxd(), sp = useSpotify(), d = useDuolingo();
   switch (key) {
     case "strava":
-      return { live: s.data?.data?.source === "strava", preview: s.data?.data ? `${s.data.data.month_km} km this month` : null };
+      return { live: s.data?.data?.source === "strava", preview: s.data?.data ? <><CountUp value={s.data.data.month_km} /> km this month</> : null };
     case "letterboxd": {
       const f = l.data?.data?.recent[0];
       return { live: !!f, preview: f ? `Last watched: ${f.title}` : null };
@@ -49,7 +50,7 @@ function useTileMeta(key: Key): { live: boolean; preview: string | null } {
     case "spotify":
       return { live: sp.data?.data?.source === "spotify", preview: "On repeat this month" };
     case "duolingo":
-      return { live: !!d.data?.data, preview: d.data?.data ? `🔥 ${fmt(d.data.data.streak)} days` : null };
+      return { live: !!d.data?.data, preview: d.data?.data ? <>🔥 <CountUp value={d.data.data.streak} /> days</> : null };
   }
 }
 
@@ -140,11 +141,11 @@ function StravaPanel() {
   return (
     <div className="grid gap-8 md:grid-cols-[1fr_1.2fr]">
       <div>
-        <Figure>{engine ? `month_km: ${s.month_km}` : `${s.month_km} km`}</Figure>
+        <Figure>{engine ? <>month_km: <CountUp value={s.month_km} /></> : <><CountUp value={s.month_km} /> km</>}</Figure>
         <Detail>{engine ? "// this month" : "this month, so far"}</Detail>
         {s.year_km !== null && (
           <div className="mt-4">
-            <Figure>{engine ? `year_km: ${s.year_km}` : `${s.year_km} km`}</Figure>
+            <Figure>{engine ? <>year_km: <CountUp value={s.year_km} /></> : <><CountUp value={s.year_km} /> km</>}</Figure>
             <Detail>{engine ? "// so far this year" : "so far this year"}</Detail>
           </div>
         )}
@@ -370,7 +371,7 @@ function DuolingoPanel() {
   return (
     <div className="grid gap-8">
       <div className="grid gap-6 sm:grid-cols-[auto_1fr] sm:items-end">
-        <Figure>{engine ? `streak: ${fmt(d.streak)}d` : `🔥 ${fmt(d.streak)} days`}</Figure>
+        <Figure>{engine ? <>streak: <CountUp value={d.streak} />d</> : <>🔥 <CountUp value={d.streak} /> days</>}</Figure>
         <div className="mode-mono grid grid-cols-3 gap-4 text-sm">
           <div><SubHead>Course</SubHead>{engine ? "es_ES" : "Spanish"}</div>
           <div><SubHead>Total XP</SubHead>{fmt(d.totalXp)}</div>

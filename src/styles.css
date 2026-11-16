@@ -485,15 +485,9 @@ html[data-mode="engine"] .magnet { display: none; }
   line-height: 1.5;
   color: var(--ink-soft);
 }
-.case-cta {
-  text-decoration-line: underline;
-  text-decoration-color: var(--accent);
-  text-decoration-thickness: 4px;
-  text-underline-offset: 10px;
-  text-decoration-skip-ink: none;
-}
+.case-cta { text-decoration: none; }
 .case-cta:hover, .case-cta:focus-visible { color: var(--accent); }
-html[data-mode="engine"] .case-cta { text-decoration-thickness: 1px; }
+html[data-mode="engine"] .case-cta path { stroke-width: 1.5px; }
 @media print {
   .method-diagram path { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
   .print-doc figure { opacity: 1 !important; transform: none !important; }
