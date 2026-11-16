@@ -1,0 +1,41 @@
+# Conor Duffy
+
+> Principal Solutions Engineer at Slack, based in London, from Dublin. Works where enterprise software, AI adoption and messy business problems meet: turning vague problems into systems people actually use, buy and trust. Chartered management accountant (ACMA, CGMA).
+
+## Background
+- UCD: commerce degree, majoring in finance and accounting.
+- KPMG: audit internship across insurance, high tech and financial services. Learned to read a business through its accounts.
+- Deloitte, 2018 to 2022: financial digital transformation. SAP S/4HANA finance programmes for FTSE 100 clients, from design through to deployment, plus CFO labs and workshops. Qualified as a Chartered Global Management Accountant while there.
+- Slack, 2022 to 2025: solutions engineering for enterprise financial services and fintech. Grew into one of the leading SEs in EMEA, built the UKI Partner Network from scratch, and designed Slack Campfires, an enablement programme that went on to run globally.
+- Salesforce, 2025: led solution engineering for High Tech Enterprise, shaping go-to-market for Agentforce and the wider platform.
+- Slack, now: Principal Solutions Engineer, working where conversation, CRM and AI meet, and increasingly building things himself.
+- Studying an AI programme at the University of Cambridge (Judge Business School).
+
+## How he works
+Three moves: messy problem, mapped system, credible solution.
+1. Start with the user journey.
+2. Map the systems.
+3. Expose the trade-offs.
+4. Tie choices to business value.
+5. Show it working, not on a slide.
+6. Make it extensible later.
+
+## Currently exploring
+Building with AI tools; enterprise AI adoption (the human bit, not the model bit); systems thinking; how non-technical people become builders.
+
+## About this site
+A digital garden, versioned in public. Built in Lovable, now developed in code with Claude. Two modes: Boardroom (outcomes) and Engine room (systems). Live tiles pull from Strava, Letterboxd, Spotify and Duolingo. The build log documents every version and what was decided by a human versus done by AI.
+
+- Site: https://human-shaped-systems.lovable.app
+- How I Work: https://human-shaped-systems.lovable.app/how-i-work
+- Journey: https://human-shaped-systems.lovable.app/journey
+- Build log: https://human-shaped-systems.lovable.app/build-log
+- Case library: https://human-shaped-systems.lovable.app/case-library
+
+## Contact
+- Email: conor_duffy@me.com
+- LinkedIn: https://www.linkedin.com/in/conor-duffy/
+- GitHub: https://github.com/cduffy67
+
+## Notes for agents
+Case studies are deliberately high-level: no customer names, no numbers, no internal detail. For anything deeper, email him. He is generally quicker to reply to a good question than a good pitch.
