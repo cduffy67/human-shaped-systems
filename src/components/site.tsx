@@ -1,3 +1,7 @@
+import kpmgLogo from "@/assets/logos/kpmg.svg.asset.json";
+import deloitteLogo from "@/assets/logos/deloitte.svg.asset.json";
+import salesforceLogo from "@/assets/logos/salesforce.svg.asset.json";
+import slackLogo from "@/assets/logos/slack.svg.asset.json";
 import type { ReactNode } from "react";
 
 export function Page({
@@ -85,12 +89,21 @@ export function Divider({ className = "" }: { className?: string; mark?: string 
 }
 
 /** Career-stage marker: small caps type, no chrome. */
+const BRAND_LOGOS: { match: (l: string) => boolean; src: string; wordmark: boolean; h: string }[] = [
+  { match: (l) => l === "KPMG", src: kpmgLogo.url, wordmark: true, h: "h-[1.05rem]" },
+  { match: (l) => l === "Deloitte", src: deloitteLogo.url, wordmark: true, h: "h-3" },
+  { match: (l) => l === "Salesforce", src: salesforceLogo.url, wordmark: true, h: "h-7 -my-1.5" },
+  { match: (l) => l.startsWith("Slack"), src: slackLogo.url, wordmark: false, h: "h-3.5" },
+];
+
 export function BrandPill({ label, className = "" }: { label: string; className?: string }) {
+  const logo = BRAND_LOGOS.find((b) => b.match(label));
   return (
     <span
-      className={`inline-flex items-center rounded-full border border-border bg-card px-3 py-1 font-display text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-foreground/75 transition-colors hover:border-accent/50 hover:text-foreground ${className}`}
+      className={`brand-pill inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-display text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-foreground/75 transition-colors hover:border-accent/50 hover:text-foreground ${className}`}
     >
-      {label}
+      {logo ? <img src={logo.src} alt={logo.wordmark ? label : ""} className={`${logo.h} w-auto`} /> : null}
+      {logo?.wordmark ? null : label}
     </span>
   );
 }

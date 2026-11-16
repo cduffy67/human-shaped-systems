@@ -159,7 +159,7 @@ export function Journey() {
               <span className="font-display text-sm text-accent/80">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <BrandPill label={c.brand} />
+              <BrandPill label={c.brand} className="self-start" />
               <span className="text-sm text-muted-foreground">{c.years}</span>
             </div>
             <div>

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { siDuolingo, siLetterboxd, siSpotify, siStrava, type SimpleIcon } from "simple-icons";
-import { getDuolingoStats, getStravaStats } from "@/lib/live/stats.functions";
+import { getDuolingoStats, getLetterboxdLatest, getStravaStats } from "@/lib/live/stats.functions";
 import { useSiteMode } from "@/lib/mode";
 
 const HOUR = 60 * 60 * 1000;
@@ -9,175 +9,162 @@ const fmt = (n: number) => n.toLocaleString("en-GB");
 const londonToday = () =>
   new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/London" }).format(new Date());
 
-function Logo({ icon }: { icon: SimpleIcon }) {
+function BrandMark({ icon, color }: { icon: SimpleIcon; color?: string }) {
+  const c = color ?? `#${icon.hex}`;
   return (
-    <svg role="img" aria-label={icon.title} viewBox="0 0 24 24" width={20} height={20} className="fill-foreground">
-      <path d={icon.path} />
-    </svg>
-  );
-}
-
-function stop(e: React.SyntheticEvent) {
-  e.stopPropagation();
-}
-function CardLink({ href, children, external = true }: { href: string; children: ReactNode; external?: boolean }) {
-  return (
-    <a
-      href={href}
-      {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
-      onClick={stop}
-      onKeyDown={stop}
-      className="quiet-link mt-3 inline-block text-sm text-accent"
+    <span
+      className="grid h-9 w-9 shrink-0 place-items-center rounded-lg"
+      style={{ background: `color-mix(in oklab, ${c} 14%, transparent)` }}
     >
-      {children}
-    </a>
+      <svg role="img" aria-label={icon.title} viewBox="0 0 24 24" width={20} height={20} style={{ fill: c }}>
+        <path d={icon.path} />
+      </svg>
+    </span>
   );
 }
 
-function Figure({ children }: { children: ReactNode }) {
-  return <p className="mode-mono font-display text-3xl leading-tight">{children}</p>;
-}
-function Detail({ children }: { children: ReactNode }) {
-  return <p className="mode-mono mt-2 text-sm text-muted-foreground">{children}</p>;
-}
-
-type CardProps = {
-  icon: SimpleIcon;
-  label: string;
-  teaser: string;
-  back: ReactNode;
-  index: number;
-  hinted: boolean;
-};
-
-function FlipCard({ icon, label, teaser, back, index, hinted }: CardProps) {
-  const engine = useSiteMode() === "engine";
-  const [flipped, setFlipped] = useState(false);
-  const showBack = engine || flipped;
-  const toggle = () => !engine && setFlipped((f) => !f);
-
-  const header = (
-    <div className="flex items-center gap-3">
-      <Logo icon={icon} />
-      <span className="mode-mono text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground">{label}</span>
-    </div>
+function LiveBadge({ on }: { on: boolean }) {
+  return on ? (
+    <span className="mode-mono flex items-center gap-1.5 text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
+      <span className="live-dot" aria-hidden /> Live
+    </span>
+  ) : (
+    <span className="mode-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground/70">Soon</span>
   );
+}
 
+function Card({
+  icon, color, app, label, live, children, footer,
+}: {
+  icon: SimpleIcon; color?: string; app: string; label: string; live: boolean; children: ReactNode; footer?: ReactNode;
+}) {
   return (
-    <div
-      role="button"
-      tabIndex={engine ? -1 : 0}
-      aria-pressed={showBack}
-      aria-label={`${label}: ${teaser}`}
-      onClick={toggle}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          toggle();
-        }
-      }}
-      className={`flip-card ${engine ? "" : "cursor-pointer"} ${hinted ? "flip-hint" : ""}`}
-      style={{ animationDelay: `${index * 140}ms` }}
-    >
-      <div className={`flip-inner ${showBack ? "is-flipped" : ""}`}>
-        <div className="flip-face flip-front paper-card" aria-hidden={showBack}>
-          {header}
-          <p className="mt-6 font-display text-2xl italic leading-snug">{teaser}</p>
-          <span className="absolute bottom-4 right-5 text-xs text-muted-foreground">tap to flip ↻</span>
+    <article className="paper-card flex min-h-[12.5rem] flex-col">
+      <header className="flex items-center gap-3">
+        <BrandMark icon={icon} {...(color ? { color } : {})} />
+        <div className="min-w-0 flex-1 leading-tight">
+          <p className="mode-mono text-[0.68rem] uppercase tracking-[0.2em] text-muted-foreground">{label}</p>
+          <p className="font-display text-base">{app}</p>
         </div>
-        <div className="flip-face flip-back paper-card" aria-hidden={!showBack}>
-          {header}
-          <div className="mt-5">{back}</div>
-        </div>
-      </div>
-    </div>
+        <LiveBadge on={live} />
+      </header>
+      <div className="mt-5 flex-1">{children}</div>
+      {footer ? <div className="mt-4 border-t border-border pt-3 text-sm">{footer}</div> : null}
+    </article>
   );
 }
 
-function RunningBack() {
+const Figure = ({ children }: { children: ReactNode }) => (
+  <p className="mode-mono font-display text-3xl leading-tight">{children}</p>
+);
+const Detail = ({ children }: { children: ReactNode }) => (
+  <p className="mode-mono mt-2 text-sm text-muted-foreground">{children}</p>
+);
+const Ext = ({ href, children }: { href: string; children: ReactNode }) => (
+  <a href={href} target="_blank" rel="noreferrer" className="quiet-link text-accent">{children}</a>
+);
+const Skeleton = () => <div className="h-16 animate-pulse rounded bg-secondary/60" aria-hidden />;
+
+function RunningCard() {
   const engine = useSiteMode() === "engine";
   const { data, isLoading } = useQuery({ queryKey: ["strava"], queryFn: () => getStravaStats(), staleTime: HOUR });
-  if (isLoading) return <Detail>loading…</Detail>;
-  if (!data) return <Detail>Out for a run. Back soon.</Detail>;
-  const l = data.latest;
-  const via = l.device_name ? ` via ${l.device_name}` : "";
-  const link = data.source !== "stub" && l.url ? l.url : null;
+  if (!isLoading && !data) return null;
+  const l = data?.latest;
+  const via = l?.device_name ? ` via ${l.device_name}` : "";
+  const link = data && data.source !== "stub" && l?.url ? l.url : null;
   return (
-    <>
-      {engine ? (
-        <Figure>month_km: {data.month_km}</Figure>
-      ) : (
-        <Figure>{data.month_km} km this month</Figure>
+    <Card icon={siStrava} app="Strava" label="Running" live={data?.source === "strava"}
+      footer={link ? <Ext href={link}>View on Strava</Ext> : undefined}>
+      {!data || !l ? <Skeleton /> : (
+        <>
+          <Figure>{engine ? `month_km: ${data.month_km}` : `${data.month_km} km this month`}</Figure>
+          <Detail>{engine
+            ? `last: ${l.distance_km}km @ ${l.pace_min_per_km}/km · ${l.weekday}${via}`
+            : `Last run: ${l.distance_km} km on ${l.weekday} · ${l.pace_min_per_km}/km${via}`}</Detail>
+        </>
       )}
-      <Detail>
-        {engine
-          ? `last: ${l.distance_km}km @ ${l.pace_min_per_km}/km · ${l.weekday}${via}`
-          : `Last run: ${l.distance_km} km on ${l.weekday} · ${l.pace_min_per_km}/km${via}`}
-      </Detail>
-      {link && <CardLink href={link}>View on Strava</CardLink>}
-    </>
+    </Card>
   );
 }
 
-function LearningBack() {
+function Stars({ rating }: { rating: number }) {
+  const full = Math.floor(rating);
+  return (
+    <span className="tracking-tight" style={{ color: "#00a828" }} aria-label={`${rating} stars`}>
+      {"★".repeat(full)}{rating % 1 ? "½" : ""}
+    </span>
+  );
+}
+
+function WatchingCard() {
+  const engine = useSiteMode() === "engine";
+  const { data, isLoading } = useQuery({ queryKey: ["letterboxd"], queryFn: () => getLetterboxdLatest(), staleTime: HOUR });
+  if (!isLoading && !data) return null;
+  const date = data?.watchedDate
+    ? new Date(data.watchedDate + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" })
+    : null;
+  return (
+    <Card icon={siLetterboxd} color="#ff8000" app="Letterboxd" label="Watching" live={!!data}
+      footer={<Ext href="https://letterboxd.com/cduffy67/films/">See all films →</Ext>}>
+      {!data ? <Skeleton /> : (
+        <a href={data.url} target="_blank" rel="noreferrer" className="group flex gap-4">
+          {data.poster ? (
+            <img src={data.poster} alt={`${data.title} poster`} loading="lazy"
+              className="aspect-[2/3] w-16 shrink-0 rounded object-cover ring-1 ring-border" style={{ borderRadius: 4 }} />
+          ) : null}
+          <div className="min-w-0">
+            <p className="mode-mono font-display text-xl leading-snug group-hover:text-accent">
+              {data.title}{data.year ? <span className="text-muted-foreground"> {engine ? `(${data.year})` : data.year}</span> : null}
+            </p>
+            {data.rating ? <p className="mt-1 text-lg"><Stars rating={data.rating} /></p> : null}
+            {date ? <Detail>{engine ? `watched: ${data.watchedDate}` : `Watched ${date}`}</Detail> : null}
+          </div>
+        </a>
+      )}
+    </Card>
+  );
+}
+
+function ListeningCard() {
+  return (
+    <Card icon={siSpotify} app="Spotify" label="Listening" live={false}>
+      <p className="font-display text-xl italic text-muted-foreground">What's on repeat?</p>
+      <Detail>Not connected yet.</Detail>
+    </Card>
+  );
+}
+
+function LearningCard() {
   const engine = useSiteMode() === "engine";
   const { data, isLoading } = useQuery({ queryKey: ["duolingo"], queryFn: () => getDuolingoStats(), staleTime: HOUR });
-  if (isLoading) return <Detail>loading…</Detail>;
-  if (!data) return <Detail>Practising quietly. Check back later.</Detail>;
-  const done = !data.endDate || data.endDate >= londonToday();
-  const joinYear = data.creationDate ? new Date(data.creationDate * 1000).getFullYear() : null;
+  if (!isLoading && !data) return null;
+  const done = data ? !data.endDate || data.endDate >= londonToday() : false;
+  const joinYear = data?.creationDate ? new Date(data.creationDate * 1000).getFullYear() : null;
   return (
-    <>
-      <Figure>{engine ? `streak: ${fmt(data.streak)}d` : `🔥 ${fmt(data.streak)} days`}</Figure>
-      <Detail>
-        {engine
-          ? `es_ES · xp: ${fmt(data.totalXp)}`
-          : data.streak === 0
-            ? "Learning Spanish · streak resetting, as streaks do"
-            : `Learning Spanish${joinYear ? ` · since ${joinYear}` : ""}`}
-      </Detail>
-      <Detail>today's lesson: {done ? "done ✓" : "pending"}</Detail>
-      <CardLink href="https://www.duolingo.com/profile/ConorDuffy575519">Duolingo profile</CardLink>
-    </>
-  );
-}
-
-function ComingSoon({ what }: { what: string }) {
-  return (
-    <>
-      <Figure>Soon.</Figure>
-      <Detail>{what} isn't connected yet.</Detail>
-    </>
+    <Card icon={siDuolingo} app="Duolingo" label="Learning" live={!!data}
+      footer={<Ext href="https://www.duolingo.com/profile/ConorDuffy575519">Duolingo profile →</Ext>}>
+      {!data ? <Skeleton /> : (
+        <>
+          <Figure>{engine ? `streak: ${fmt(data.streak)}d` : `🔥 ${fmt(data.streak)} days`}</Figure>
+          <Detail>{engine
+            ? `es_ES · xp: ${fmt(data.totalXp)}`
+            : data.streak === 0
+              ? "Learning Spanish · streak resetting, as streaks do"
+              : `Learning Spanish${joinYear ? ` · since ${joinYear}` : ""}`}</Detail>
+          <Detail>today's lesson: {done ? "done ✓" : "pending"}</Detail>
+        </>
+      )}
+    </Card>
   );
 }
 
 export function LiveTiles() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [hinted, setHinted] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([e]) => {
-      if (e?.isIntersecting) {
-        setHinted(true);
-        io.disconnect();
-      }
-    }, { threshold: 0.4 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  const cards = [
-    { icon: siStrava, label: "Running", teaser: "How far this month?", back: <RunningBack /> },
-    { icon: siLetterboxd, label: "Watching", teaser: "What did I watch last?", back: <ComingSoon what="Letterboxd" /> },
-    { icon: siSpotify, label: "Listening", teaser: "What's on repeat?", back: <ComingSoon what="Spotify" /> },
-    { icon: siDuolingo, label: "Learning", teaser: "How many days in a row?", back: <LearningBack /> },
-  ];
   return (
-    <div ref={ref} className="mb-12 grid gap-5 sm:grid-cols-2">
-      {cards.map((c, i) => (
-        <FlipCard key={c.label} {...c} index={i} hinted={hinted} />
-      ))}
+    <div className="mb-12 grid gap-5 sm:grid-cols-2">
+      <RunningCard />
+      <WatchingCard />
+      <ListeningCard />
+      <LearningCard />
     </div>
   );
 }

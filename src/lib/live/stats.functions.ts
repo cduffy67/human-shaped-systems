@@ -65,3 +65,42 @@ export const getStravaStats = createServerFn({ method: "GET" }).handler(
       latest: { distance_km: 8.4, pace_min_per_km: "5:12", weekday: "Sunday", device_name: null, url: null },
     })),
 );
+
+export type LetterboxdFilm = {
+  title: string;
+  year: string | null;
+  rating: number | null;
+  watchedDate: string | null;
+  poster: string | null;
+  url: string;
+};
+
+export const getLetterboxdLatest = createServerFn({ method: "GET" }).handler(
+  async (): Promise<LetterboxdFilm | null> =>
+    cached("letterboxd", async () => {
+      try {
+        const res = await fetch("https://letterboxd.com/cduffy67/rss/", {
+          headers: { "User-Agent": "Mozilla/5.0 (personal site)" },
+        });
+        if (!res.ok) return null;
+        const xml = await res.text();
+        const items = xml.split("<item>").slice(1);
+        const item = items.find((i) => i.includes("<letterboxd:filmTitle>"));
+        if (!item) return null;
+        const tag = (t: string) => item.match(new RegExp(`<${t}>([\\s\\S]*?)</${t}>`))?.[1]?.trim() ?? null;
+        const title = tag("letterboxd:filmTitle");
+        if (!title) return null;
+        const rating = tag("letterboxd:memberRating");
+        return {
+          title: title.replace(/&amp;/g, "&").replace(/&#039;|&apos;/g, "'"),
+          year: tag("letterboxd:filmYear"),
+          rating: rating ? Number(rating) : null,
+          watchedDate: tag("letterboxd:watchedDate"),
+          poster: item.match(/<img src="([^"]+)"/)?.[1] ?? null,
+          url: tag("link") ?? "https://letterboxd.com/cduffy67/",
+        };
+      } catch {
+        return null;
+      }
+    }),
+);

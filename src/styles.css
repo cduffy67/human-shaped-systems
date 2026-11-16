@@ -359,60 +359,24 @@ html[data-mode="engine"] {
   --shadow-paper: inset 0 0 24px rgb(239 230 216 / 0.04);
   --shadow-paper-lift: inset 0 0 28px rgb(239 230 216 / 0.07);
 }
-.flip-card {
-  perspective: 1000px;
-  min-height: 12rem;
-  border-radius: 8px;
-  outline: none;
-  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.flip-card:hover { transform: translateY(-2px); }
-.flip-card:hover .paper-card { box-shadow: var(--shadow-paper-lift); }
-.flip-card:focus-visible { box-shadow: 0 0 0 2px var(--ring); }
-.flip-inner {
-  position: relative;
-  height: 100%;
-  min-height: 12rem;
-  transform-style: preserve-3d;
-  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-.flip-inner.is-flipped { transform: rotateY(180deg); }
-.flip-face {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-.flip-back { transform: rotateY(180deg); }
 .paper-card {
   padding: 1.25rem 1.4rem;
   border-radius: 8px;
   border: 0.5px solid color-mix(in oklab, var(--foreground) 18%, transparent);
   background: var(--paper-card);
   box-shadow: var(--shadow-paper);
-  transition: box-shadow 300ms ease;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 300ms ease;
 }
+.paper-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-paper-lift); }
 html[data-mode="engine"] .paper-card { border-color: rgb(239 230 216 / 0.22); }
-/* Engine room: backs shown directly, no 3D */
-html[data-mode="engine"] .flip-inner,
-html[data-mode="engine"] .flip-inner.is-flipped { transform: none; transition: none; }
-html[data-mode="engine"] .flip-front { display: none; }
-html[data-mode="engine"] .flip-back { position: relative; transform: none; min-height: 12rem; }
-
-.flip-hint { animation: flip-wiggle 700ms ease-in-out both; }
-@keyframes flip-wiggle {
-  0%, 100% { transform: rotate(0); }
-  25% { transform: rotate(-1.2deg); }
-  50% { transform: rotate(1deg); }
-  75% { transform: rotate(-0.5deg); }
+.live-dot {
+  position: relative; width: 7px; height: 7px; border-radius: 9999px; background: oklch(0.68 0.17 145);
 }
-html[data-mode="engine"] .flip-hint { animation: none; }
-
-@media (prefers-reduced-motion: reduce) {
-  .flip-inner, .flip-inner.is-flipped { transform: none !important; }
-  .flip-face { transform: none !important; transition: opacity 300ms ease !important; }
-  .flip-inner .flip-back { opacity: 0; }
-  .flip-inner.is-flipped .flip-front { opacity: 0; }
-  .flip-inner.is-flipped .flip-back { opacity: 1; }
-  .flip-hint { animation: none; }
+.live-dot::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; background: inherit;
+  animation: live-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
+@keyframes live-ping { 75%, 100% { transform: scale(2.6); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .live-dot::after { animation: none; } }
+/* logos stay legible on espresso: pills get a parchment chip */
+html[data-mode="engine"] .brand-pill:has(img) { background: oklch(0.964 0.014 79); color: #2d241f; }
