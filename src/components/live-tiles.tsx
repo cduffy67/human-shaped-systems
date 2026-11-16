@@ -9,6 +9,7 @@ import {
   getSpotifyStats,
   getStravaStats,
   type LetterboxdFilm,
+  type SpotifyArtist,
 } from "@/lib/live/stats.functions";
 import { useSiteMode } from "@/lib/mode";
 
@@ -40,13 +41,13 @@ function useTileMeta(key: Key): { live: boolean; preview: string | null } {
   const s = useStrava(), l = useLetterboxd(), sp = useSpotify(), d = useDuolingo();
   switch (key) {
     case "strava":
-      return { live: s.data?.data.source === "strava", preview: s.data ? `${s.data.data.month_km} km this month` : null };
+      return { live: s.data?.data?.source === "strava", preview: s.data?.data ? `${s.data.data.month_km} km this month` : null };
     case "letterboxd": {
       const f = l.data?.data?.recent[0];
       return { live: !!f, preview: f ? `Last watched: ${f.title}` : null };
     }
     case "spotify":
-      return { live: sp.data?.data.source === "spotify", preview: "On repeat this month" };
+      return { live: sp.data?.data?.source === "spotify", preview: "On repeat this month" };
     case "duolingo":
       return { live: !!d.data?.data, preview: d.data?.data ? `🔥 ${fmt(d.data.data.streak)} days` : null };
   }
@@ -132,32 +133,59 @@ function StravaPanel() {
   const { data } = useStrava();
   if (!data) return <Skeleton />;
   const s = data.data;
+  if (!s) return <Detail>Couldn't reach Strava just now.</Detail>;
+  const runs = s.recent_runs ?? s.runs;
+  const weeks = s.weekly_km ?? [];
+  const max = Math.max(...weeks.map((w) => w.km), 1);
   return (
     <div className="grid gap-8 md:grid-cols-[1fr_1.2fr]">
       <div>
         <Figure>{engine ? `month_km: ${s.month_km}` : `${s.month_km} km`}</Figure>
         <Detail>{engine ? "// this month" : "this month, so far"}</Detail>
+        {s.year_km !== null && (
+          <div className="mt-4">
+            <Figure>{engine ? `year_km: ${s.year_km}` : `${s.year_km} km`}</Figure>
+            <Detail>{engine ? "// so far this year" : "so far this year"}</Detail>
+          </div>
+        )}
+        {s.latest?.device_name && (
+          <div className="mt-4">
+            <Detail>last run logged on {s.latest.device_name}</Detail>
+          </div>
+        )}
         <div className="mt-6">
           <SubHead>Weekly km</SubHead>
-          <div className="flex h-24 items-end gap-2 rounded border border-dashed border-border p-3" aria-label="Weekly km chart placeholder">
-            {[40, 65, 30, 80, 55, 70, 45, 60].map((h, i) => (
-              <span key={i} className="flex-1 rounded-sm bg-secondary" style={{ height: `${h}%` }} />
+          <div className="flex h-24 items-end gap-2 rounded border border-border p-3" aria-label="Weekly kilometres">
+            {weeks.map((w) => (
+              <span
+                key={w.week_start}
+                className="flex-1 rounded-sm bg-secondary"
+                style={{ height: `${Math.max((w.km / max) * 100, 2)}%` }}
+                title={`${w.km} km`}
+              />
             ))}
           </div>
-          <Detail>Chart fills in once Strava is connected.</Detail>
+          <div className="flex gap-2 px-3 pt-1">
+            {weeks.map((w) => (
+              <span key={w.week_start} className="mode-mono flex-1 text-center text-[0.6rem] text-muted-foreground">
+                {shortDate(w.week_start)}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
       <div>
         <SubHead>Last 5 runs</SubHead>
         <ul className="border-t border-border">
-          {s.runs.map((r) => (
-            <li key={r.date} className="mode-mono grid grid-cols-3 border-b border-border py-2.5 text-sm">
+          {runs.map((r, i) => (
+            <li key={`${r.date}-${i}`} className="mode-mono grid grid-cols-3 border-b border-border py-2.5 text-sm">
               <span className="text-muted-foreground">{engine ? r.date : shortDate(r.date)}</span>
               <span>{r.distance_km} km</span>
               <span className="text-right text-muted-foreground">{r.pace_min_per_km}/km</span>
             </li>
           ))}
         </ul>
+        {s.latest?.url && <Ext href={s.latest.url}>View on Strava →</Ext>}
       </div>
       <div className="md:col-span-2"><Updated at={data.fetchedAt} /></div>
     </div>
@@ -225,19 +253,34 @@ function SpotifyPanel() {
   const { data } = useSpotify();
   if (!data) return <Skeleton />;
   const s = data.data;
+  if (!s) return <Detail>Couldn't reach Spotify just now.</Detail>;
+  const tracks = s.top_tracks?.length ? s.top_tracks : s.tracks;
+  const artists: SpotifyArtist[] = s.top_artists?.length
+    ? s.top_artists
+    : s.artists.map((name) => ({ name, url: null, image: null }));
   return (
     <div className="grid gap-8 md:grid-cols-[1.4fr_1fr]">
       <div>
         <SubHead>On repeat this month</SubHead>
         <ol className="border-t border-border">
-          {s.tracks.map((t, i) => (
-            <li key={i} className="flex items-center gap-3 border-b border-border py-2.5">
+          {tracks.map((t, i) => (
+            <li key={`${t.title}-${i}`} className="flex items-center gap-3 border-b border-border py-2.5">
               <span className="mode-mono w-5 text-xs text-muted-foreground">{i + 1}</span>
               {t.art ? <img src={t.art} alt="" className="h-10 w-10 rounded" /> : <span className="h-10 w-10 rounded bg-secondary" aria-hidden />}
-              <span className="min-w-0">
+              <span className="min-w-0 flex-1">
                 <span className="block truncate text-sm">{t.title}</span>
                 <span className="block truncate text-xs text-muted-foreground">{t.artist}</span>
               </span>
+              {t.url && (
+                <a
+                  href={t.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mode-mono shrink-0 text-[0.65rem] uppercase tracking-[0.15em] text-accent"
+                >
+                  Play
+                </a>
+              )}
             </li>
           ))}
         </ol>
@@ -245,14 +288,31 @@ function SpotifyPanel() {
       <div>
         <SubHead>Top artists</SubHead>
         <ul className="grid gap-3">
-          {s.artists.map((a, i) => (
-            <li key={a} className="flex items-center gap-3">
-              <span className="h-12 w-12 rounded-full bg-secondary" aria-hidden />
-              <span className="mode-mono font-display text-lg">{i + 1}. {a}</span>
+          {artists.map((a, i) => (
+            <li key={a.name} className="flex items-center gap-3">
+              {a.image ? (
+                <img src={a.image} alt="" className="h-12 w-12 shrink-0 rounded-full object-cover" />
+              ) : (
+                <span className="h-12 w-12 shrink-0 rounded-full bg-secondary" aria-hidden />
+              )}
+              <span className="min-w-0">
+                <span className="mode-mono font-display block truncate text-lg">
+                  {i + 1}. {a.name}
+                </span>
+                {a.url && (
+                  <a
+                    href={a.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mode-mono text-[0.65rem] uppercase tracking-[0.15em] text-accent"
+                  >
+                    on Spotify →
+                  </a>
+                )}
+              </span>
             </li>
           ))}
         </ul>
-        <Detail>Placeholder — Spotify isn't connected yet.</Detail>
       </div>
       <div className="md:col-span-2"><Updated at={data.fetchedAt} /></div>
     </div>

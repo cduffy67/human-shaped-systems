@@ -7,11 +7,13 @@ export const Route = createFileRoute("/api/public/jobs/snapshot-stats")({
       POST: async ({ request }) => {
         const authFailure = await authenticateCronRequest(request);
         if (authFailure) return authFailure;
-        const { fetchDuolingo } = await import("@/lib/live/sources.server");
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-        const d = await fetchDuolingo();
-        if (d) await supabaseAdmin.from("live_stats").insert({ source: "duolingo", payload: d });
-        return Response.json({ success: true, duolingo: !!d });
+
+        const body = (await request.json().catch(() => ({}))) as { source?: unknown };
+        const source = body.source === "strava" || body.source === "spotify" ? body.source : "duolingo";
+
+        const { runSnapshot } = await import("@/lib/live/snapshot.server");
+        const result = await runSnapshot(source);
+        return Response.json({ success: result.ok, source });
       },
     },
   },

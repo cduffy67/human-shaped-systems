@@ -1,7 +1,14 @@
 import { createServerFn } from "@tanstack/react-start";
-import type { DuolingoStats } from "./sources.server";
 
-export type { DuolingoStats };
+export type {
+  DuolingoStats,
+  LetterboxdFilm,
+  SpotifyArtist,
+  SpotifyStats,
+  SpotifyTrack,
+  StravaRun,
+  StravaStats,
+} from "./types";
 
 const TTL = 60 * 60 * 1000;
 const cache = new Map<string, { at: number; data: unknown }>();
@@ -12,6 +19,23 @@ async function cached<T>(key: string, fn: () => Promise<T>): Promise<{ data: T; 
   const at = Date.now();
   if (data !== null) cache.set(key, { at, data });
   return { data, fetchedAt: at };
+}
+
+/** Newest saved snapshot for a source — the fallback when a live API call fails. */
+async function lastSnapshot<T>(source: string): Promise<T | null> {
+  try {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data } = await supabaseAdmin
+      .from("live_stats")
+      .select("payload")
+      .eq("source", source)
+      .order("captured_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    return (data?.payload as T) ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export const getDuolingoStats = createServerFn({ method: "GET" }).handler(async () => {
@@ -42,60 +66,25 @@ export const getDuolingoHistory = createServerFn({ method: "GET" }).handler(asyn
   }),
 );
 
-export type StravaRun = { date: string; distance_km: number; pace_min_per_km: string };
-export type StravaStats = {
-  source: "stub" | "strava";
-  month_km: number;
-  latest: { distance_km: number; pace_min_per_km: string; weekday: string; device_name: string | null; url: string | null };
-  runs: StravaRun[];
-};
-
-// Stub: replace internals with the real Strava API later, keep the same shape.
 export const getStravaStats = createServerFn({ method: "GET" }).handler(async () =>
-  cached("strava", async (): Promise<StravaStats> => ({
-    source: "stub",
-    month_km: 42.0,
-    latest: { distance_km: 8.4, pace_min_per_km: "5:12", weekday: "Sunday", device_name: null, url: null },
-    runs: [
-      { date: "2026-11-15", distance_km: 8.4, pace_min_per_km: "5:12" },
-      { date: "2026-11-12", distance_km: 6.1, pace_min_per_km: "5:20" },
-      { date: "2026-11-09", distance_km: 10.2, pace_min_per_km: "5:31" },
-      { date: "2026-11-06", distance_km: 5.0, pace_min_per_km: "5:05" },
-      { date: "2026-11-03", distance_km: 12.3, pace_min_per_km: "5:40" },
-    ],
-  })),
+  cached("strava", async () => {
+    const { fetchStrava } = await import("./sources.server");
+    const live = await fetchStrava();
+    if (live) return live;
+    console.error("strava: live fetch failed — serving the last saved snapshot");
+    return lastSnapshot<import("./types").StravaStats>("strava");
+  }),
 );
 
-export type SpotifyStats = {
-  source: "stub" | "spotify";
-  tracks: { title: string; artist: string; art: string | null }[];
-  artists: string[];
-};
-
-// Stub: Spotify isn't connected yet.
 export const getSpotifyStats = createServerFn({ method: "GET" }).handler(async () =>
-  cached("spotify", async (): Promise<SpotifyStats> => ({
-    source: "stub",
-    tracks: [
-      { title: "Track one", artist: "Artist", art: null },
-      { title: "Track two", artist: "Artist", art: null },
-      { title: "Track three", artist: "Artist", art: null },
-      { title: "Track four", artist: "Artist", art: null },
-      { title: "Track five", artist: "Artist", art: null },
-    ],
-    artists: ["Artist one", "Artist two", "Artist three"],
-  })),
+  cached("spotify", async () => {
+    const { fetchSpotify } = await import("./sources.server");
+    const live = await fetchSpotify();
+    if (live) return live;
+    console.error("spotify: live fetch failed — serving the last saved snapshot");
+    return lastSnapshot<import("./types").SpotifyStats>("spotify");
+  }),
 );
-
-export type LetterboxdFilm = {
-  title: string;
-  year: string | null;
-  rating: number | null;
-  liked: boolean;
-  watchedDate: string | null;
-  poster: string | null;
-  url: string;
-};
 
 export const getLetterboxd = createServerFn({ method: "GET" }).handler(async () =>
   cached("letterboxd", async () => {
@@ -105,7 +94,7 @@ export const getLetterboxd = createServerFn({ method: "GET" }).handler(async () 
       });
       if (!res.ok) return null;
       const xml = await res.text();
-      const films: LetterboxdFilm[] = [];
+      const films: import("./types").LetterboxdFilm[] = [];
       for (const item of xml.split("<item>").slice(1)) {
         const tag = (t: string) => item.match(new RegExp(`<${t}>([\\s\\S]*?)</${t}>`))?.[1]?.trim() ?? null;
         const title = tag("letterboxd:filmTitle");
