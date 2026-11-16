@@ -207,9 +207,9 @@ function LetterboxdPanel() {
       </div>
       {top.length ? (
         <div>
-          <SubHead>Top 4</SubHead>
-          <div className="grid max-w-xl grid-cols-4 gap-3">
-            {top.map((f) => <Poster key={f.url} f={f} wide />)}
+          <SubHead>Top 5</SubHead>
+          <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
+            {top.map((f) => <Poster key={f.url} f={f} />)}
           </div>
         </div>
       ) : null}
@@ -261,38 +261,37 @@ function SpotifyPanel() {
 
 function StreakCalendar({ days }: { days: string[] }) {
   const set = new Set(days);
-  const today = new Date(londonToday() + "T12:00:00");
-  const WEEKS = 26;
-  // start on the Monday WEEKS-1 weeks ago
-  const start = new Date(today);
-  start.setDate(start.getDate() - ((start.getDay() + 6) % 7) - (WEEKS - 1) * 7);
-  const cols: { iso: string; future: boolean }[][] = [];
-  for (let w = 0; w < WEEKS; w++) {
-    const col = [];
-    for (let d = 0; d < 7; d++) {
-      const dt = new Date(start);
-      dt.setDate(start.getDate() + w * 7 + d);
-      col.push({ iso: dt.toISOString().slice(0, 10), future: dt > today });
-    }
-    cols.push(col);
+  const todayIso = londonToday();
+  const [y, m] = todayIso.split("-").map(Number);
+  const first = new Date(Date.UTC(y, m - 1, 1));
+  const daysInMonth = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  const lead = (first.getUTCDay() + 6) % 7;
+  const cells: ({ iso: string; day: number } | null)[] = Array(lead).fill(null);
+  for (let d = 1; d <= daysInMonth; d++) {
+    cells.push({ iso: `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`, day: d });
   }
+  const label = first.toLocaleDateString("en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
   return (
-    <div className="overflow-x-auto">
-      <div className="flex gap-[3px]">
-        {cols.map((col, i) => (
-          <div key={i} className="flex flex-col gap-[3px]">
-            {col.map((c) => (
-              <span
-                key={c.iso}
-                title={c.iso}
-                className="h-3 w-3 rounded-[2px]"
-                style={{
-                  background: c.future ? "transparent" : set.has(c.iso) ? `#${siDuolingo.hex}` : "var(--secondary)",
-                }}
-              />
-            ))}
-          </div>
-        ))}
+    <div className="max-w-xs">
+      <SubHead>{label}</SubHead>
+      <div className="mode-mono grid grid-cols-7 gap-1 text-center text-[10px] text-muted-foreground">
+        {["M", "T", "W", "T", "F", "S", "S"].map((d, i) => <span key={i}>{d}</span>)}
+        {cells.map((c, i) =>
+          c ? (
+            <span
+              key={c.iso}
+              title={c.iso}
+              className="flex aspect-square items-center justify-center rounded-[4px]"
+              style={{
+                background: c.iso > todayIso ? "transparent" : set.has(c.iso) ? `#${siDuolingo.hex}` : "var(--secondary)",
+                color: set.has(c.iso) ? "#fff" : undefined,
+                outline: c.iso === todayIso ? "1px solid currentColor" : undefined,
+              }}
+            >
+              {c.day}
+            </span>
+          ) : <span key={`e${i}`} />,
+        )}
       </div>
     </div>
   );

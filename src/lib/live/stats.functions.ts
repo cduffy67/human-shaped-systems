@@ -126,7 +126,7 @@ export const getLetterboxd = createServerFn({ method: "GET" }).handler(async () 
       const top = [...films]
         .filter((f) => f.rating && !seen.has(f.title) && seen.add(f.title))
         .sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0) || Number(b.liked) - Number(a.liked))
-        .slice(0, 4);
+        .slice(0, 5);
       return { recent: films.slice(0, 5), top };
     } catch {
       return null;
