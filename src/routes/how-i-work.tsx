@@ -1,8 +1,22 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { CONTENT, sectionNo } from "@/lib/content";
 import { useSiteMode } from "@/lib/mode";
-import { Divider, Label, Page, PageHeader, SectionHeading } from "@/components/site";
+import { Divider, Label, Page, PageHeader, Plate, SectionHeading } from "@/components/site";
+
+import { motion, useReducedMotion } from "framer-motion";
+import { MethodDiagram } from "@/components/method-diagram";
+import { CaseCTA } from "@/components/case-cta";
+import { CASES, METHOD_STEPS } from "@/lib/cases";
+import podcast from "@/assets/podcast.png.asset.json";
+import cambridge from "@/assets/cambridge.png.asset.json";
+import stage from "@/assets/stage.png.asset.json";
+
+const PHOTOS = [
+  { src: podcast.url, alt: "Conor in conversation during a filmed interview", caption: "Adoption beats features.", position: "object-center" },
+  { src: cambridge.url, alt: "Conor outside a Cambridge college during an AI course", caption: "Stay the least expert in the room.", position: "object-bottom" },
+  { src: stage.url, alt: "Conor speaking on stage at a Salesforce event", caption: "Making complex ideas useful in a room.", position: "object-center" },
+];
 
 const PHASES = [
   {
@@ -70,6 +84,7 @@ export const Route = createFileRoute("/how-i-work")({
 
 export function HowIWork() {
   const mode = useSiteMode();
+  const reduce = useReducedMotion();
   return (
     <Page>
       <PageHeader
@@ -78,21 +93,13 @@ export function HowIWork() {
         intro="Not a methodology. Three moves, six habits, and the order things usually need to happen in."
       />
 
-      {/* Flow line */}
-      <div className="mt-14 flex flex-wrap items-center gap-x-4 gap-y-2 border-y border-border py-5 font-display text-lg">
-        <span>Messy problem</span>
-        <span aria-hidden="true" className="text-accent">
-          →
-        </span>
-        <span>mapped system</span>
-        <span aria-hidden="true" className="text-accent">
-          →
-        </span>
-        <span>credible solution</span>
-      </div>
+      <MethodDiagram />
 
       <div className="mt-16 space-y-16">
-        {PHASES.map((p, pi) => (
+        {PHASES.map((p, pi) => {
+          const photo = PHOTOS[pi];
+          if (!photo) return null;
+          return (
           <section key={p.phase}>
             <div className="flex flex-wrap items-baseline gap-x-5 border-b border-border pb-3">
               <Label>{p.phase}</Label>
@@ -101,9 +108,12 @@ export function HowIWork() {
               </span>
             </div>
 
+            <motion.div className="my-7" initial={{ opacity: reduce ? 1 : 0, y: reduce ? 0 : 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: reduce ? 0 : 0.55 }}>
+              <Plate {...photo} ratio="aspect-[16/7]" />
+            </motion.div>
             <div className="grid gap-x-12 sm:grid-cols-2">
               {p.steps.map((s, si) => (
-                <article key={s.title} className="border-b border-border/70 py-6">
+                <article key={s.title} id={METHOD_STEPS[pi * 2 + si]?.id} className="scroll-mt-28 border-b border-border/70 py-6">
                   <span className="mode-mono font-display text-xs uppercase tracking-[0.2em] text-muted-foreground">
                     Step {pi * 2 + si + 1}
                   </span>
@@ -111,12 +121,29 @@ export function HowIWork() {
                   <p key={mode} className="mode-fade mt-2 leading-relaxed text-ink-soft">
                     {CONTENT.method[pi * 2 + si]?.[mode]}
                   </p>
+                  <Link to="/case-library/$slug" params={{ slug: METHOD_STEPS[pi * 2 + si]?.caseSlug ?? CASES[0].slug }} className="quiet-link mode-mono mt-5 inline-block text-xs leading-relaxed text-link">
+                    SEEN IN → {CASES.find((study) => study.slug === METHOD_STEPS[pi * 2 + si]?.caseSlug)?.title}
+                  </Link>
                 </article>
               ))}
             </div>
           </section>
-        ))}
+          );
+        })}
       </div>
+
+      <section className="mt-20">
+        <SectionHeading>What that adds up to</SectionHeading>
+        <div className="border-t border-border">
+          {CONTENT.strengths.map((strength, i) => (
+            <article key={i} className="row-warm grid gap-2 border-b border-border px-1 py-6 sm:grid-cols-[3.5rem_1fr_1.35fr] sm:gap-6 sm:px-3">
+              <span className="mode-mono text-sm text-accent">{sectionNo(i + 1, mode)}</span>
+              <h3 key={mode + "t"} className="mode-fade text-xl leading-snug">{strength.title[mode]}</h3>
+              <p key={mode + "b"} className="mode-fade leading-relaxed text-ink-soft">{strength.body[mode]}</p>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <div className="py-16">
         <Divider />
@@ -127,6 +154,7 @@ export function HowIWork() {
         None of this is rigid. Some projects need three of these and a whiteboard. Some need all six
         twice, and a difficult conversation in the middle.
       </p>
+      <div className="mt-16"><CaseCTA>See it in practice</CaseCTA></div>
     </Page>
   );
 }

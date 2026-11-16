@@ -471,3 +471,30 @@ html[data-mode="engine"] .brand-pill:has(img) { background: oklch(0.964 0.014 79
 
 /* no magnets on the espresso board */
 html[data-mode="engine"] .magnet { display: none; }
+
+/* Small notebook topics and step backlinks share one quiet treatment. */
+.topic-chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.4rem 0.65rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.case-cta {
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 4px;
+  text-underline-offset: 10px;
+  text-decoration-skip-ink: none;
+}
+.case-cta:hover, .case-cta:focus-visible { color: var(--accent); }
+html[data-mode="engine"] .case-cta { text-decoration-thickness: 1px; }
+@media print {
+  .method-diagram path { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
+  .print-doc figure { opacity: 1 !important; transform: none !important; }
+}

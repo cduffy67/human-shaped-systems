@@ -1,50 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { BrandPill, Divider, Label, Plate, PullQuote, SectionHeading } from "@/components/site";
-import { CONTENT, sectionNo } from "@/lib/content";
+import { CONTENT } from "@/lib/content";
+import { CaseCTA } from "@/components/case-cta";
 import { useSiteMode } from "@/lib/mode";
 import { LiveTiles } from "@/components/live-tiles";
 import headshot from "@/assets/headshot.png.asset.json";
 import team from "@/assets/team.png.asset.json";
 
-import stage from "@/assets/stage.png.asset.json";
-import podcast from "@/assets/podcast.png.asset.json";
-import cambridge from "@/assets/cambridge.png.asset.json";
-
-const STRENGTHS = [
-  {
-    no: "01",
-    title: "Value-led solutions",
-    body: "Start from the outcome someone will actually pay for, then work backwards to the build.",
-  },
-  {
-    no: "02",
-    title: "Ambiguity to execution",
-    body: "Turn a vague, half-formed problem into something a team can start on this week.",
-  },
-  {
-    no: "03",
-    title: "Two rooms, one story",
-    body: "Board-level framing upstairs, honest detail with the engineers. Same story either way.",
-  },
-  {
-    no: "04",
-    title: "Pragmatic architecture",
-    body: "Enough structure to hold weight, not so much that nobody can change it later.",
-  },
-  {
-    no: "05",
-    title: "Commercially grounded",
-    body: "An accountant's instinct for what a decision costs, and what it's genuinely worth.",
-  },
-];
 
 const EXPLORING = [
-  { title: "Building with AI tools", note: "less designing, more shipping" },
-  { title: "This digital garden", note: "perpetually unfinished, deliberately" },
-  { title: "Enterprise AI adoption", note: "the human bit, not the model bit" },
-  { title: "Systems thinking", note: "an old habit, newly useful" },
-  { title: "How non-technical people become builders", note: "including me" },
+  "Building with AI tools",
+  "This digital garden",
+  "Enterprise AI adoption",
+  "Systems thinking",
+  "How non-technical people become builders",
 ];
 
 export const Route = createFileRoute("/")({
@@ -145,36 +115,6 @@ export function Home() {
         </div>
       </section>
 
-      {/* Field notes — photography high on the page */}
-      <section className="mx-auto w-full max-w-5xl px-5 pt-20 sm:px-8">
-        <SectionHeading note="presenting, learning, talking">Work in the wild</SectionHeading>
-        <div className="grid gap-8 sm:grid-cols-3">
-          <Plate
-            src={stage.url}
-            alt="Conor speaking on stage at a Salesforce event"
-            ratio="aspect-[4/3]"
-            title="Evangelising"
-            caption="Making complex ideas useful in a room."
-          />
-          <Plate
-            src={podcast.url}
-            alt="Conor in conversation during a filmed interview"
-            ratio="aspect-[4/3]"
-            title="In conversation"
-            caption="Adoption beats features."
-          />
-          <Plate
-            src={cambridge.url}
-            alt="Conor outside a Cambridge college during an AI course"
-            ratio="aspect-[4/3]"
-            position="object-top"
-            title="Learning"
-            caption="Stay the least expert in the room."
-          />
-
-        </div>
-      </section>
-
       <div className="py-20">
         <Divider />
       </div>
@@ -184,14 +124,9 @@ export function Home() {
         <div className="grid gap-10 md:grid-cols-[1.35fr_1fr] md:items-start">
           <div>
             <p className="max-w-2xl text-lg leading-relaxed text-ink-soft">
-              Part storyteller, part systems thinker, part practical builder. Irish, based in
-              London, still learning out loud.
-            </p>
-            <p className="mt-4 max-w-2xl leading-relaxed text-ink-soft">
-              I started in accounting, ended up in consulting, and then spent years in enterprise
-              software watching good ideas die of vagueness. Most of my work now happens on that
-              messy edge where a business problem, a customer story, an architecture diagram and a
-              budget all have to agree with each other.
+              I started in accounting, ended up in consulting, then spent years in enterprise
+              software watching good ideas die of vagueness. Now I work on the messy edge where
+              business problems, architecture and budgets have to agree.
             </p>
           </div>
           <PullQuote>
@@ -201,53 +136,19 @@ export function Home() {
         </div>
       </section>
 
-      {/* Strengths — editorial index */}
-      <section className="mx-auto w-full max-w-5xl px-5 pt-24 sm:px-8">
-        <SectionHeading note="the short version">What I do</SectionHeading>
-        <div className="border-t border-border">
-          {STRENGTHS.map((s, i) => (
-            <article
-              key={s.no}
-              className="row-warm grid gap-2 border-b border-border px-1 py-6 sm:grid-cols-[3.5rem_1fr_1.35fr] sm:gap-6 sm:px-3"
-            >
-              <span className="mode-mono font-display text-sm text-accent/80">{sectionNo(i + 1, mode)}</span>
-              <h3 key={mode + "t"} className="mode-fade text-xl leading-snug">{CONTENT.strengths[i]?.title[mode]}</h3>
-              <p key={mode + "b"} className="mode-fade leading-relaxed text-ink-soft">{CONTENT.strengths[i]?.body[mode]}</p>
-            </article>
-          ))}
+      {/* Currently exploring */}
+      <section className="mx-auto w-full max-w-5xl px-5 pt-20 sm:px-8">
+        <h2 className="mb-5 text-xl">Currently exploring</h2>
+        <div className="flex flex-wrap gap-2">
+          {EXPLORING.map((topic) => <span key={topic} className="topic-chip">{topic}</span>)}
         </div>
-        <p className="mt-6 text-sm text-muted-foreground">
-          Accounting → consulting → Slack → Salesforce → Slack again.{" "}
-          <Link to="/journey" className="quiet-link text-link">
-            The winding version
-          </Link>
-        </p>
-      </section>
-
-      {/* Currently exploring — notebook index */}
-      <section className="mx-auto w-full max-w-5xl px-5 pt-24 sm:px-8">
-        <SectionHeading note="always in progress">Currently exploring</SectionHeading>
-        <ol className="max-w-3xl">
-          {EXPLORING.map((item, i) => (
-            <li
-              key={item.title}
-              className="flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-border/70 py-3.5"
-            >
-              <span className="mode-mono w-12 font-display text-sm text-muted-foreground">
-                {sectionNo(i + 1, mode)}
-              </span>
-              <span className="text-lg">{item.title}</span>
-              <span className="text-sm italic text-muted-foreground">{item.note}</span>
-            </li>
-          ))}
-        </ol>
       </section>
 
       {/* Beyond work */}
-      <section className="mx-auto w-full max-w-5xl px-5 pb-28 pt-24 sm:px-8">
+      <section className="mx-auto w-full max-w-5xl px-5 pb-16 pt-20 sm:px-8">
         <SectionHeading note="the rest of it">Beyond work</SectionHeading>
         <LiveTiles />
-        <div className="grid gap-10 md:grid-cols-[1fr_1fr] md:items-start">
+        <div className="space-y-8">
           <div>
             <p className="max-w-xl text-lg leading-relaxed text-ink-soft">
               Usually running, reading, watching a film, following sport, or somewhere around a
@@ -264,12 +165,13 @@ export function Home() {
               src={team.url}
               alt="Conor with colleagues in the office"
               title="People"
-              ratio="aspect-[4/3]"
+              ratio="aspect-[16/7]"
               position="object-center"
             />
           </div>
         </div>
       </section>
+      <section className="mx-auto w-full max-w-5xl px-5 pb-24 sm:px-8"><CaseCTA>See the work</CaseCTA></section>
     </div>
   );
 }
