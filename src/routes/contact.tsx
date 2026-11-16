@@ -9,8 +9,7 @@ const LINKS = [
     href: "https://www.linkedin.com/in/conor-duffy/",
   },
   { label: "Email", value: "conor_duffy@me.com", href: "mailto:conor_duffy@me.com" },
-  // Swap in the real handle when there's something worth showing.
-  { label: "GitHub", value: "coming soon", href: "#" },
+  { label: "GitHub", value: "github.com/cduffy67", href: "https://github.com/cduffy67" },
 ];
 
 export const Route = createFileRoute("/contact")({
