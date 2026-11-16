@@ -30,7 +30,7 @@ const CHAPTERS: {
     era: "Audit",
     title: "Learning how businesses actually run",
     years: "Internship",
-    body: "Three years of audit across insurance, high tech and financial services. It taught me to read a business through its accounts, so the solutions I design stay grounded in what they cost and what they're worth.",
+    body: "Audit experience across insurance, high tech and financial services. It taught me to read a business through its accounts, so the solutions I design stay grounded in what they cost and what they're worth.",
     tags: ["Financial services", "Assurance", "Detail"],
   },
   {
