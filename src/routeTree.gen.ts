@@ -16,6 +16,8 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as HowIWorkRouteImport } from './routes/how-i-work'
 import { Route as JourneyRouteImport } from './routes/journey'
 import { Route as PrintRouteImport } from './routes/print'
+import { Route as ApiPublicSpotifyCallbackRouteImport } from './routes/api/public/spotify-callback'
+import { Route as ApiPublicStravaCallbackRouteImport } from './routes/api/public/strava-callback'
 import { Route as ApiPublicJobsSnapshotStatsRouteImport } from './routes/api/public/jobs/snapshot-stats'
 
 const IndexRoute = IndexRouteImport.update({
@@ -53,6 +55,17 @@ const PrintRoute = PrintRouteImport.update({
   path: '/print',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicSpotifyCallbackRoute =
+  ApiPublicSpotifyCallbackRouteImport.update({
+    id: '/api/public/spotify-callback',
+    path: '/api/public/spotify-callback',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicStravaCallbackRoute = ApiPublicStravaCallbackRouteImport.update({
+  id: '/api/public/strava-callback',
+  path: '/api/public/strava-callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicJobsSnapshotStatsRoute =
   ApiPublicJobsSnapshotStatsRouteImport.update({
     id: '/api/public/jobs/snapshot-stats',
@@ -68,6 +81,8 @@ export interface FileRoutesByFullPath {
   '/how-i-work': typeof HowIWorkRoute
   '/journey': typeof JourneyRoute
   '/print': typeof PrintRoute
+  '/api/public/spotify-callback': typeof ApiPublicSpotifyCallbackRoute
+  '/api/public/strava-callback': typeof ApiPublicStravaCallbackRoute
   '/api/public/jobs/snapshot-stats': typeof ApiPublicJobsSnapshotStatsRoute
 }
 export interface FileRoutesByTo {
@@ -78,6 +93,8 @@ export interface FileRoutesByTo {
   '/how-i-work': typeof HowIWorkRoute
   '/journey': typeof JourneyRoute
   '/print': typeof PrintRoute
+  '/api/public/spotify-callback': typeof ApiPublicSpotifyCallbackRoute
+  '/api/public/strava-callback': typeof ApiPublicStravaCallbackRoute
   '/api/public/jobs/snapshot-stats': typeof ApiPublicJobsSnapshotStatsRoute
 }
 export interface FileRoutesById {
@@ -89,6 +106,8 @@ export interface FileRoutesById {
   '/how-i-work': typeof HowIWorkRoute
   '/journey': typeof JourneyRoute
   '/print': typeof PrintRoute
+  '/api/public/spotify-callback': typeof ApiPublicSpotifyCallbackRoute
+  '/api/public/strava-callback': typeof ApiPublicStravaCallbackRoute
   '/api/public/jobs/snapshot-stats': typeof ApiPublicJobsSnapshotStatsRoute
 }
 export interface FileRouteTypes {
@@ -101,6 +120,8 @@ export interface FileRouteTypes {
     | '/how-i-work'
     | '/journey'
     | '/print'
+    | '/api/public/spotify-callback'
+    | '/api/public/strava-callback'
     | '/api/public/jobs/snapshot-stats'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -111,6 +132,8 @@ export interface FileRouteTypes {
     | '/how-i-work'
     | '/journey'
     | '/print'
+    | '/api/public/spotify-callback'
+    | '/api/public/strava-callback'
     | '/api/public/jobs/snapshot-stats'
   id:
     | '__root__'
@@ -121,6 +144,8 @@ export interface FileRouteTypes {
     | '/how-i-work'
     | '/journey'
     | '/print'
+    | '/api/public/spotify-callback'
+    | '/api/public/strava-callback'
     | '/api/public/jobs/snapshot-stats'
   fileRoutesById: FileRoutesById
 }
@@ -132,6 +157,8 @@ export interface RootRouteChildren {
   HowIWorkRoute: typeof HowIWorkRoute
   JourneyRoute: typeof JourneyRoute
   PrintRoute: typeof PrintRoute
+  ApiPublicSpotifyCallbackRoute: typeof ApiPublicSpotifyCallbackRoute
+  ApiPublicStravaCallbackRoute: typeof ApiPublicStravaCallbackRoute
   ApiPublicJobsSnapshotStatsRoute: typeof ApiPublicJobsSnapshotStatsRoute
 }
 
@@ -186,6 +213,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrintRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/spotify-callback': {
+      id: '/api/public/spotify-callback'
+      path: '/api/public/spotify-callback'
+      fullPath: '/api/public/spotify-callback'
+      preLoaderRoute: typeof ApiPublicSpotifyCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/strava-callback': {
+      id: '/api/public/strava-callback'
+      path: '/api/public/strava-callback'
+      fullPath: '/api/public/strava-callback'
+      preLoaderRoute: typeof ApiPublicStravaCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/jobs/snapshot-stats': {
       id: '/api/public/jobs/snapshot-stats'
       path: '/api/public/jobs/snapshot-stats'
@@ -204,6 +245,8 @@ const rootRouteChildren: RootRouteChildren = {
   HowIWorkRoute: HowIWorkRoute,
   JourneyRoute: JourneyRoute,
   PrintRoute: PrintRoute,
+  ApiPublicSpotifyCallbackRoute: ApiPublicSpotifyCallbackRoute,
+  ApiPublicStravaCallbackRoute: ApiPublicStravaCallbackRoute,
   ApiPublicJobsSnapshotStatsRoute: ApiPublicJobsSnapshotStatsRoute,
 }
 export const routeTree = rootRouteImport
