@@ -42,9 +42,9 @@ const CHAPTERS: {
     body: "Four years in financial digital transformation: SAP S/4HANA finance programmes for FTSE 100 clients, from design through to deployment, plus CFO labs and workshops. Hands-on delivery of transformational technology for some of the UK's biggest names.",
     tags: ["Finance transformation", "Programme delivery", "Executive rooms"],
     credential: {
-      label: "Chartered (CGMA)",
+      label: "Qualified as a Chartered Global Management Accountant",
       logo: "/logos/cgma.png",
-      title: "Chartered Global Management Accountant (ACMA, CGMA), qualified while at Deloitte",
+      title: "ACMA, CGMA: qualified while at Deloitte",
     },
   },
   {
@@ -172,8 +172,8 @@ export function Journey() {
               <BrandPill label={c.brand} className="self-start" />
               <span className="text-sm text-muted-foreground">{c.years}</span>
               {c.credential ? (
-                <span title={c.credential.title} className="mt-1 inline-flex items-center gap-1.5 self-start text-xs font-medium text-ink-soft">
-                  <img src={c.credential.logo} alt="" className="h-4 w-4 rounded-full" />
+                <span title={c.credential.title} className="mt-1 inline-flex items-start gap-1.5 self-start text-xs font-medium leading-snug text-ink-soft">
+                  <img src={c.credential.logo} alt="" className="mt-px h-4 w-4 shrink-0 rounded-full" />
                   {c.credential.label}
                 </span>
               ) : null}
