@@ -23,6 +23,9 @@ Three moves: messy problem, mapped system, credible solution.
 ## Currently exploring
 Building with AI tools; enterprise AI adoption (the human bit, not the model bit); systems thinking; how non-technical people become builders.
 
+## Built
+- Bag Chancer (https://bag-chancer-ai.lovable.app, code: https://github.com/cduffy67/bag-chancer): AI cabin bag checker for Ireland–UK flights. A vision model estimates a bag's size from one photo; ordinary code applies each airline's cabin rules. Includes an eval of 5 models (Gemini, Claude, GPT) on 21 bags with published dimensions, measuring size error and pass/fail agreement. Finding: the most accurate model didn't make the best decisions.
+
 ## About this site
 A digital garden, versioned in public. Built in Lovable, now developed in code with Claude. Two modes: Boardroom (outcomes) and Engine room (systems). Live tiles pull from Strava, Letterboxd, Spotify and Duolingo. The build log documents every version and what was decided by a human versus done by AI.
 
