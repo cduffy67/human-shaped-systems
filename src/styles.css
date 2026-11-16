@@ -571,3 +571,5 @@ html[data-mode="engine"] .engine-caption { text-transform: none; letter-spacing:
 @keyframes snail-crawl { from { transform: translateX(0); } to { transform: translateX(min(80vw, 900px)); } }
 .hero-flip { transition: transform 500ms ease; transform-style: preserve-3d; }
 @media (prefers-reduced-motion: reduce) { .snail, .hero-flip { animation: none; transition: none; } }
+
+html[data-mode="engine"] { --kpmg-ink: #EFE6D8; }

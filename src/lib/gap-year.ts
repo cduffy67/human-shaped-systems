@@ -7,3 +7,4 @@ export function revealGapYear() { revealed = true; subs.forEach((f) => f()); }
 export function useGapYear() {
   return useSyncExternalStore((f) => { subs.add(f); return () => subs.delete(f); }, () => revealed, () => false);
 }
+export function hideGapYear() { revealed = false; subs.forEach((f) => f()); }

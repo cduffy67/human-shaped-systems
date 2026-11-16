@@ -74,7 +74,7 @@ async function runEgg(cmd: string, ctx: { streak: string; go: ReturnType<typeof 
     case "seance": case "séance": return { text: "no séance required. the seams are documented in ~/build-log.", link: { to: "/build-log", label: "~/build-log" } };
     case "nyc": case "gap year": case "fraunces": revealGapYear(); ctx.go("/journey", "gap-year"); return { text: "found it. a year behind the bar, now back on the record." };
     case "demo": return { text: DEMO[Math.floor(Math.random() * DEMO.length)]! };
-    case "medal": setOffClock(true); ctx.go("/", "beyond"); window.setTimeout(() => window.dispatchEvent(new Event("cd-open-tile")), 400); window.setTimeout(() => document.getElementById("off-clock")?.scrollIntoView({ behavior: "smooth", block: "center" }), 1100); return { text: "Work hard. Celebrate the wins." };
+    case "medal": setOffClock(true); ctx.go("/", "beyond"); [500, 1000].forEach((t) => window.setTimeout(() => window.dispatchEvent(new Event("cd-open-tile")), t)); window.setTimeout(() => document.getElementById("off-clock")?.scrollIntoView({ behavior: "smooth", block: "center" }), 1400); return { text: "Work hard. Celebrate the wins." };
     default: return null;
   }
 }
@@ -123,6 +123,7 @@ function Terminal({ close }: { close: () => void }) {
     void runEgg(cmd, { streak: live.streak, go }).then((egg) => {
       const out = egg ? egg.text : run(cmd);
       if (out) push(out);
+      if (cmd === "medal") window.setTimeout(close, 700);
     });
   };
   return (
@@ -164,7 +165,7 @@ function Palette({ close }: { close: () => void }) {
     { group: "Do", label: "Contact", run: done(() => go("/contact")) },
     { group: "Do", label: "Switch to Engine room", run: done(() => setSiteMode("engine")) },
     { group: "Do", label: "Copy email", hint: EMAIL, run: () => { void navigator.clipboard?.writeText(EMAIL); setNote("Email copied ✓"); } },
-    ...["coffee", "dublin", "hola", "seance", "demo", "medal"].map((c) => ({ group: "Try", label: c, run: () => void runEgg(c, { streak: live.streak, go }).then((r) => r && setCard(r)) })),
+    ...["coffee", "dublin", "hola", "seance", "demo", "medal"].map((c) => ({ group: "Try", label: c, run: () => void runEgg(c, { streak: live.streak, go }).then((r) => { if (c === "medal") close(); else if (r) setCard(r); }) })),
     // eslint-disable-next-line react-hooks/exhaustive-deps
   ], [live.film, live.run, live.streak]);
   useEffect(() => setCard(null), [q]);

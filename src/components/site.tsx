@@ -127,7 +127,7 @@ export function BrandPill({ label, className = "" }: { label: string; className?
     >
       {logo ? <img src={logo.src} alt={logo.wordmark ? label : ""} className={`${logo.h} w-auto`} /> : null}
       {label === "KPMG" ? (
-        <span className="font-sans text-[0.85rem] font-extrabold normal-case tracking-tight" style={{ color: "#00338D" }}>KPMG</span>
+        <span className="font-sans text-[0.85rem] font-extrabold normal-case tracking-tight" style={{ color: "var(--kpmg-ink, #00338D)" }}>KPMG</span>
       ) : logo?.wordmark ? null : label}
     </span>
   );
