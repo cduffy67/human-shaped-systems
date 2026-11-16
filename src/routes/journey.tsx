@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { BrandPill, Divider, Page, PageHeader, Plate, PullQuote, SectionHeading } from "@/components/site";
+import { BrandPill, Divider, Page, PageHeader, Plate, PullQuote, BeatSection } from "@/components/site";
 import stage from "@/assets/stage.png.asset.json";
 import cambridge from "@/assets/cambridge.png.asset.json";
 import podcast from "@/assets/podcast.png.asset.json";
@@ -95,10 +95,10 @@ export function Journey() {
         eyebrow="A bit about me"
         title="Journey"
         intro="A slightly winding route: accounting, consulting, then enterprise software. Each step added a language — numbers, systems, customers — and I still use all three."
-      />
-
+        opener="journey"
+      >
       {/* Stage markers */}
-      <div className="mt-12 flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-border py-4">
+      <div className="beat mt-12 flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-border py-4">
         {["UCD", "KPMG", "Deloitte", "Slack", "Salesforce", "Slack, again", "Cambridge"].map(
           (label, i, arr) => (
             <span key={label} className="flex items-center gap-3">
@@ -112,26 +112,26 @@ export function Journey() {
           ),
         )}
       </div>
+      </PageHeader>
 
       {/* Photography, early */}
-      <section className="mt-20">
-        <SectionHeading note="occasionally in public">Different dimensions</SectionHeading>
+      <BeatSection id="journey-dimensions" title="Different dimensions" note="occasionally in public" className="mt-20">
         <div className="grid gap-8 md:grid-cols-3">
-          <Plate
+          <Plate className="beat"
             src={stage.url}
             alt="Conor speaking on stage at a Salesforce event"
             ratio="aspect-[4/3]"
             title="Evangelising"
             caption="Making complex ideas useful in a room."
           />
-          <Plate
+          <Plate className="beat"
             src={podcast.url}
             alt="Conor in conversation during a filmed interview"
             ratio="aspect-[4/3]"
             title="In conversation"
             caption="Adoption beats features."
           />
-          <Plate
+          <Plate className="beat"
             src={cambridge.url}
             alt="Conor outside a Cambridge college during an AI course"
             ratio="aspect-[4/3]"
@@ -140,20 +140,19 @@ export function Journey() {
             caption="Stay the least expert in the room."
           />
         </div>
-
-      </section>
+      </BeatSection>
 
       <div className="py-20">
         <Divider />
       </div>
 
-      <SectionHeading note="the winding version">Chapter by chapter</SectionHeading>
+      <BeatSection id="journey-chapters" title="Chapter by chapter" note="the winding version">
 
       <ol className="border-t border-border">
         {CHAPTERS.map((c, i) => (
           <li
             key={c.brand}
-            className="grid gap-x-10 gap-y-3 border-b border-border py-9 md:grid-cols-[10rem_1fr]"
+            className="beat grid gap-x-10 gap-y-3 border-b border-border py-9 md:grid-cols-[10rem_1fr]"
           >
             <div className="flex flex-col gap-1.5">
               <span className="mode-mono text-sm text-accent">
@@ -174,11 +173,12 @@ export function Journey() {
         ))}
       </ol>
 
-      <PullQuote className="mt-16 max-w-2xl">
+      <PullQuote className="beat mt-16 max-w-2xl">
         The through-line: numbers taught me what a business cares about, consulting taught me how
         change actually lands, and enterprise software taught me how to build something people will
         still use on a wet Tuesday.
       </PullQuote>
+      </BeatSection>
     </Page>
   );
 }

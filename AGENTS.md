@@ -13,3 +13,4 @@
 - Keep provisional case definitions and method-step anchors in a shared browser-safe module so case links and step backlinks remain aligned.
 - Use an un-nested dynamic case-detail route so the case index does not wrap detail pages.
 - Keep phase illustrations in a How I Work-only component using semantic mode colours and one-shot motion variants, so Journey imagery remains independent.
+- Section entrances go through `Beats`/`BeatSection`/`PageHeader` (src/components/beats.tsx) with timings from src/lib/motion.ts; content lines opt in with the `.beat` class and illustrations wait on `useBeatsReady()`, so both modes share one choreography.

@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useReducedMotion } from "framer-motion";
+import { Beats } from "@/components/beats";
 
 import { CONTENT, sectionNo } from "@/lib/content";
 import { useSiteMode } from "@/lib/mode";
-import { Divider, Label, Page, PageHeader, SectionHeading } from "@/components/site";
+import { BeatSection, Divider, Label, Page, PageHeader } from "@/components/site";
 
 import { MethodDiagram } from "@/components/method-diagram";
 import { PhaseIllustration } from "@/components/phase-illustration";
@@ -76,22 +76,22 @@ export const Route = createFileRoute("/how-i-work")({
 
 export function HowIWork() {
   const mode = useSiteMode();
-  const reduce = useReducedMotion();
   return (
     <Page>
       <PageHeader
         eyebrow="Operating model, loosely held"
         title="How I Work"
         intro="Not a methodology. Three moves, six habits, and the order things usually need to happen in."
-      />
-
-      <MethodDiagram />
+        opener="how"
+      >
+        <MethodDiagram />
+      </PageHeader>
 
       <div className="mt-16 space-y-16">
         {PHASES.map((p, pi) => {
           return (
-          <section key={p.phase}>
-            <div className="flex flex-wrap items-baseline gap-x-5 border-b border-border pb-3">
+          <Beats key={p.phase} id={`how-phase-${pi}`}>
+            <div className="beat flex flex-wrap items-baseline gap-x-5 border-b border-border pb-3">
               <Label>{p.phase}</Label>
               <span className="mode-mono ml-auto font-display text-sm text-muted-foreground">
                 {mode === "engine" ? sectionNo(pi + 1, mode) : `0${pi + 1} / 03`}
@@ -100,9 +100,9 @@ export function HowIWork() {
 
             <div className="mt-7 grid items-center gap-5 lg:grid-cols-[minmax(240px,0.85fr)_2fr] lg:gap-10">
               <PhaseIllustration phase={pi} />
-              <motion.div className="grid gap-x-8 sm:grid-cols-2" initial={reduce ? "show" : "hide"} whileInView="show" viewport={{ once: true, amount: 0.3 }} transition={{ staggerChildren: reduce ? 0 : 0.08 }}>
+              <div className="grid gap-x-8 sm:grid-cols-2">
               {p.steps.map((s, si) => (
-                <motion.article key={s.title} id={METHOD_STEPS[pi * 2 + si]?.id} className="scroll-mt-28 border-b border-border/70 py-6" variants={{ hide: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: reduce ? 0 : 0.45, ease: "easeOut" } } }}>
+                <article key={s.title} id={METHOD_STEPS[pi * 2 + si]?.id} className="beat scroll-mt-28 border-b border-border/70 py-6">
                   <span className="mode-mono font-display text-xs uppercase tracking-[0.2em] text-muted-foreground">
                     Step {pi * 2 + si + 1}
                   </span>
@@ -113,38 +113,49 @@ export function HowIWork() {
                   <Link to="/case-library/$slug" params={{ slug: METHOD_STEPS[pi * 2 + si]?.caseSlug ?? CASES[0].slug }} className="quiet-link mode-mono mt-5 inline-block text-xs leading-relaxed text-link">
                     SEEN IN → {CASES.find((study) => study.slug === METHOD_STEPS[pi * 2 + si]?.caseSlug)?.title}
                   </Link>
-                </motion.article>
+                </article>
               ))}
-              </motion.div>
+              </div>
             </div>
-          </section>
+          </Beats>
           );
         })}
       </div>
 
-      <section className="mt-20">
-        <SectionHeading>What that adds up to</SectionHeading>
-        <div className="grid border-t border-border lg:grid-cols-5 lg:gap-6">
-          {CONTENT.strengths.map((strength, i) => (
-            <article key={i} className="row-warm flex flex-col gap-2 border-b border-border px-1 py-5 lg:border-b-0 lg:px-0">
-              <span className="mode-mono text-sm text-accent">{sectionNo(i + 1, mode)}</span>
-              <h3 key={mode + "t"} className="mode-fade text-base font-bold leading-snug">{strength.title[mode]}</h3>
-              <p key={mode + "b"} className="mode-fade line-clamp-2 text-sm leading-snug text-ink-soft lg:line-clamp-3">{strength.body[mode]}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <BeatSection id="how-what" opener="what" title="What that adds up to" className="mt-20">
+        {mode === "engine" ? (
+          <ul className="border-t border-border">
+            {CONTENT.strengths.map((strength, i) => (
+              <li key={i} className="beat grid gap-1 border-b border-border py-3 text-sm sm:grid-cols-[18rem_1fr] sm:gap-6">
+                <span className="text-accent">{strength.title.engine.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}</span>
+                <span className="text-muted-foreground">{strength.body.engine}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="grid border-t border-border lg:grid-cols-5 lg:gap-6">
+            {CONTENT.strengths.map((strength, i) => (
+              <article key={i} className="beat row-warm flex flex-col gap-2 border-b border-border px-1 py-5 lg:border-b-0 lg:px-0">
+                <span className="mode-mono text-sm text-accent">{sectionNo(i + 1, mode)}</span>
+                <h3 className="text-base font-bold leading-snug">{strength.title[mode]}</h3>
+                <p className="line-clamp-2 text-sm leading-snug text-ink-soft lg:line-clamp-3">{strength.body[mode]}</p>
+              </article>
+            ))}
+          </div>
+        )}
+      </BeatSection>
 
       <div className="py-16">
         <Divider />
       </div>
 
-      <SectionHeading note="the honest caveat">In practice</SectionHeading>
-      <p className="max-w-2xl text-lg leading-relaxed text-ink-soft">
+      <BeatSection id="how-practice" title="In practice" note="the honest caveat">
+      <p className="beat max-w-2xl text-lg leading-relaxed text-ink-soft">
         None of this is rigid. Some projects need three of these and a whiteboard. Some need all six
         twice, and a difficult conversation in the middle.
       </p>
-      <div className="mt-16"><CaseCTA>See it in practice</CaseCTA></div>
+      <div className="beat mt-16"><CaseCTA>See it in practice</CaseCTA></div>
+      </BeatSection>
     </Page>
   );
 }

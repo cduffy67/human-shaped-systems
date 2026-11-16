@@ -306,13 +306,13 @@ html[data-mode="engine"] {
   --card-foreground: #efe6d8;
   --popover: #221a16;
   --popover-foreground: #efe6d8;
-  --primary: oklch(0.66 0.13 45);
+  --primary: #5bf870;
   --primary-foreground: #1a1411;
   --secondary: #2a211c;
   --secondary-foreground: #efe6d8;
   --muted: #2a211c;
   --muted-foreground: color-mix(in oklab, #efe6d8 55%, #1a1411);
-  --accent: oklch(0.66 0.13 45);
+  --accent: #5bf870;
   --accent-foreground: #1a1411;
   --sage: oklch(0.72 0.08 140);
   --border: rgb(239 230 216 / 0.15);
@@ -323,7 +323,7 @@ html[data-mode="engine"] {
   --paper-card: #221a16;
   --shadow-paper: inset 0 0 24px rgb(239 230 216 / 0.04);
   --shadow-paper-lift: inset 0 0 28px rgb(239 230 216 / 0.07);
-  --link: oklch(0.66 0.13 45);
+  --link: #5bf870;
   --toggle-on: #efe6d8;
   --toggle-on-foreground: #1a1411;
   color-scheme: dark;
@@ -492,3 +492,64 @@ html[data-mode="engine"] .case-cta path { stroke-width: 1.5px; }
   .method-diagram path { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
   .print-doc figure { opacity: 1 !important; transform: none !important; }
 }
+
+/* ============ Shared section beats (see src/lib/motion.ts) ============ */
+.font-hand { font-family: "Caveat", "Comic Sans MS", cursive; font-weight: 600; }
+[data-beats] .beat {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 400ms ease, transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--d, 0) * var(--k, 1) * 1ms);
+}
+html[data-mode="engine"] [data-beats] .beat { transform: none; }
+[data-beats] .beat-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 400ms ease, transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--d, 0) * var(--k, 1) * 1ms);
+}
+[data-beats] .beat-char {
+  visibility: hidden;
+  transition: visibility 0s linear calc(var(--d, 0) * var(--k, 1) * 1ms);
+}
+[data-beats] .beat-draw text {
+  stroke-dasharray: 260;
+  stroke-dashoffset: 260;
+  fill-opacity: 0;
+  transition: stroke-dashoffset 400ms ease, fill-opacity 200ms ease 260ms;
+}
+[data-beats] .beat-circle path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 600ms ease-out;
+}
+[data-beats] .beat-circle path { transition-delay: calc(var(--d, 0) * var(--k, 1) * 1ms); }
+:is([data-state="play"], [data-state="done"], [data-state="instant"]) .beat,
+:is([data-state="play"], [data-state="done"], [data-state="instant"]) .beat-word { opacity: 1; transform: none; }
+:is([data-state="play"], [data-state="done"], [data-state="instant"]) .beat-char { visibility: visible; }
+:is([data-state="play"], [data-state="done"], [data-state="instant"]) .beat-draw text { stroke-dashoffset: 0; fill-opacity: 1; }
+:is([data-state="play"], [data-state="done"], [data-state="instant"]) .beat-circle path { stroke-dashoffset: 0; }
+[data-state="instant"] :is(.beat, .beat-word, .beat-char, .beat-draw text, .beat-circle path) { transition: none !important; }
+@media print {
+  [data-beats] :is(.beat, .beat-word) { opacity: 1 !important; transform: none !important; }
+  [data-beats] .beat-char { visibility: visible !important; }
+  [data-beats] :is(.beat-draw text, .beat-circle path) { stroke-dashoffset: 0 !important; fill-opacity: 1 !important; }
+}
+
+/* ============ Engine room typography: JetBrains Mono everywhere ============ */
+html[data-mode="engine"] body,
+html[data-mode="engine"] body * { font-family: "JetBrains Mono", ui-monospace, monospace !important; }
+html[data-mode="engine"] :is(h1, h2, h3) { font-weight: 800; letter-spacing: -0.02em; line-height: 1.12; }
+@media (min-width: 640px) { html[data-mode="engine"] .hero-title { font-size: 56px; } }
+html[data-mode="engine"] main p:not(.no-slash, .beat-opener, .pull-quote p, .paper-card p, [role="dialog"] p, figcaption p) {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #9c9387;
+}
+html[data-mode="engine"] main p:not(.no-slash, .beat-opener, .pull-quote p, .paper-card p, [role="dialog"] p, figcaption p)::before {
+  content: "// ";
+  color: #6f675d;
+}
+html[data-mode="engine"] figcaption::before { content: "// "; color: #6f675d; }
+html[data-mode="engine"] .engine-caption { text-transform: none; letter-spacing: 0; }

@@ -14,14 +14,15 @@ import { useEffect, useState, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { initSiteMode, setSiteMode, useSiteMode, type SiteMode } from "../lib/mode";
+import { CommandPalette, openPalette } from "../components/command-palette";
 
 const NAV = [
-  { to: "/", label: "Home" },
-  { to: "/how-i-work", label: "How I Work" },
-  { to: "/journey", label: "Journey" },
-  { to: "/build-log", label: "Build Log" },
-  { to: "/case-library", label: "Case Library" },
-  { to: "/contact", label: "Contact" },
+  { to: "/", label: "Home", path: "~/home" },
+  { to: "/how-i-work", label: "How I Work", path: "~/how-i-work" },
+  { to: "/journey", label: "Journey", path: "~/journey" },
+  { to: "/build-log", label: "Build Log", path: "~/build-log" },
+  { to: "/case-library", label: "Case Library", path: "~/cases" },
+  { to: "/contact", label: "Contact", path: "~/contact" },
 ] as const;
 
 function NotFoundComponent() {
@@ -103,7 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=IBM+Plex+Mono:wght@400;500&family=JetBrains+Mono:wght@400;500;800&family=Caveat:wght@600&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
@@ -169,31 +170,35 @@ function ModeToggle() {
 
 function Header() {
   const [open, setOpen] = useState(false);
+  const engine = useSiteMode() === "engine";
   const linkBase =
     "quiet-link relative py-1 text-sm text-ink-soft transition-colors hover:text-foreground";
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur">
-      <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-5 py-4 sm:px-8">
-        <Link to="/" className="font-display text-lg tracking-tight">
+      <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
+        <Link to="/" className="whitespace-nowrap font-display text-lg tracking-tight">
           Conor Duffy
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className={`hidden items-center md:flex ${engine ? "gap-4 text-xs" : "gap-5 xl:gap-7"}`}>
           {NAV.map((item) => (
             <Link
               key={item.to}
               to={item.to}
-              className={linkBase}
+              className={`${linkBase} whitespace-nowrap ${engine ? "!text-[0.8rem]" : ""}`}
               activeOptions={{ exact: item.to === "/" }}
               activeProps={{ className: "text-foreground font-medium" }}
             >
-              {item.label}
+              {engine ? item.path : item.label}
             </Link>
           ))}
         </nav>
 
         <div className="flex items-center gap-4">
+          <button type="button" onClick={openPalette} aria-label="Open command menu" title="Command menu (⌘K)" className={`mode-mono hidden rounded-[4px] border border-border px-1.5 py-0.5 text-xs transition-colors hover:text-foreground sm:inline ${engine ? "text-accent" : "text-muted-foreground"}`}>
+            ⌘K
+          </button>
           <ModeToggle />
           <Link
             to="/print"
@@ -201,7 +206,7 @@ function Header() {
             title="Open a printable version of the whole site"
           >
             <FileDown className="h-4 w-4" aria-hidden="true" />
-            <span className="hidden sm:inline">Export PDF</span>
+            <span className="hidden whitespace-nowrap 2xl:inline">Export PDF</span>
           </Link>
 
           <button
@@ -227,7 +232,7 @@ function Header() {
               activeOptions={{ exact: item.to === "/" }}
               activeProps={{ className: "text-foreground font-medium" }}
             >
-              {item.label}
+              {engine ? item.path : item.label}
             </Link>
           ))}
         </nav>
@@ -263,6 +268,7 @@ function RootComponent() {
         </main>
         <Footer />
       </div>
+      <CommandPalette />
     </QueryClientProvider>
   );
 }

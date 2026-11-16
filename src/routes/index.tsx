@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { BrandPill, Divider, Label, Plate, PullQuote, SectionHeading } from "@/components/site";
+import { BeatSection, BrandPill, Divider, Plate, PullQuote } from "@/components/site";
+import { Beats, BeatHeading, BeatOpener } from "@/components/beats";
 import { CONTENT } from "@/lib/content";
 import { CaseCTA } from "@/components/case-cta";
 import { useSiteMode } from "@/lib/mode";
@@ -10,12 +11,13 @@ import team from "@/assets/team.png.asset.json";
 
 
 const EXPLORING = [
-  "Building with AI tools",
-  "This digital garden",
-  "Enterprise AI adoption",
-  "Systems thinking",
-  "How non-technical people become builders",
+  { topic: "Building with AI tools", note: "shipping things, not just slides" },
+  { topic: "This digital garden", note: "you're standing in it" },
+  { topic: "Enterprise AI adoption", note: "why pilots stall, and how they don't" },
+  { topic: "Systems thinking", note: "seeing the whole board" },
+  { topic: "How non-technical people become builders", note: "the new on-ramp" },
 ];
+const kebab = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -46,36 +48,27 @@ export const Route = createFileRoute("/")({
 export function Home() {
   const mode = useSiteMode();
   const engine = mode === "engine";
-  const lines = CONTENT.hero.headline[mode].split("|");
   return (
     <div>
       {/* Hero */}
-      <section className="mx-auto grid w-full max-w-5xl gap-12 px-5 py-16 sm:px-8 sm:py-24 md:grid-cols-[1.25fr_0.75fr] md:items-end">
-        <div className="rise mode-fade" key={mode}>
-          <Label className="mode-mono">{CONTENT.hero.label[mode]}</Label>
-          <h1 className="mt-6 text-[2.75rem] leading-[1.02] sm:text-[4.25rem]">
-            {lines.map((l, i) => (
-              <span key={i}>
-                {l}
-                {i < lines.length - 1 ? <br /> : null}
-              </span>
-            ))}
-            {engine ? <span className="block-cursor" aria-hidden="true" /> : null}
-          </h1>
-          <p className="mt-7 max-w-xl text-lg leading-relaxed text-ink-soft">
+      <Beats id="home-hero" opener="hero" heading={CONTENT.hero.headline[mode]} placeOpener={false} className="mx-auto grid w-full max-w-5xl gap-12 px-5 py-16 sm:px-8 sm:py-24 md:grid-cols-[1.25fr_0.75fr] md:items-end">
+        <div>
+          <BeatOpener />
+          <BeatHeading as="h1" text={CONTENT.hero.headline[mode]} circle="human-shaped" cursor className="hero-title text-[2.75rem] leading-[1.02] sm:text-[4.25rem]" />
+          <p className="beat mt-7 max-w-xl text-lg leading-relaxed text-ink-soft">
             {CONTENT.hero.sub[mode]}
           </p>
-          <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 text-sm">
+          <div className="beat mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 text-sm">
             <Link to="/how-i-work" className="quiet-link font-medium text-link">
-              How I work →
+              {engine ? "[ how_i_work → ]" : "How I work →"}
             </Link>
-            <Link to="/contact" className="quiet-link text-ink-soft">
-              Say hello
+            <Link to="/contact" className={engine ? "quiet-link text-muted-foreground" : "quiet-link text-ink-soft"}>
+              {engine ? "[ say_hello ]" : "Say hello"}
             </Link>
           </div>
         </div>
 
-        <div className="rise">
+        <div className="beat">
           <div className="relative">
             <div className="overflow-hidden rounded-[4px] bg-secondary ring-1 ring-border shadow-[0_20px_50px_-34px_color-mix(in_oklab,var(--foreground)_75%,transparent)]">
               <img
@@ -88,13 +81,11 @@ export function Home() {
             </div>
             <span aria-hidden="true" className="magnet" />
           </div>
-          <p className="mode-mono mt-3 text-xs uppercase tracking-[0.18em] text-muted-foreground">
-            Conor Duffy · Principal SE · London
+          <p className={`no-slash mode-mono engine-caption mt-3 text-xs text-muted-foreground ${engine ? "" : "uppercase tracking-[0.18em]"}`}>
+            {engine ? "// conor · principal_se · ldn" : "Conor Duffy · Principal SE · London"}
           </p>
         </div>
-
-
-      </section>
+      </Beats>
 
       {/* Career strip */}
       <section className="mx-auto w-full max-w-5xl px-5 sm:px-8">
@@ -120,47 +111,56 @@ export function Home() {
       </div>
 
       {/* Positioning */}
-      <section className="mx-auto w-full max-w-5xl px-5 sm:px-8">
+      <Beats id="home-positioning" className="mx-auto w-full max-w-5xl px-5 sm:px-8">
         <div className="grid gap-10 md:grid-cols-[1.35fr_1fr] md:items-start">
           <div>
-            <p className="max-w-2xl text-lg leading-relaxed text-ink-soft">
+            <p className="beat max-w-2xl text-lg leading-relaxed text-ink-soft">
               I started in accounting, ended up in consulting, then spent years in enterprise
               software watching good ideas die of vagueness. Now I work on the messy edge where
               business problems, architecture and budgets have to agree.
             </p>
           </div>
-          <PullQuote>
+          <PullQuote className="beat">
             “The interesting part is rarely the software. It's the people arguing about what the
             software is for.”
           </PullQuote>
         </div>
-      </section>
+      </Beats>
 
       {/* Currently exploring */}
-      <section className="mx-auto w-full max-w-5xl px-5 pt-20 sm:px-8">
-        <h2 className="mb-5 text-xl">Currently exploring</h2>
-        <div className="flex flex-wrap gap-2">
-          {EXPLORING.map((topic) => <span key={topic} className="topic-chip">{topic}</span>)}
-        </div>
-      </section>
+      <BeatSection id="home-exploring" title="Currently exploring" className="mx-auto w-full max-w-5xl px-5 pt-20 sm:px-8">
+        {engine ? (
+          <ul className="border-t border-border">
+            {EXPLORING.map(({ topic, note }) => (
+              <li key={topic} className="beat grid gap-1 border-b border-border py-2.5 text-sm sm:grid-cols-[22rem_1fr] sm:gap-6">
+                <span className="text-accent">{kebab(topic)}</span>
+                <span className="text-muted-foreground">{note}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            {EXPLORING.map(({ topic }) => <span key={topic} className="beat topic-chip">{topic}</span>)}
+          </div>
+        )}
+      </BeatSection>
 
       {/* Beyond work */}
-      <section className="mx-auto w-full max-w-5xl px-5 pb-16 pt-20 sm:px-8">
-        <SectionHeading note="the rest of it">Beyond work</SectionHeading>
-        <LiveTiles />
+      <BeatSection id="home-beyond" opener="tiles" title="Beyond work" note="the rest of it" className="mx-auto w-full max-w-5xl scroll-mt-24 px-5 pb-16 pt-20 sm:px-8">
+        <div id="beyond" className="beat"><LiveTiles /></div>
         <div className="space-y-8">
           <div>
-            <p className="max-w-xl text-lg leading-relaxed text-ink-soft">
+            <p className="beat max-w-xl text-lg leading-relaxed text-ink-soft">
               Usually running, reading, watching a film, following sport, or somewhere around a
               table with friends. Most of the good ideas turn up in one of those places rather than
               at a desk.
             </p>
-            <p className="mt-4 max-w-xl leading-relaxed text-muted-foreground">
+            <p className="beat mt-4 max-w-xl leading-relaxed text-muted-foreground">
               Nothing I've shipped happened alone either. The good bits usually came out of an
               argument with people I like.
             </p>
           </div>
-          <div>
+          <div className="beat">
             <Plate
               src={team.url}
               alt="Conor with colleagues in the office"
@@ -171,7 +171,7 @@ export function Home() {
             />
           </div>
         </div>
-      </section>
+      </BeatSection>
       <section className="mx-auto w-full max-w-5xl px-5 pb-24 sm:px-8"><CaseCTA>See the work</CaseCTA></section>
     </div>
   );

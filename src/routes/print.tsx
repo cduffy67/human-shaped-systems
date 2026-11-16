@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { BeatsInstant } from "@/components/beats";
 
 import { Home } from "./index";
 import { HowIWork } from "./how-i-work";
@@ -63,11 +64,13 @@ function PrintPage() {
         </div>
       </div>
 
+      <BeatsInstant>
       {SECTIONS.map(({ label, Component }) => (
         <section key={label} className="print-section">
           <Component />
         </section>
       ))}
+      </BeatsInstant>
     </div>
   );
 }

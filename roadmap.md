@@ -8,3 +8,7 @@
 - [x] Replace the three photo bands with mode-aware, animated SVG phase illustrations.
 - [x] Place illustrations beside steps on desktop and above them on mobile.
 - [x] Verify both modes, reduced motion and Journey remaining unchanged.
+# Unified motion + Engine room typography
+- [x] Shared beat timings, openers, headings, content lines in both modes
+- [x] Engine room JetBrains Mono, green accent, // body, path nav, ls lists
+- [x] Cmd-K terminal (Engine) and palette (Boardroom)

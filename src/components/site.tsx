@@ -3,6 +3,8 @@ import deloitteLogo from "@/assets/logos/deloitte.svg.asset.json";
 import salesforceLogo from "@/assets/logos/salesforce.svg.asset.json";
 import slackLogo from "@/assets/logos/slack.svg.asset.json";
 import type { ReactNode } from "react";
+import { Beats, BeatHeading } from "@/components/beats";
+import type { OpenerKey } from "@/lib/motion";
 
 export function Page({
   children,
@@ -33,17 +35,25 @@ export function PageHeader({
   eyebrow,
   title,
   intro,
+  opener,
+  children,
 }: {
   eyebrow: string;
   title: string;
   intro?: string;
+  opener?: OpenerKey | undefined;
+  /** Further content lines (mark them `.beat`) that belong to the page's opening section. */
+  children?: ReactNode;
 }) {
   return (
-    <header className="rise max-w-2xl">
-      <Label>{eyebrow}</Label>
-      <h1 className="mt-4 text-4xl leading-[1.08] sm:text-[3.25rem]">{title}</h1>
-      {intro ? <p className="mt-6 text-lg leading-relaxed text-ink-soft">{intro}</p> : null}
-    </header>
+    <Beats id={`page-${title}`} opener={opener} heading={title} as="div">
+      <header className="max-w-2xl">
+        <BeatHeading as="h1" text={title} className="text-4xl leading-[1.08] sm:text-[3.25rem]" />
+        <Label className="beat mt-4 block">{eyebrow}</Label>
+        {intro ? <p className="beat mt-4 text-lg leading-relaxed text-ink-soft">{intro}</p> : null}
+      </header>
+      {children}
+    </Beats>
   );
 }
 
@@ -56,6 +66,19 @@ export function SectionHeading({ children, note }: { children: ReactNode; note?:
         <span className="text-sm italic font-medium text-accent">{note}</span>
       ) : null}
     </div>
+  );
+}
+
+/** A section entering with the shared beats: optional opener, typed/risen heading, `.beat` content. */
+export function BeatSection({ id, opener, title, note, className = "", children }: { id: string; opener?: OpenerKey | undefined; title: string; note?: string; className?: string; children: ReactNode }) {
+  return (
+    <Beats id={id} opener={opener} heading={title} className={className}>
+      <div className="mb-8 flex flex-wrap items-baseline gap-x-5 gap-y-1 border-b border-border pb-3">
+        <BeatHeading text={title} className="text-2xl sm:text-[1.65rem]" />
+        {note ? <span className="beat text-sm italic font-medium text-accent">{note}</span> : null}
+      </div>
+      {children}
+    </Beats>
   );
 }
 

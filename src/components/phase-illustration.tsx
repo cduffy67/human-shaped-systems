@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useSiteMode } from "@/lib/mode";
+import { useBeatsReady } from "@/components/beats";
 
 const NOTES = [
   { x: 39, y: 35, angle: -12 },
@@ -14,6 +15,7 @@ const NOTES = [
 export function PhaseIllustration({ phase }: { phase: number }) {
   const reduce = useReducedMotion();
   const mode = useSiteMode();
+  const ready = useBeatsReady();
   const stroke = {
     hidden: { strokeDashoffset: 1 },
     visible: { strokeDashoffset: 0, transition: { duration: reduce ? 0 : 0.9, ease: "easeInOut" as const } },
@@ -38,8 +40,7 @@ export function PhaseIllustration({ phase }: { phase: number }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       initial={reduce ? "visible" : "hidden"}
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
+      animate={ready ? "visible" : "hidden"}
     >
       {phase === 0 ? <>
         {NOTES.map(({ x, y, angle }, i) => (

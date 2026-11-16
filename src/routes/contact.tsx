@@ -43,7 +43,8 @@ export function Contact() {
         eyebrow="Say hello"
         title="Contact"
         intro="Always happy to chat about enterprise AI, systems thinking, solution architecture, or the odd good coffee."
-      />
+        opener="contact"
+      >
 
       <div className="mt-14 grid max-w-3xl gap-6 sm:grid-cols-2">
         {LINKS.map((link) => (
@@ -52,32 +53,33 @@ export function Contact() {
             href={link.href}
             target={link.href.startsWith("http") ? "_blank" : undefined}
             rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-            className="block"
+            className="beat block"
           >
             <Card>
               <span className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
                 {link.label}
               </span>
-              <p className="quiet-link relative mt-3 inline-block font-display text-lg text-foreground">
+              <p className="no-slash quiet-link relative mt-3 inline-block font-display text-lg text-foreground">
                 {link.value}
               </p>
             </Card>
           </a>
         ))}
-        <Card>
+        <Card className="beat">
           <span className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
             Location
           </span>
-          <p className="mt-3 font-display text-lg text-foreground">London / Ireland</p>
+          <p className="no-slash mt-3 font-display text-lg text-foreground">London / Ireland</p>
         </Card>
       </div>
 
 
-      <p className="mt-10 max-w-2xl leading-relaxed text-ink-soft">
+      <p className="beat mt-10 max-w-2xl leading-relaxed text-ink-soft">
         Based in <span className="font-medium">London</span>, from{" "}
         <span className="font-medium">Ireland</span>. Usually reachable somewhere in between, and
         generally quicker to reply to a good question than a good pitch.
       </p>
+      </PageHeader>
     </Page>
   );
 }

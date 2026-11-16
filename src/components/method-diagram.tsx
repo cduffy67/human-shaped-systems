@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import { useBeatsReady } from "@/components/beats";
 
 // Node 1: wobbly, corners overshoot. Node 2: hand-drawn but nearly straight. Node 3: crisp.
 const NODES = [
@@ -11,6 +12,7 @@ const ARROW_V = "M 20 2 Q 15 18 21 34 M 13 26 L 21 35 L 28 27";
 
 export function MethodDiagram() {
   const reduce = useReducedMotion();
+  const ready = useBeatsReady();
   const t = (i: number) => ({ duration: reduce ? 0 : 0.6, delay: reduce ? 0 : i * 0.45, ease: "easeInOut" as const });
   return (
     <motion.div
@@ -18,8 +20,7 @@ export function MethodDiagram() {
       role="img"
       aria-label="Messy problem, then mapped system, then credible solution: a wobbly sketch, a neater sketch, then a crisp filled box."
       initial={reduce ? "on" : "off"}
-      whileInView="on"
-      viewport={{ once: true, amount: 0.5 }}
+      animate={ready ? "on" : "off"}
     >
       {NODES.map((n, i) => {
         const final = i === 2;
