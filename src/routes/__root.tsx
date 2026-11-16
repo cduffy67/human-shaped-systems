@@ -16,6 +16,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ToggleNudge } from "../components/toggle-nudge";
 import { initSiteMode, setSiteMode, useSiteMode, type SiteMode } from "../lib/mode";
 import { CommandPalette, openPalette } from "../components/command-palette";
+import { HomeChimneys } from "../components/home-chimneys";
 import { EasterEggs, MuteToggle, SnailFooterLine } from "../components/easter-eggs";
 import { Toaster } from "../components/ui/sonner";
 
@@ -180,9 +181,12 @@ function Header() {
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur">
       <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
-        <Link to="/" className="whitespace-nowrap font-display text-lg tracking-tight">
-          Conor Duffy
-        </Link>
+        <span className="inline-flex items-baseline gap-1.5">
+          <Link to="/" className="whitespace-nowrap font-display text-lg tracking-tight">
+            Conor Duffy
+          </Link>
+          <HomeChimneys size="sm" />
+        </span>
 
         <nav className={`hidden items-center md:flex ${engine ? "gap-4 text-xs" : "gap-5 xl:gap-7"}`}>
           {NAV.map((item) => (
@@ -246,7 +250,15 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="border-t border-border">
+    <footer className="relative border-t border-border">
+      {/* `home` easter egg: the chimneys stand on the footer line, above "London / Ireland". */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-full">
+        <div className="relative mx-auto w-full max-w-5xl px-5 sm:px-8">
+          <div className="absolute bottom-0 right-[4.75rem] sm:right-24">
+            <HomeChimneys size="lg" />
+          </div>
+        </div>
+      </div>
       <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-5 py-10 text-sm text-muted-foreground sm:px-8">
         <SnailFooterLine />
         <div className="flex items-center gap-4"><p>London / Ireland</p><MuteToggle /></div>

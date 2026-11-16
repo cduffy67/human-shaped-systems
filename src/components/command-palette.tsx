@@ -6,6 +6,7 @@ import { setOffClock } from "@/components/easter-eggs";
 import { getDuolingoStats, getLetterboxd, getStravaStats } from "@/lib/live/stats.functions";
 import { setSiteMode, useSiteMode } from "@/lib/mode";
 import { revealGapYear } from "@/lib/gap-year";
+import { buildHome } from "@/lib/home";
 
 const HOUR = 60 * 60 * 1000;
 export const EMAIL = "conor_duffy@me.com";
@@ -73,6 +74,8 @@ async function runEgg(cmd: string, ctx: { streak: string; go: ReturnType<typeof 
     case "hola": return { text: `¡hola! llevo ${ctx.streak.replace(/ days$/, "")} días seguidos aprendiendo español.` };
     case "seance": case "séance": return { text: "no séance required. the seams are documented in ~/build-log.", link: { to: "/build-log", label: "~/build-log" } };
     case "nyc": case "gap year": case "fraunces": revealGapYear(); ctx.go("/journey", "gap-year"); return { text: "found it. a year behind the bar, now back on the record." };
+    // Hidden: builds the Poolbeg chimneys beside the name and on the footer line. Deliberately no reply.
+    case "home": case "sandymount": buildHome(); return { text: "" };
     case "demo": return { text: DEMO[Math.floor(Math.random() * DEMO.length)]! };
     case "medal": setOffClock(true); ctx.go("/", "beyond"); [500, 1000].forEach((t) => window.setTimeout(() => window.dispatchEvent(new Event("cd-open-tile")), t)); window.setTimeout(() => document.getElementById("off-clock")?.scrollIntoView({ behavior: "smooth", block: "center" }), 1400); return { text: "Work hard. Celebrate the wins." };
     default: return null;
@@ -124,6 +127,7 @@ function Terminal({ close }: { close: () => void }) {
       const out = egg ? egg.text : run(cmd);
       if (out) push(out);
       if (cmd === "medal") window.setTimeout(close, 700);
+      else if (egg && !egg.text) window.setTimeout(close, 300);
     });
   };
   return (
@@ -176,7 +180,7 @@ function Palette({ close }: { close: () => void }) {
     else if (e.key === "ArrowUp") { e.preventDefault(); setSel((s) => Math.max(s - 1, 0)); }
     else if (e.key === "Enter") {
       const cmd = q.trim().toLowerCase();
-      if (cmd.startsWith("sudo") || !shown.length) void runEgg(cmd, { streak: live.streak, go }).then((r) => setCard(r ?? { text: "nothing matches that." }));
+      if (cmd.startsWith("sudo") || cmd === "home" || cmd === "sandymount" || !shown.length) void runEgg(cmd, { streak: live.streak, go }).then((r) => { if (r && !r.text) close(); else setCard(r ?? { text: "nothing matches that." }); });
       else shown[sel]?.run();
     }
   };
