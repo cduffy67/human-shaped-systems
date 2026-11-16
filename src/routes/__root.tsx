@@ -259,9 +259,10 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-5 py-10 text-sm text-muted-foreground sm:px-8">
-        <SnailFooterLine />
-        <div className="flex items-center gap-4"><a href="/llms.txt" className="quiet-link relative mode-mono text-xs transition-colors hover:text-foreground" title="A plain-text summary of this site for AI assistants">For agents: /llms.txt</a><p>London / Ireland</p><MuteToggle /></div>
+      <div className="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-3 px-5 py-10 text-sm text-muted-foreground sm:grid-cols-3 sm:px-8">
+        <div className="sm:justify-self-start"><SnailFooterLine /></div>
+        <a href="/llms.txt" className="quiet-link relative mode-mono justify-self-start text-xs transition-colors hover:text-foreground sm:justify-self-center" title="A plain-text summary of this site for AI assistants">For agents: /llms.txt</a>
+        <div className="flex items-center gap-4 sm:justify-self-end"><p>London / Ireland</p><MuteToggle /></div>
       </div>
     </footer>
   );
