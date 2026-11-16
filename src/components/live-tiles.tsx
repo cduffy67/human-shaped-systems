@@ -262,7 +262,8 @@ function SpotifyPanel() {
 function StreakCalendar({ days }: { days: string[] }) {
   const set = new Set(days);
   const todayIso = londonToday();
-  const [y, m] = todayIso.split("-").map(Number);
+  const y = Number(todayIso.slice(0, 4));
+  const m = Number(todayIso.slice(5, 7));
   const first = new Date(Date.UTC(y, m - 1, 1));
   const daysInMonth = new Date(Date.UTC(y, m, 0)).getUTCDate();
   const lead = (first.getUTCDay() + 6) % 7;
