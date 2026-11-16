@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { BrandPill, Divider, Label, Plate, SectionHeading } from "@/components/site";
 import { CONTENT, sectionNo } from "@/lib/content";
 import { useSiteMode } from "@/lib/mode";
+import { LiveTiles } from "@/components/live-tiles";
 import headshot from "@/assets/headshot.png.asset.json";
 import team from "@/assets/team.png.asset.json";
 
@@ -241,6 +242,7 @@ export function Home() {
       {/* Beyond work */}
       <section className="mx-auto w-full max-w-5xl px-5 pb-28 pt-24 sm:px-8">
         <SectionHeading note="the rest of it">Beyond work</SectionHeading>
+        <LiveTiles />
         <div className="grid gap-10 md:grid-cols-[1fr_1fr] md:items-start">
           <div>
             <p className="max-w-xl text-lg leading-relaxed text-ink-soft">
