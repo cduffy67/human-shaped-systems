@@ -57,10 +57,10 @@ const BUILT = [
   {
     slug: "fx-deal-desk",
     name: "FX Deal Desk Assistant",
-    tagline: "Bank policy decides. AI does the reading and the writing.",
-    oneLiner: "AI decision support for FX requests at a fictional bank, with policy guardrails the model can't override.",
+    tagline: "Client FX emails in, checked tickets and safe replies out."
+    oneLiner: "Client FX email triage for relationship managers at a fictional bank, with policy guardrails the model can't override.",
     body: [
-      "A relationship manager pastes in a customer's email. AI pulls out the FX request and flags what's missing, a rules engine checks it against the bank's policy and decides the outcome, then AI drafts the decision pack and the reply to the customer. The model never decides anything, and its citations and customer replies are checked in code before anyone sees them.",
+      "Clients send FX requests as messy emails, and someone retypes them. Here a relationship manager pastes the email, AI turns it into a ticket and flags what's missing, the bank's policy (not the AI) decides who needs to review it, and AI drafts a holding reply that's checked in code so it never promises a firm price or leaks internal detail.",
       "Two eval suites run against the live model: 12 test deals and 6 customer emails, three runs each, including prompt-injection attempts. Email extraction passed 99 of 99 field checks; the decision pack passes 35 of 36 runs.",
     ],
     finding:
