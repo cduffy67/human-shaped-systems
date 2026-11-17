@@ -57,7 +57,7 @@ const BUILT = [
   {
     slug: "fx-deal-desk",
     name: "FX Deal Desk Assistant",
-    tagline: "Client FX emails in, checked tickets and safe replies out."
+    tagline: "Client FX emails in, checked tickets and safe replies out.",
     oneLiner: "Client FX email triage for relationship managers at a fictional bank, with policy guardrails the model can't override.",
     body: [
       "Clients send FX requests as messy emails, and someone retypes them. Here a relationship manager pastes the email, AI turns it into a ticket and flags what's missing, the bank's policy (not the AI) decides who needs to review it, and AI drafts a holding reply that's checked in code so it never promises a firm price or leaks internal detail.",
