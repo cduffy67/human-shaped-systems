@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from "react";
+import { findEgg } from "@/lib/hunt";
 
 /**
  * "home" easter egg: once someone runs `home` (or `sandymount`) in ⌘K, the
@@ -22,6 +23,7 @@ function read(): boolean {
 }
 
 export function buildHome() {
+  findEgg("home");
   read();
   if (built) return;
   built = true;

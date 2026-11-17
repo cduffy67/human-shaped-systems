@@ -3,6 +3,8 @@ import { toast } from "sonner";
 import { Volume2, VolumeX } from "lucide-react";
 import { setSiteMode } from "@/lib/mode";
 import { buildHome } from "@/lib/home";
+import { findEgg } from "@/lib/hunt";
+import { EggHunt } from "@/components/egg-hunt";
 import headshot from "@/assets/headshot.png.asset.json";
 import offClockPhoto from "@/assets/marathon_pint.png.asset.json";
 
@@ -50,6 +52,7 @@ function rainSound(seconds: number) {
 const RAIN_EVENT = "cd-rain";
 export function startRain() {
   toast("wet tuesday mode. umbrellas recommended.");
+  findEgg("rain");
   if (reduced()) return;
   rainSound(6);
   window.dispatchEvent(new Event(RAIN_EVENT));
@@ -130,7 +133,7 @@ export function withWet(text: string | undefined, phrase: string): ReactNode {
 export function SnailFooterLine() {
   const [run, setRun] = useState(0);
   const [slow, setSlow] = useState(false);
-  const start = () => { toast("tweaking in progress."); if (!reduced()) { setSlow(false); setRun((r) => r + 1); } };
+  const start = () => { toast("tweaking in progress."); findEgg("snail"); if (!reduced()) { setSlow(false); setRun((r) => r + 1); } };
   return (
     <p className="relative italic">
       Built quickly, tweaked{" "}
@@ -175,7 +178,7 @@ export function EasterEggs() {
     window.addEventListener("keydown", key);
     return () => window.removeEventListener("keydown", key);
   }, []);
-  return <RainCanvas />;
+  return <><RainCanvas /><EggHunt /></>;
 }
 
 export const OFF_CLOCK_CAPTION = "Work hard. Celebrate the wins.";
@@ -193,7 +196,7 @@ export function OffClockPolaroid() {
         ))}
       </div>
       <figcaption className="mt-2 min-h-[1.4em] text-xs text-muted-foreground">{on ? OFF_CLOCK_CAPTION : ""}</figcaption>
-      <button type="button" onClick={() => setOffClock(!on)}
+      <button type="button" onClick={() => { if (!on) findEgg("offclock"); setOffClock(!on); }}
         className="mode-mono mt-1 rounded-sm text-[0.68rem] text-muted-foreground/70 transition-colors hover:text-accent focus-visible:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
         {on ? "↻ on the clock" : "↻ off the clock"}
       </button>

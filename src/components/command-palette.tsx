@@ -7,6 +7,7 @@ import { getDuolingoStats, getLetterboxd, getStravaStats } from "@/lib/live/stat
 import { setSiteMode, useSiteMode } from "@/lib/mode";
 import { revealGapYear } from "@/lib/gap-year";
 import { buildHome } from "@/lib/home";
+import { findEgg, openHunt, type EggId } from "@/lib/hunt";
 
 const HOUR = 60 * 60 * 1000;
 export const EMAIL = "conor_duffy@me.com";
@@ -60,9 +61,13 @@ const DEMO = ["it worked five minutes ago, i swear.", "the demo gods have been c
 type EggResult = { text: string; link?: { to: "/build-log"; label: string } };
 
 /** Shared easter-egg commands; same replies in both rooms. Returns null when not an egg. */
+const EGG_FOR: Record<string, EggId> = { coffee: "coffee", dublin: "dublin", hola: "hola", seance: "seance", "séance": "seance", nyc: "gapyear", "gap year": "gapyear", fraunces: "gapyear", demo: "demo", medal: "offclock" };
 async function runEgg(cmd: string, ctx: { streak: string; go: ReturnType<typeof useActions>["go"] }): Promise<EggResult | null> {
-  if (cmd.startsWith("sudo ") || cmd === "sudo") return { text: "nice try. this incident has been reported." };
+  if (cmd.startsWith("sudo ") || cmd === "sudo") { findEgg("sudo"); return { text: "nice try. this incident has been reported." }; }
+  const egg = EGG_FOR[cmd];
+  if (egg) findEgg(egg);
   switch (cmd) {
+    case "eggs": case "leaderboard": case "easter eggs": openHunt(); return { text: "" };
     case "coffee": window.setTimeout(() => ctx.go("/contact"), 900); return { text: "always up for one. bring a good question." };
     case "dublin": {
       try {
@@ -97,7 +102,7 @@ function Terminal({ close }: { close: () => void }) {
     const cmd = raw.trim().toLowerCase().replace(/\s+/g, " ");
     switch (cmd) {
       case "": return null;
-      case "help": return "help whoami cases method journey stats films run streak contact coffee dublin hola seance demo medal boardroom clear";
+      case "help": return "help whoami cases method journey stats films run streak contact coffee dublin hola seance demo medal eggs boardroom clear";
       case "whoami": return "conor duffy · principal solutions engineer @ slack · london / ireland";
       case "cases": go("/case-library"); return "→ ~/cases";
       case "method": go("/how-i-work"); return "→ ~/how-i-work";
@@ -119,6 +124,7 @@ function Terminal({ close }: { close: () => void }) {
     setLines((l) => [...l, { kind: "in", text: value }]);
     setValue("");
     if (cmd === "rm -rf /" || cmd === "sudo rm -rf /") {
+      findEgg("rmrf");
       RM_FILES.forEach((f, i) => window.setTimeout(() => push(`deleting ${f}…`), (i + 1) * 40));
       window.setTimeout(() => push("just kidding. everything's versioned."), (RM_FILES.length + 1) * 40 + 300);
       return;
@@ -180,7 +186,7 @@ function Palette({ close }: { close: () => void }) {
     else if (e.key === "ArrowUp") { e.preventDefault(); setSel((s) => Math.max(s - 1, 0)); }
     else if (e.key === "Enter") {
       const cmd = q.trim().toLowerCase();
-      if (cmd.startsWith("sudo") || cmd === "home" || cmd === "sandymount" || !shown.length) void runEgg(cmd, { streak: live.streak, go }).then((r) => { if (r && !r.text) close(); else setCard(r ?? { text: "nothing matches that." }); });
+      if (cmd.startsWith("sudo") || ["home", "sandymount", "eggs", "leaderboard"].includes(cmd) || !shown.length) void runEgg(cmd, { streak: live.streak, go }).then((r) => { if (r && !r.text) close(); else setCard(r ?? { text: "nothing matches that." }); });
       else shown[sel]?.run();
     }
   };

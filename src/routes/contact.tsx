@@ -5,6 +5,7 @@ import { ArrowUpRight, Mail, MapPin } from "lucide-react";
 import { siGithub } from "simple-icons";
 
 import { Page, PageHeader } from "@/components/site";
+import { findEgg } from "@/lib/hunt";
 import { useSiteMode } from "@/lib/mode";
 
 // LinkedIn isn't in simple-icons any more, so its mark is inlined here.
@@ -147,7 +148,7 @@ function LocationRow() {
     <li className="beat border-b border-border">
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => { if (!open) findEgg("route"); setOpen((v) => !v); }}
         aria-expanded={open}
         aria-controls="location-route"
         aria-label={`Location: London / Ireland. ${open ? "Hide" : "Show"} the route from Sandymount to New York to London`}

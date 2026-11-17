@@ -572,5 +572,19 @@ html[data-mode="engine"] .engine-caption { text-transform: none; letter-spacing:
 .hero-flip { transition: transform 500ms ease; transform-style: preserve-3d; }
 @media (prefers-reduced-motion: reduce) { .snail, .hero-flip { animation: none; transition: none; } }
 
+/* Easter egg hunt: +1 floats up from wherever the egg was found. */
+.egg-pop { animation: egg-pop 1500ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+@keyframes egg-pop {
+  0% { opacity: 0; transform: translateY(8px) scale(0.6); }
+  15% { opacity: 1; transform: translateY(0) scale(1.15); }
+  30% { transform: translateY(-6px) scale(1); }
+  75% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-48px) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .egg-pop { animation: egg-fade 1500ms ease forwards; }
+  @keyframes egg-fade { 0%, 70% { opacity: 1; } 100% { opacity: 0; } }
+}
+
 /* Engine room: KPMG gets the same light pill and navy wordmark as Boardroom, like the other logos. */
 html[data-mode="engine"] .brand-pill--kpmg { background: oklch(0.964 0.014 79); }

@@ -8,6 +8,7 @@ import { CaseCTA } from "@/components/case-cta";
 import { setSiteMode, useSiteMode } from "@/lib/mode";
 import { LiveTiles, useLiveUpdatedLabel } from "@/components/live-tiles";
 import headshot from "@/assets/headshot.png.asset.json";
+import { findEgg } from "@/lib/hunt";
 import { OFF_CLOCK_CAPTION, OFF_CLOCK_SRC } from "@/components/easter-eggs";
 import team from "@/assets/team.png.asset.json";
 
@@ -58,6 +59,7 @@ export function Home() {
     if (clicks.current.length >= 5 && !heroOff) {
       clicks.current = [];
       setHeroOff(true);
+      findEgg("headshot");
       window.setTimeout(() => setHeroOff(false), 6000);
     }
   };

@@ -258,7 +258,7 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="relative border-t border-border">
+    <footer className="relative border-t border-border pb-12">
       {/* `home` easter egg: the chimneys stand on the footer line, above "London / Ireland". */}
       <div className="pointer-events-none absolute inset-x-0 bottom-full">
         <div className="relative mx-auto w-full max-w-5xl px-5 sm:px-8">
