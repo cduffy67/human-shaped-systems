@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } fro
 import { toast } from "sonner";
 import { Volume2, VolumeX } from "lucide-react";
 import { setSiteMode } from "@/lib/mode";
+import { buildHome } from "@/lib/home";
 import headshot from "@/assets/headshot.png.asset.json";
 import offClockPhoto from "@/assets/marathon_pint.png.asset.json";
 
@@ -169,7 +170,7 @@ export function EasterEggs() {
       const k = e.key.toLowerCase();
       seq = [...seq, k].slice(-KONAMI.length);
       if (seq.join() === KONAMI.join()) { seq = []; startRain(); return; }
-      if (!e.metaKey && !e.ctrlKey && !e.altKey) { if (k === "e") setSiteMode("engine"); else if (k === "b" && seq.at(-2) !== "arrowright") setSiteMode("boardroom"); }
+      if (!e.metaKey && !e.ctrlKey && !e.altKey) { if (k === "e") setSiteMode("engine"); else if (k === "b" && seq.at(-2) !== "arrowright") setSiteMode("boardroom"); else if (k === "s") buildHome(); }
     };
     window.addEventListener("keydown", key);
     return () => window.removeEventListener("keydown", key);
