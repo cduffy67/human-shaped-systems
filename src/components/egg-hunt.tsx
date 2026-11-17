@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSiteMode } from "@/lib/mode";
-import { EGGS, TARGET, TOTAL, closeHunt, formatTime, openHunt, saveEntry, startHuntClock, useHunt } from "@/lib/hunt";
+import { EGGS, TARGET, closeHunt, formatTime, openHunt, saveEntry, startHuntClock, useHunt } from "@/lib/hunt";
 import { getLeaderboard, submitScore, syncEggs } from "@/lib/hunt.functions";
 
 /** +1 pops, the egg counter pill, and the submit / leaderboard panel. Mounted once in EasterEggs. */
@@ -38,7 +38,7 @@ function PlusOne({ x, y, n }: { x: number; y: number; n: number }) {
       <div className="egg-pop" onAnimationEnd={() => setGone(true)}>
       <div className="font-display text-3xl font-semibold leading-none text-accent">+1</div>
       <div className="mode-mono mt-1 whitespace-nowrap text-[0.7rem] text-muted-foreground">
-        {engine ? `egg ${n}/${TOTAL}` : `Easter egg ${n} of ${TOTAL}`}
+        {engine ? `egg #${n}` : `Easter egg #${n}`}
       </div>
     </div>
     </div>
@@ -48,9 +48,9 @@ function PlusOne({ x, y, n }: { x: number; y: number; n: number }) {
 function Pill({ count }: { count: number }) {
   const engine = useSiteMode() === "engine";
   return (
-    <button type="button" onClick={() => openHunt()} aria-label={`Easter egg hunt: ${count} of ${TOTAL} found. Open the leaderboard`}
+    <button type="button" onClick={() => openHunt()} aria-label={`Easter egg hunt: ${count} found. Open the leaderboard`}
       className="mode-mono fixed bottom-4 left-4 z-40 rounded-full border border-border bg-card/90 px-3 py-1.5 text-xs text-muted-foreground shadow-sm backdrop-blur transition-colors hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-      {engine ? `[eggs ${count}/${TOTAL}]` : `🥚 ${count}/${TOTAL}`}
+      {engine ? `[eggs: ${count}]` : `🥚 ${count}`}
     </button>
   );
 }
@@ -64,6 +64,7 @@ function Panel({ which }: { which: "submit" | "board" }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [rank, setRank] = useState<number | null>(null);
+  const [hint, setHint] = useState(() => Math.floor(Math.random() * 100));
   const input = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -89,7 +90,7 @@ function Panel({ which }: { which: "submit" | "board" }) {
     } finally { setBusy(false); }
   };
 
-  const left = TOTAL - h.count;
+  const unfound = EGGS.filter((egg) => !h.found[egg.id]);
   const rows = board.data?.rows ?? [];
   const mine = h.entry?.id;
 
@@ -113,7 +114,7 @@ function Panel({ which }: { which: "submit" | "board" }) {
               </button>
               <button type="button" onClick={() => closeHunt(true)} className="text-muted-foreground hover:text-foreground">{engine ? "skip" : "Not now"}</button>
             </div>
-            <p className="no-slash mt-4 text-xs text-muted-foreground">Only your name and time are saved. {left} more hiding.</p>
+            <p className="no-slash mt-4 text-xs text-muted-foreground">Only your name and time are saved. Plenty more hiding.</p>
           </form>
         ) : (
           <div>
@@ -130,7 +131,7 @@ function Panel({ which }: { which: "submit" | "board" }) {
                 <li key={r.id} className={`flex items-baseline gap-3 py-1.5 ${r.id === mine ? "text-accent" : "text-foreground"}`}>
                   <span className="w-6 text-muted-foreground">{i + 1}</span>
                   <span className="min-w-0 flex-1 truncate">{r.name}{r.id === mine ? (engine ? "  <- you" : " (you)") : ""}</span>
-                  <span className="text-xs text-muted-foreground">{r.eggs}/{TOTAL}</span>
+                  <span className="text-xs text-muted-foreground">{r.eggs} eggs</span>
                   <span className="w-16 text-right">{formatTime(r.ms)}</span>
                 </li>
               ))}
@@ -138,18 +139,18 @@ function Panel({ which }: { which: "submit" | "board" }) {
             {h.count < TARGET ? <p className="no-slash mt-3 text-xs text-muted-foreground">Find {TARGET - h.count} more to get on the board.</p> : null}
             {h.count >= TARGET && !h.entry ? <button type="button" onClick={() => openHunt("submit")} className="quiet-link mt-3 text-xs text-link">Add my name →</button> : null}
 
-            <p className="no-slash mode-mono mt-5 text-xs uppercase tracking-[0.2em] text-muted-foreground">{engine ? `found ${h.count}/${TOTAL}` : `Your finds · ${h.count} of ${TOTAL}`}</p>
+            <p className="no-slash mode-mono mt-5 text-xs uppercase tracking-[0.2em] text-muted-foreground">{engine ? `found: ${h.count}` : `Your finds · ${h.count}`}</p>
             <ul className="mt-2 space-y-1.5">
-              {EGGS.map((egg) => {
-                const got = Boolean(h.found[egg.id]);
-                return (
-                  <li key={egg.id} className="flex gap-2">
-                    <span aria-hidden className={got ? "text-accent" : "text-muted-foreground/60"}>{got ? "✓" : "?"}</span>
-                    <span className={got ? "text-foreground" : "text-muted-foreground"}>{got ? egg.name : egg.hint}</span>
-                  </li>
-                );
-              })}
+              {EGGS.filter((egg) => h.found[egg.id]).map((egg) => (
+                <li key={egg.id} className="flex gap-2"><span aria-hidden className="text-accent">✓</span><span className="text-foreground">{egg.name}</span></li>
+              ))}
             </ul>
+            {unfound.length ? (
+              <div className="mt-4 rounded-[4px] border border-dashed border-border px-3 py-2">
+                <p className="no-slash text-xs text-muted-foreground">{engine ? "// hint: " : "Stuck? "}<span className="text-foreground">{unfound[hint % unfound.length]!.hint}</span></p>
+                {unfound.length > 1 ? <button type="button" onClick={() => setHint((x) => x + 1)} className="mode-mono mt-1 text-[0.7rem] text-muted-foreground hover:text-accent">{engine ? "[ another ]" : "Another hint ↻"}</button> : null}
+              </div>
+            ) : null}
           </div>
         )}
       </div>
