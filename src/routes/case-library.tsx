@@ -55,6 +55,23 @@ export function CaseLibrary() {
 
 const BUILT = [
   {
+    slug: "fx-deal-desk",
+    name: "FX Deal Desk Assistant",
+    tagline: "Bank policy decides. AI does the reading and the writing.",
+    oneLiner: "AI decision support for FX requests at a fictional bank, with policy guardrails the model can't override.",
+    body: [
+      "A relationship manager pastes in a customer's email. AI pulls out the FX request and flags what's missing, a rules engine checks it against the bank's policy and decides the outcome, then AI drafts the decision pack and the reply to the customer. The model never decides anything, and its citations and customer replies are checked in code before anyone sees them.",
+      "Two eval suites run against the live model: 12 test deals and 6 customer emails, three runs each, including prompt-injection attempts. Email extraction passed 99 of 99 field checks; the decision pack passes 35 of 36 runs.",
+    ],
+    finding:
+      "The evals caught a regression I'd otherwise have shipped. Telling the model not to name internal teams in customer emails leaked into its internal analysis too, and its replies started promising firm quotes. The score dropped to 13 of 36 until a scoped prompt fixed it, and the runtime guardrail meant no user ever saw a bad reply.",
+    stack: ["LLM extraction + drafting", "Rules engine", "Eval: 18 cases × 3 runs", "Lovable"],
+    links: [
+      { label: "Try it", href: "https://fx-deal-genius.lovable.app" },
+      { label: "Code on GitHub", href: "https://github.com/cduffy67/fx-deal-genius" },
+    ],
+  },
+  {
     slug: "bag-chancer",
     name: "Bag Chancer",
     tagline: "Will your bag make it through the gate?",
