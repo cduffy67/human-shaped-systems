@@ -13,7 +13,7 @@ export const CONTENT = {
       boardroom:
         "I help leadership teams turn AI ambition into something their people actually use, buy and trust, with a clear line from the first workshop to the business case.",
       engine:
-        "I map what already exists (data, APIs, permissions, the bits held together with cron jobs) then build the smallest version that survives contact with production.",
+        "I map what already exists (data, APIs, permissions, the workarounds people actually rely on), then shape the simplest solution that delivers real value in production.",
     } as Pair,
   },
   strengths: [
@@ -28,7 +28,7 @@ export const CONTENT = {
       title: { boardroom: "Ambiguity to execution", engine: "Spec from chaos" },
       body: {
         boardroom: "Turn a half-formed ambition into a plan a team can start this week.",
-        engine: "Turn a vague ask into a ticketable spec: inputs, outputs, edge cases, owners.",
+        engine: "Turn a vague ask into a spec you can build from: inputs, outputs, edge cases, owners.",
       },
     },
     {
@@ -42,7 +42,7 @@ export const CONTENT = {
       title: { boardroom: "Pragmatic architecture", engine: "Boring architecture, on purpose" },
       body: {
         boardroom: "Enough structure to scale, not so much that it slows you down.",
-        engine: "Events where it matters, plain APIs where it doesn't. Every seam documented so it can change later.",
+        engine: "Agents where judgement helps, deterministic flows where it doesn't, plain APIs underneath. Every interface documented, so it can change later.",
       },
     },
     {
@@ -76,7 +76,7 @@ export const CONTENT = {
     },
     {
       boardroom: "Built so your team can own it after we've gone.",
-      engine: "Clear seams, typed interfaces, a README a stranger can follow. No séance required.",
+      engine: "Clear seams, typed interfaces, and a README a stranger can follow.",
     },
   ] as Pair[],
 };

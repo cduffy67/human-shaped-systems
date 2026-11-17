@@ -17,7 +17,7 @@ const EXPLORING = [
   { topic: "This digital garden", note: "you're standing in it" },
   { topic: "Enterprise AI adoption", note: "why pilots stall, and how they don't" },
   { topic: "Systems thinking", note: "seeing the whole board" },
-  { topic: "How non-technical people become builders", note: "the new on-ramp" },
+  { topic: "How non-technical people become builders", note: "from user to builder" },
 ];
 const kebab = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
