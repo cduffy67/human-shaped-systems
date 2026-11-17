@@ -79,7 +79,7 @@ function ding() {
     if (localStorage.getItem("cd-muted") === "1") return;
     ctx ??= new AudioContext();
     const c = ctx;
-    const engine = document.documentElement.dataset.mode === "engine";
+    const engine = document.documentElement.dataset["mode"] === "engine";
     const notes = engine ? [988, 1319] : [1319, 1976];
     notes.forEach((f, i) => {
       const t = c.currentTime + i * (engine ? 0.08 : 0.11);
