@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      egg_hunt: {
+        Row: {
+          created_at: string
+          eggs: number
+          hidden: boolean
+          id: string
+          ms: number
+          name: string
+          token: string
+        }
+        Insert: {
+          created_at?: string
+          eggs?: number
+          hidden?: boolean
+          id?: string
+          ms: number
+          name: string
+          token?: string
+        }
+        Update: {
+          created_at?: string
+          eggs?: number
+          hidden?: boolean
+          id?: string
+          ms?: number
+          name?: string
+          token?: string
+        }
+        Relationships: []
+      }
       live_stats: {
         Row: {
           captured_at: string

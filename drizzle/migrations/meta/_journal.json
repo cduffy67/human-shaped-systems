@@ -15,6 +15,13 @@
       "when": 1794829780727,
       "tag": "0001_create_oauth_tokens",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794911269684,
+      "tag": "0002_create_egg_hunt",
+      "breakpoints": true
     }
   ]
 }
