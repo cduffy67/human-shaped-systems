@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BuildLogRouteImport } from './routes/build-log'
+import { Route as WorkRouteImport } from './routes/work'
 import { Route as CaseLibraryRouteImport } from './routes/case-library'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as HowIWorkRouteImport } from './routes/how-i-work'
@@ -29,6 +30,11 @@ const IndexRoute = IndexRouteImport.update({
 const BuildLogRoute = BuildLogRouteImport.update({
   id: '/build-log',
   path: '/build-log',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkRoute = WorkRouteImport.update({
+  id: '/work',
+  path: '/work',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CaseLibraryRoute = CaseLibraryRouteImport.update({
@@ -82,6 +88,7 @@ const ApiPublicJobsSnapshotStatsRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/build-log': typeof BuildLogRoute
+  '/work': typeof WorkRoute
   '/case-library': typeof CaseLibraryRoute
   '/contact': typeof ContactRoute
   '/how-i-work': typeof HowIWorkRoute
@@ -95,6 +102,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/build-log': typeof BuildLogRoute
+  '/work': typeof WorkRoute
   '/case-library': typeof CaseLibraryRoute
   '/contact': typeof ContactRoute
   '/how-i-work': typeof HowIWorkRoute
@@ -109,6 +117,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/build-log': typeof BuildLogRoute
+  '/work': typeof WorkRoute
   '/case-library': typeof CaseLibraryRoute
   '/contact': typeof ContactRoute
   '/how-i-work': typeof HowIWorkRoute
@@ -124,6 +133,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/build-log'
+    | '/work'
     | '/case-library'
     | '/contact'
     | '/how-i-work'
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/build-log'
+    | '/work'
     | '/case-library'
     | '/contact'
     | '/how-i-work'
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/build-log'
+    | '/work'
     | '/case-library'
     | '/contact'
     | '/how-i-work'
@@ -164,6 +176,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BuildLogRoute: typeof BuildLogRoute
+  WorkRoute: typeof WorkRoute
   CaseLibraryRoute: typeof CaseLibraryRoute
   ContactRoute: typeof ContactRoute
   HowIWorkRoute: typeof HowIWorkRoute
@@ -189,6 +202,13 @@ declare module '@tanstack/react-router' {
       path: '/build-log'
       fullPath: '/build-log'
       preLoaderRoute: typeof BuildLogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work': {
+      id: '/work'
+      path: '/work'
+      fullPath: '/work'
+      preLoaderRoute: typeof WorkRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/case-library': {
@@ -260,6 +280,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BuildLogRoute: BuildLogRoute,
+  WorkRoute: WorkRoute,
   CaseLibraryRoute: CaseLibraryRoute,
   ContactRoute: ContactRoute,
   HowIWorkRoute: HowIWorkRoute,

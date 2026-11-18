@@ -15,17 +15,15 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ToggleNudge } from "../components/toggle-nudge";
 import { initSiteMode, setSiteMode, useSiteMode, type SiteMode } from "../lib/mode";
-import { CommandPalette, openPalette } from "../components/command-palette";
+import { CommandPalette } from "../components/command-palette";
 import { HomeChimneys } from "../components/home-chimneys";
 import { EasterEggs, MuteToggle, SnailFooterLine } from "../components/easter-eggs";
 import { Toaster } from "../components/ui/sonner";
 
 const NAV = [
   { to: "/", label: "Home", path: "~/home" },
-  { to: "/how-i-work", label: "How I Work", path: "~/how-i-work" },
+  { to: "/work", label: "Work", path: "~/work" },
   { to: "/journey", label: "Journey", path: "~/journey" },
-  { to: "/build-log", label: "Build Log", path: "~/build-log" },
-  { to: "/case-library", label: "Case Library", path: "~/cases" },
   { to: "/contact", label: "Contact", path: "~/contact" },
 ] as const;
 
@@ -211,9 +209,6 @@ function Header() {
         </nav>
 
         <div className="flex items-center gap-4">
-          <button type="button" onClick={openPalette} aria-label="Open command menu" title="Command menu (⌘K)" className={`mode-mono hidden rounded-[4px] border border-border px-1.5 py-0.5 text-xs transition-colors hover:text-foreground sm:inline ${engine ? "text-accent" : "text-muted-foreground"}`}>
-            ⌘K
-          </button>
           <div className="relative"><ModeToggle /><ToggleNudge /></div>
           <Link
             to="/print"
@@ -269,7 +264,10 @@ function Footer() {
       </div>
       <div className="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-3 px-5 py-10 text-sm text-muted-foreground sm:grid-cols-3 sm:px-8">
         <div className="sm:justify-self-start"><SnailFooterLine /></div>
-        <a href="/llms.txt" className="quiet-link relative mode-mono justify-self-start text-xs transition-colors hover:text-foreground sm:justify-self-center" title="A plain-text summary of this site for AI assistants">For agents: /llms.txt</a>
+        <div className="mode-mono flex items-center gap-4 justify-self-start text-xs sm:justify-self-center">
+          <Link to="/build-log" className="quiet-link relative transition-colors hover:text-foreground">Build log</Link>
+          <a href="/llms.txt" className="quiet-link relative transition-colors hover:text-foreground" title="A plain-text summary of this site for AI assistants">For agents: /llms.txt</a>
+        </div>
         <div className="flex items-center gap-4 sm:justify-self-end"><p>London / Ireland</p><MuteToggle /></div>
       </div>
     </footer>

@@ -75,8 +75,8 @@ export function Home() {
             {CONTENT.hero.sub[mode]}
           </p>
           <div className="beat mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 text-sm">
-            <Link to="/how-i-work" className="quiet-link font-medium text-link">
-              {engine ? "[ how_i_work → ]" : "How I work →"}
+            <Link to="/work" className="quiet-link font-medium text-link">
+              {engine ? "[ ls ~/work → ]" : "See what I've built →"}
             </Link>
             <Link to="/contact" className={engine ? "quiet-link text-muted-foreground" : "quiet-link text-ink-soft"}>
               {engine ? "[ say_hello ]" : "Say hello"}

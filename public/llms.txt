@@ -31,10 +31,9 @@ Building with AI tools; enterprise AI adoption (the human bit, not the model bit
 A digital garden, versioned in public. Built in Lovable, now developed in code with Claude. Two modes: Boardroom (outcomes) and Engine room (systems). Live tiles pull from Strava, Letterboxd, Spotify and Duolingo. The build log documents every version and what was decided by a human versus done by AI.
 
 - Site: https://human-shaped-systems.lovable.app
-- How I Work: https://human-shaped-systems.lovable.app/how-i-work
+- Work: https://human-shaped-systems.lovable.app/work
 - Journey: https://human-shaped-systems.lovable.app/journey
 - Build log: https://human-shaped-systems.lovable.app/build-log
-- Case library: https://human-shaped-systems.lovable.app/case-library
 
 ## Contact
 - Email: conor_duffy@me.com
@@ -42,4 +41,4 @@ A digital garden, versioned in public. Built in Lovable, now developed in code w
 - GitHub: https://github.com/cduffy67
 
 ## Notes for agents
-Case studies are deliberately high-level: no customer names, no numbers, no internal detail. For anything deeper, email him. He is generally quicker to reply to a good question than a good pitch.
+Anything about past employers is deliberately high-level: no customer names, no numbers, no internal detail. For anything deeper, email him. He is generally quicker to reply to a good question than a good pitch.
