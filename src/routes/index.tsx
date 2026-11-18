@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import { BeatSection, BrandPill, Divider, Plate, PullQuote } from "@/components/site";
+import { BeatSection, BrandPill, Divider, NextStep, Plate, PullQuote } from "@/components/site";
+import { BUILT } from "@/lib/built";
 import { Beats, BeatHeading, BeatOpener } from "@/components/beats";
 import { CONTENT } from "@/lib/content";
 import { setSiteMode, useSiteMode } from "@/lib/mode";
@@ -74,11 +75,11 @@ export function Home() {
             {CONTENT.hero.sub[mode]}
           </p>
           <div className="beat mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 text-sm">
-            <Link to="/work" className="quiet-link font-medium text-link">
-              {engine ? "[ ls ~/work → ]" : "See what I've built →"}
+            <Link to="/work" className={`rounded-[4px] bg-accent px-5 py-2.5 font-medium text-accent-foreground transition-opacity hover:opacity-90 ${engine ? "mode-mono" : ""}`}>
+              {engine ? "ls ~/work →" : "See the work →"}
             </Link>
-            <Link to="/contact" className={engine ? "quiet-link text-muted-foreground" : "quiet-link text-ink-soft"}>
-              {engine ? "[ say_hello ]" : "Say hello"}
+            <Link to="/journey" className={engine ? "quiet-link text-muted-foreground" : "quiet-link text-ink-soft"}>
+              {engine ? "[ cat journey ]" : "Read the journey"}
             </Link>
           </div>
           <button
@@ -134,6 +135,23 @@ export function Home() {
             Now
           </span>
           <BrandPill label="Slack" />
+        </div>
+      </section>
+
+      {/* Latest builds: the proof, right under the fold */}
+      <section aria-labelledby="latest-builds" className="mx-auto w-full max-w-5xl px-5 pt-12 sm:px-8">
+        <h2 id="latest-builds" className="mode-mono text-[0.72rem] uppercase tracking-[0.22em] text-muted-foreground">
+          {engine ? "$ ls ~/work" : "Latest builds"}
+        </h2>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          {BUILT.map((p) => (
+            <Link key={p.slug} to="/work" hash={p.slug} className="row-warm group block rounded-[6px] border border-border p-5 transition-colors hover:border-accent">
+              <p className="no-slash mode-mono text-xs text-accent">{engine ? `${p.slug}/` : "Side project"}</p>
+              <h3 className="mt-2 text-xl leading-snug">{p.name}</h3>
+              <p className="no-slash mt-1 text-sm leading-relaxed text-ink-soft">{p.oneLiner}</p>
+              <p className="no-slash mode-mono mt-4 text-xs text-muted-foreground transition-colors group-hover:text-accent">{engine ? "[ read → ]" : "How it works and what the evals found →"}</p>
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -206,14 +224,7 @@ export function Home() {
         </div>
       </Beats>
       <Beats id="home-cta" opener="cta" className="mx-auto w-full max-w-5xl px-5 pb-24 sm:px-8">
-        <div className="beat border-t border-border pt-12">
-          <Link
-            to="/work"
-            className="case-cta inline-block max-w-full font-display text-3xl font-extrabold leading-tight sm:text-4xl"
-          >
-            See the work →
-          </Link>
-        </div>
+        <NextStep to="/journey" kicker={engine ? "$ next" : "Next"} label={engine ? "cd ~/journey" : "The journey so far →"} />
       </Beats>
     </div>
   );

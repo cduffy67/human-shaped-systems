@@ -2,6 +2,7 @@ import deloitteLogo from "@/assets/logos/deloitte.svg.asset.json";
 import salesforceLogo from "@/assets/logos/salesforce.svg.asset.json";
 import slackLogo from "@/assets/logos/slack.svg.asset.json";
 import type { ReactNode } from "react";
+import { Link } from "@tanstack/react-router";
 import { Beats, BeatHeading } from "@/components/beats";
 import type { OpenerKey } from "@/lib/motion";
 
@@ -192,3 +193,13 @@ export function PullQuote({
   );
 }
 
+
+/** The big "where next" link at the foot of a page: Home → Journey → Work → Contact. */
+export function NextStep({ to, kicker, label }: { to: "/" | "/work" | "/journey" | "/contact"; kicker: string; label: string }) {
+  return (
+    <div className="beat mt-20 border-t border-border pt-12">
+      <p className="no-slash mode-mono text-xs uppercase tracking-[0.22em] text-muted-foreground">{kicker}</p>
+      <Link to={to} className="case-cta mt-3 inline-block max-w-full font-display text-3xl font-extrabold leading-tight sm:text-4xl">{label}</Link>
+    </div>
+  );
+}

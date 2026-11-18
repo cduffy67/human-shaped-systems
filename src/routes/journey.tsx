@@ -3,7 +3,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { GapYear } from "@/components/gap-year";
 import { Fragment } from "react";
 import { WetTrigger } from "@/components/easter-eggs";
-import { BrandPill, Divider, Page, PageHeader, Plate, PullQuote, BeatSection } from "@/components/site";
+import { BrandPill, Divider, NextStep, Page, PageHeader, Plate, PullQuote, BeatSection } from "@/components/site";
+import { useSiteMode } from "@/lib/mode";
 import stage from "@/assets/stage.png.asset.json";
 import cambridge from "@/assets/cambridge.png.asset.json";
 import podcast from "@/assets/podcast.png.asset.json";
@@ -98,6 +99,7 @@ export const Route = createFileRoute("/journey")({
 });
 
 export function Journey() {
+  const engine = useSiteMode() === "engine";
   return (
     <Page>
       <PageHeader
@@ -196,6 +198,7 @@ export function Journey() {
         change actually lands, and enterprise software taught me how to build something people will
         still use on a <WetTrigger>wet Tuesday</WetTrigger>.
       </PullQuote>
+      <NextStep to="/work" kicker={engine ? "$ next" : "That's the CV"} label={engine ? "cd ~/work" : "Now see what I've built →"} />
       </BeatSection>
     </Page>
   );
