@@ -195,7 +195,7 @@ export function PullQuote({
 
 
 /** The big "where next" link at the foot of a page: Home → Journey → Work → Contact. */
-export function NextStep({ to, kicker, label }: { to: "/" | "/work" | "/journey" | "/contact"; kicker: string; label: string }) {
+export function NextStep({ to, kicker, label }: { to: "/" | "/lab" | "/journey" | "/contact"; kicker: string; label: string }) {
   return (
     <div className="beat mt-20 border-t border-border pt-12">
       <p className="no-slash mode-mono text-xs uppercase tracking-[0.22em] text-muted-foreground">{kicker}</p>

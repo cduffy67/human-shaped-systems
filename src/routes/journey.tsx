@@ -198,7 +198,7 @@ export function Journey() {
         change actually lands, and enterprise software taught me how to build something people will
         still use on a <WetTrigger>wet Tuesday</WetTrigger>.
       </PullQuote>
-      <NextStep to="/work" kicker={engine ? "$ next" : "That's the CV"} label={engine ? "cd ~/work" : "Now see what I've built →"} />
+      <NextStep to="/lab" kicker={engine ? "$ next" : "That's the CV"} label={engine ? "cd ~/lab" : "Now see what I've built →"} />
       </BeatSection>
     </Page>
   );

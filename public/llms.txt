@@ -31,7 +31,7 @@ Building with AI tools; enterprise AI adoption (the human bit, not the model bit
 A digital garden, versioned in public. Built in Lovable, now developed in code with Claude. Two modes: Boardroom (outcomes) and Engine room (systems). Live tiles pull from Strava, Letterboxd, Spotify and Duolingo. The build log documents every version and what was decided by a human versus done by AI.
 
 - Site: https://human-shaped-systems.lovable.app
-- Work: https://human-shaped-systems.lovable.app/work
+- Lab (side projects): https://human-shaped-systems.lovable.app/lab
 - Journey: https://human-shaped-systems.lovable.app/journey
 - Build log: https://human-shaped-systems.lovable.app/build-log
 

@@ -50,7 +50,7 @@ function useLive() {
 function useActions() {
   const navigate = useNavigate();
   return {
-    go: (to: "/" | "/work" | "/journey" | "/build-log" | "/contact", hash?: string) => (hash ? navigate({ to, hash }) : navigate({ to })),
+    go: (to: "/" | "/lab" | "/journey" | "/build-log" | "/contact", hash?: string) => (hash ? navigate({ to, hash }) : navigate({ to })),
     mail: () => window.setTimeout(() => { window.location.href = `mailto:${EMAIL}`; }, 600),
   };
 }
@@ -102,9 +102,9 @@ function Terminal({ close }: { close: () => void }) {
     const cmd = raw.trim().toLowerCase().replace(/\s+/g, " ");
     switch (cmd) {
       case "": return null;
-      case "help": return "help whoami work journey buildlog stats films run streak contact coffee dublin hola seance demo medal eggs boardroom clear";
+      case "help": return "help whoami journey lab buildlog stats films run streak contact coffee dublin hola seance demo medal eggs boardroom clear";
       case "whoami": return "conor duffy · principal solutions engineer @ slack · london / ireland";
-      case "work": case "cases": go("/work"); return "→ ~/work";
+      case "lab": case "work": case "cases": go("/lab"); return "→ ~/lab";
       case "buildlog": case "build log": go("/build-log"); return "→ ~/build-log";
       case "journey": go("/journey"); return "→ ~/journey";
       case "stats": go("/", "beyond"); return "→ ~/home#beyond";
@@ -165,7 +165,7 @@ function Palette({ close }: { close: () => void }) {
   const done = (fn: () => void) => () => { fn(); close(); };
   const items = useMemo(() => [
     { group: "Sections", label: "Home", run: done(() => go("/")) },
-    { group: "Sections", label: "Work", run: done(() => go("/work")) },
+    { group: "Sections", label: "Lab", run: done(() => go("/lab")) },
     { group: "Sections", label: "Journey", run: done(() => go("/journey")) },
     { group: "Sections", label: "Build Log", run: done(() => go("/build-log")) },
     { group: "Right now", label: "Films", hint: `Last watched: ${live.film}`, run: done(() => window.open(LETTERBOXD, "_blank", "noopener")) },

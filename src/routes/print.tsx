@@ -5,7 +5,7 @@ import { BeatsInstant } from "@/components/beats";
 import { Home } from "./index";
 import { Journey } from "./journey";
 import { BuildLog } from "./build-log";
-import { Work } from "./work";
+import { Lab } from "./lab";
 import { Contact } from "./contact";
 
 export const Route = createFileRoute("/print")({
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/print")({
       {
         name: "description",
         content:
-          "A single printable page containing every section of Conor Duffy's site: home, work, journey, build log and contact.",
+          "A single printable page containing every section of Conor Duffy's site: home, journey, lab, build log and contact.",
       },
       { property: "og:title", content: "Conor Duffy · Printable site" },
       {
@@ -32,7 +32,7 @@ export const Route = createFileRoute("/print")({
 
 const SECTIONS = [
   { label: "Home", Component: Home },
-  { label: "Work", Component: Work },
+  { label: "Lab", Component: Lab },
   { label: "Journey", Component: Journey },
   { label: "Build Log", Component: BuildLog },
   { label: "Contact", Component: Contact },

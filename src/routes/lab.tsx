@@ -5,26 +5,26 @@ import { ArrowUpRight } from "lucide-react";
 import { BUILT } from "@/lib/built";
 import { NextStep } from "@/components/site";
 
-export const Route = createFileRoute("/work")({
+export const Route = createFileRoute("/lab")({
   head: () => ({
     meta: [
-      { title: "Work · Conor Duffy" },
+      { title: "Lab · Conor Duffy" },
       { name: "description", content: "Things Conor Duffy has built end to end: live apps, the code, and the evals behind them." },
-      { property: "og:title", content: "Work · Conor Duffy" },
+      { property: "og:title", content: "Lab · Conor Duffy" },
       { property: "og:description", content: "Live apps, the code, and the evals behind them." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "https://human-shaped-systems.lovable.app/work" }],
+    links: [{ rel: "canonical", href: "https://human-shaped-systems.lovable.app/lab" }],
   }),
-  component: Work,
+  component: Lab,
 });
 
-export function Work() {
+export function Lab() {
   const engine = useSiteMode() === "engine";
   return (
     <Page>
-      <PageHeader opener="cases" eyebrow="Built, shipped, tested" title="Work" intro="Things I've built end to end. Each one is live, with the code and the evals behind it.">
+      <PageHeader opener="cases" eyebrow="Built, shipped, tested" title="Lab" intro="Things I've built end to end. Each one is live, with the code and the evals behind it.">
         <BuiltSection engine={engine} />
         <NextStep to="/contact" kicker={engine ? "$ next" : "Like what you see?"} label={engine ? "cd ~/contact" : "Say hello →"} />
       </PageHeader>
