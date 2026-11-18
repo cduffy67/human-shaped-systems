@@ -4,7 +4,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { BeatSection, BrandPill, Divider, Plate, PullQuote } from "@/components/site";
 import { Beats, BeatHeading, BeatOpener } from "@/components/beats";
 import { CONTENT } from "@/lib/content";
-import { CaseCTA } from "@/components/case-cta";
 import { setSiteMode, useSiteMode } from "@/lib/mode";
 import { LiveTiles, useLiveUpdatedLabel } from "@/components/live-tiles";
 import headshot from "@/assets/headshot.png.asset.json";
@@ -207,7 +206,14 @@ export function Home() {
         </div>
       </Beats>
       <Beats id="home-cta" opener="cta" className="mx-auto w-full max-w-5xl px-5 pb-24 sm:px-8">
-        <div className="beat"><CaseCTA>See the work</CaseCTA></div>
+        <div className="beat border-t border-border pt-12">
+          <Link
+            to="/work"
+            className="case-cta inline-block max-w-full font-display text-3xl font-extrabold leading-tight sm:text-4xl"
+          >
+            See the work <span className="whitespace-nowrap">→ Work</span>
+          </Link>
+        </div>
       </Beats>
     </div>
   );

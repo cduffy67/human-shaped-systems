@@ -11,12 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BuildLogRouteImport } from './routes/build-log'
-import { Route as WorkRouteImport } from './routes/work'
 import { Route as CaseLibraryRouteImport } from './routes/case-library'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as HowIWorkRouteImport } from './routes/how-i-work'
 import { Route as JourneyRouteImport } from './routes/journey'
 import { Route as PrintRouteImport } from './routes/print'
+import { Route as WorkRouteImport } from './routes/work'
 import { Route as CaseLibrarySlugRouteImport } from './routes/case-library_.$slug'
 import { Route as ApiPublicSpotifyCallbackRouteImport } from './routes/api/public/spotify-callback'
 import { Route as ApiPublicStravaCallbackRouteImport } from './routes/api/public/strava-callback'
@@ -30,11 +30,6 @@ const IndexRoute = IndexRouteImport.update({
 const BuildLogRoute = BuildLogRouteImport.update({
   id: '/build-log',
   path: '/build-log',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WorkRoute = WorkRouteImport.update({
-  id: '/work',
-  path: '/work',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CaseLibraryRoute = CaseLibraryRouteImport.update({
@@ -60,6 +55,11 @@ const JourneyRoute = JourneyRouteImport.update({
 const PrintRoute = PrintRouteImport.update({
   id: '/print',
   path: '/print',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkRoute = WorkRouteImport.update({
+  id: '/work',
+  path: '/work',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CaseLibrarySlugRoute = CaseLibrarySlugRouteImport.update({
@@ -88,12 +88,12 @@ const ApiPublicJobsSnapshotStatsRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/build-log': typeof BuildLogRoute
-  '/work': typeof WorkRoute
   '/case-library': typeof CaseLibraryRoute
   '/contact': typeof ContactRoute
   '/how-i-work': typeof HowIWorkRoute
   '/journey': typeof JourneyRoute
   '/print': typeof PrintRoute
+  '/work': typeof WorkRoute
   '/case-library/$slug': typeof CaseLibrarySlugRoute
   '/api/public/spotify-callback': typeof ApiPublicSpotifyCallbackRoute
   '/api/public/strava-callback': typeof ApiPublicStravaCallbackRoute
@@ -102,12 +102,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/build-log': typeof BuildLogRoute
-  '/work': typeof WorkRoute
   '/case-library': typeof CaseLibraryRoute
   '/contact': typeof ContactRoute
   '/how-i-work': typeof HowIWorkRoute
   '/journey': typeof JourneyRoute
   '/print': typeof PrintRoute
+  '/work': typeof WorkRoute
   '/case-library/$slug': typeof CaseLibrarySlugRoute
   '/api/public/spotify-callback': typeof ApiPublicSpotifyCallbackRoute
   '/api/public/strava-callback': typeof ApiPublicStravaCallbackRoute
@@ -117,12 +117,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/build-log': typeof BuildLogRoute
-  '/work': typeof WorkRoute
   '/case-library': typeof CaseLibraryRoute
   '/contact': typeof ContactRoute
   '/how-i-work': typeof HowIWorkRoute
   '/journey': typeof JourneyRoute
   '/print': typeof PrintRoute
+  '/work': typeof WorkRoute
   '/case-library_/$slug': typeof CaseLibrarySlugRoute
   '/api/public/spotify-callback': typeof ApiPublicSpotifyCallbackRoute
   '/api/public/strava-callback': typeof ApiPublicStravaCallbackRoute
@@ -133,12 +133,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/build-log'
-    | '/work'
     | '/case-library'
     | '/contact'
     | '/how-i-work'
     | '/journey'
     | '/print'
+    | '/work'
     | '/case-library/$slug'
     | '/api/public/spotify-callback'
     | '/api/public/strava-callback'
@@ -147,12 +147,12 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/build-log'
-    | '/work'
     | '/case-library'
     | '/contact'
     | '/how-i-work'
     | '/journey'
     | '/print'
+    | '/work'
     | '/case-library/$slug'
     | '/api/public/spotify-callback'
     | '/api/public/strava-callback'
@@ -161,12 +161,12 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/build-log'
-    | '/work'
     | '/case-library'
     | '/contact'
     | '/how-i-work'
     | '/journey'
     | '/print'
+    | '/work'
     | '/case-library_/$slug'
     | '/api/public/spotify-callback'
     | '/api/public/strava-callback'
@@ -176,12 +176,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BuildLogRoute: typeof BuildLogRoute
-  WorkRoute: typeof WorkRoute
   CaseLibraryRoute: typeof CaseLibraryRoute
   ContactRoute: typeof ContactRoute
   HowIWorkRoute: typeof HowIWorkRoute
   JourneyRoute: typeof JourneyRoute
   PrintRoute: typeof PrintRoute
+  WorkRoute: typeof WorkRoute
   CaseLibrarySlugRoute: typeof CaseLibrarySlugRoute
   ApiPublicSpotifyCallbackRoute: typeof ApiPublicSpotifyCallbackRoute
   ApiPublicStravaCallbackRoute: typeof ApiPublicStravaCallbackRoute
@@ -202,13 +202,6 @@ declare module '@tanstack/react-router' {
       path: '/build-log'
       fullPath: '/build-log'
       preLoaderRoute: typeof BuildLogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/work': {
-      id: '/work'
-      path: '/work'
-      fullPath: '/work'
-      preLoaderRoute: typeof WorkRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/case-library': {
@@ -246,6 +239,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrintRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/work': {
+      id: '/work'
+      path: '/work'
+      fullPath: '/work'
+      preLoaderRoute: typeof WorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/case-library_/$slug': {
       id: '/case-library_/$slug'
       path: '/case-library/$slug'
@@ -280,12 +280,12 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BuildLogRoute: BuildLogRoute,
-  WorkRoute: WorkRoute,
   CaseLibraryRoute: CaseLibraryRoute,
   ContactRoute: ContactRoute,
   HowIWorkRoute: HowIWorkRoute,
   JourneyRoute: JourneyRoute,
   PrintRoute: PrintRoute,
+  WorkRoute: WorkRoute,
   CaseLibrarySlugRoute: CaseLibrarySlugRoute,
   ApiPublicSpotifyCallbackRoute: ApiPublicSpotifyCallbackRoute,
   ApiPublicStravaCallbackRoute: ApiPublicStravaCallbackRoute,
