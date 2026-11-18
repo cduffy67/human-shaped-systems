@@ -57,11 +57,11 @@ const BUILT = [
   {
     slug: "fx-deal-desk",
     name: "FX Deal Desk Assistant",
-    tagline: "Client FX emails in, checked tickets and safe replies out.",
-    oneLiner: "Client FX email triage for relationship managers at a fictional bank, with policy guardrails the model can't override.",
+    tagline: "A morning's client FX emails in. A policy-ordered queue with safe replies out.",
+    oneLiner: "Client FX inbox triage for relationship managers at a fictional bank, with policy guardrails the model can't override.",
     body: [
-      "Clients send FX requests as messy emails, and someone retypes them. Here a relationship manager pastes the email, AI turns it into a ticket and flags what's missing, the bank's policy (not the AI) decides who needs to review it, and AI drafts a holding reply that's checked in code so it never promises a firm price or leaks internal detail.",
-      "Two eval suites run against the live model: 12 test deals and 6 customer emails, three runs each, including prompt-injection attempts. Email extraction passed 99 of 99 field checks; the decision pack passes 35 of 36 runs.",
+      "Clients send FX requests as messy emails, and someone retypes them one by one. Here a relationship manager pastes their inbox: AI turns each email into a ticket and flags what's missing, the bank's policy (not the AI) sets each ticket's priority and who reviews it, and every client gets a holding reply that's checked in code so it never promises a firm price or leaks internal detail.",
+      "Two eval suites run against the live model (12 test deals and 6 client emails, three runs each, including prompt-injection attempts), plus a deterministic queue-ordering test. Email extraction passed 99 of 99 field checks, replies and policy explanations pass 35 of 36 runs, and the queue lands 7 of 7 tickets in the right order.",
     ],
     finding:
       "The evals caught a regression I'd otherwise have shipped. Telling the model not to name internal teams in customer emails leaked into its internal analysis too, and its replies started promising firm quotes. The score dropped to 13 of 36 until a scoped prompt fixed it, and the runtime guardrail meant no user ever saw a bad reply.",
