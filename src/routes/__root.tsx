@@ -22,8 +22,8 @@ import { Toaster } from "../components/ui/sonner";
 
 const NAV = [
   { to: "/", label: "Home", path: "~/home" },
-  { to: "/work", label: "Work", path: "~/work" },
   { to: "/journey", label: "Journey", path: "~/journey" },
+  { to: "/work", label: "Work", path: "~/work" },
   { to: "/contact", label: "Contact", path: "~/contact" },
 ] as const;
 
