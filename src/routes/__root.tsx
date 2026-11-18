@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useLocation,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -178,6 +179,20 @@ function ModeToggle() {
   );
 }
 
+/** Thin accent line under the header that fills as you follow the route: Home → Journey → Lab → Contact. */
+function RouteProgress() {
+  const path = useLocation({ select: (l) => l.pathname.replace(/\/$/, "") || "/" });
+  const step = NAV.findIndex((n) => n.to === path);
+  return (
+    <div aria-hidden="true" className="absolute inset-x-0 -bottom-px h-[2px]">
+      <div
+        className="h-full bg-accent transition-[width,opacity] duration-500 ease-out motion-reduce:transition-none"
+        style={{ width: step < 0 ? "0%" : `${((step + 1) / NAV.length) * 100}%`, opacity: step < 0 ? 0 : 1 }}
+      />
+    </div>
+  );
+}
+
 function Header() {
   const [open, setOpen] = useState(false);
   const engine = useSiteMode() === "engine";
@@ -186,6 +201,7 @@ function Header() {
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur">
+      <RouteProgress />
       <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
         <span className="inline-flex items-baseline gap-1.5">
           <Link to="/" className="whitespace-nowrap font-display text-lg tracking-tight">
