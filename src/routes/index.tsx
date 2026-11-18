@@ -211,7 +211,7 @@ export function Home() {
             to="/work"
             className="case-cta inline-block max-w-full font-display text-3xl font-extrabold leading-tight sm:text-4xl"
           >
-            See the work <span className="whitespace-nowrap">→ Work</span>
+            See the work →
           </Link>
         </div>
       </Beats>
