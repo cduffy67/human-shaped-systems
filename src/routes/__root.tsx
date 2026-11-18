@@ -149,9 +149,9 @@ function ModeToggle() {
     setSiteMode(m);
     window.setTimeout(() => root.classList.remove("mode-anim"), 450);
   };
-  const opts: { id: SiteMode; label: string }[] = [
-    { id: "boardroom", label: "Boardroom" },
-    { id: "engine", label: "Engine room" },
+  const opts: { id: SiteMode; label: string; short: string }[] = [
+    { id: "boardroom", label: "Plain English", short: "Plain" },
+    { id: "engine", label: "Under the hood", short: "Under the hood" },
   ];
   return (
     <div
@@ -172,7 +172,7 @@ function ModeToggle() {
               : "text-ink-soft hover:text-foreground"
           }`}
         >
-          {o.label}
+          <span className="sm:hidden">{o.short}</span><span className="hidden sm:inline">{o.label}</span>
         </button>
       ))}
     </div>

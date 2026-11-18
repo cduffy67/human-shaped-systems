@@ -89,7 +89,7 @@ export function Home() {
             <span>{engine ? <><span className="text-[#6f675d]">// </span>Want to get out of the weeds?</> : "Want to see under the hood?"}</span>
             <span className="relative inline-flex items-baseline gap-1 text-accent">
               <span aria-hidden="true" className="inline-block transition-transform duration-200 group-hover:translate-x-[3px] group-focus-visible:translate-x-[3px]">→</span>
-              <span>{engine ? "Boardroom" : "Engine room"}</span>
+              <span>{engine ? "Plain English" : "Take a look"}</span>
               <svg aria-hidden="true" viewBox="0 0 100 8" preserveAspectRatio="none" className="pointer-events-none absolute -bottom-1.5 left-0 h-2 w-full fill-none">
                 <path d="M 2 5 Q 25 2 50 4.5 T 98 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" pathLength={1} className="invite-line" />
               </svg>

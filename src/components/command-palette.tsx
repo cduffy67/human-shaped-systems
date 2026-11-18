@@ -102,7 +102,7 @@ function Terminal({ close }: { close: () => void }) {
     const cmd = raw.trim().toLowerCase().replace(/\s+/g, " ");
     switch (cmd) {
       case "": return null;
-      case "help": return "help whoami journey lab buildlog stats films run streak contact coffee dublin hola seance demo medal eggs boardroom clear";
+      case "help": return "help whoami journey lab buildlog stats films run streak contact coffee dublin hola seance demo medal eggs plain clear";
       case "whoami": return "conor duffy · principal solutions engineer @ slack · london / ireland";
       case "lab": case "work": case "cases": go("/lab"); return "→ ~/lab";
       case "buildlog": case "build log": go("/build-log"); return "→ ~/build-log";
@@ -112,7 +112,7 @@ function Terminal({ close }: { close: () => void }) {
       case "run": return `strava: ${live.run}`;
       case "streak": return `duolingo es_ES streak: ${live.streak}`;
       case "contact": go("/contact"); return `→ ~/contact · ${EMAIL}`;
-      case "boardroom": setSiteMode("boardroom"); return "switching to boardroom…";
+      case "plain": case "plain english": case "boardroom": setSiteMode("boardroom"); return "switching to plain english…";
       default: return `command not found: ${cmd}. try 'help'`;
     }
   };
@@ -172,7 +172,7 @@ function Palette({ close }: { close: () => void }) {
     { group: "Right now", label: "Run", hint: live.run, run: done(() => go("/", "beyond")) },
     { group: "Right now", label: "Streak", hint: `🔥 ${live.streak}`, run: done(() => go("/", "beyond")) },
     { group: "Do", label: "Contact", run: done(() => go("/contact")) },
-    { group: "Do", label: "Switch to Engine room", run: done(() => setSiteMode("engine")) },
+    { group: "Do", label: "Switch to Under the hood", run: done(() => setSiteMode("engine")) },
     { group: "Do", label: "Copy email", hint: EMAIL, run: () => { void navigator.clipboard?.writeText(EMAIL); setNote("Email copied ✓"); } },
     ...["coffee", "dublin", "hola", "seance", "demo", "medal"].map((c) => ({ group: "Try", label: c, run: () => void runEgg(c, { streak: live.streak, go }).then((r) => { if (c === "medal") close(); else if (r) setCard(r); }) })),
     // eslint-disable-next-line react-hooks/exhaustive-deps

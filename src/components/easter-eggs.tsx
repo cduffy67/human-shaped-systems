@@ -163,7 +163,7 @@ const KONAMI = ["arrowup", "arrowup", "arrowdown", "arrowdown", "arrowleft", "ar
 export function EasterEggs() {
   useEffect(() => {
     console.log(
-      "%c  ____ ____  \n / ___|  _ \\ \n| |   | | | |\n| |___| |_| |\n \\____|____/ \n\nlooking under the hood? you'd like the engine room. press E.",
+      "%c  ____ ____  \n / ___|  _ \\ \n| |   | | | |\n| |___| |_| |\n \\____|____/ \n\nlooking under the hood? there's a mode for that. press E.",
       "color:#5bf870;background:#1c1714;font-family:monospace;padding:8px 12px;line-height:1.2",
     );
     let seq: string[] = [];

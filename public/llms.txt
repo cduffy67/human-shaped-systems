@@ -28,7 +28,7 @@ Building with AI tools; enterprise AI adoption (the human bit, not the model bit
 - Bag Chancer (https://bag-chancer-ai.lovable.app, code: https://github.com/cduffy67/bag-chancer): AI cabin bag checker for Ireland–UK flights. A vision model estimates a bag's size from one photo; ordinary code applies each airline's cabin rules. Includes an eval of 5 models (Gemini, Claude, GPT) on 21 bags with published dimensions, measuring size error and pass/fail agreement. Finding: the most accurate model didn't make the best decisions.
 
 ## About this site
-A digital garden, versioned in public. Built in Lovable, now developed in code with Claude. Two modes: Boardroom (outcomes) and Engine room (systems). Live tiles pull from Strava, Letterboxd, Spotify and Duolingo. The build log documents every version and what was decided by a human versus done by AI.
+A digital garden, versioned in public. Built in Lovable, now developed in code with Claude. Two modes: Plain English (the default, outcomes) and Under the hood (systems detail, terminal styling). Live tiles pull from Strava, Letterboxd, Spotify and Duolingo. The build log documents every version and what was decided by a human versus done by AI.
 
 - Site: https://human-shaped-systems.lovable.app
 - Lab (side projects): https://human-shaped-systems.lovable.app/lab

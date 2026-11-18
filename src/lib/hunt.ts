@@ -19,7 +19,7 @@ export const EGGS = [
   { id: "seance", name: "No séance", hint: "⌘K: no need to talk to the dead." },
   { id: "demo", name: "Demo gods", hint: "⌘K: what does every SE get asked for?" },
   { id: "sudo", name: "Nice try", hint: "⌘K: ask for admin rights." },
-  { id: "rmrf", name: "Everything's versioned", hint: "Engine room terminal: delete everything." },
+  { id: "rmrf", name: "Everything's versioned", hint: "Under the hood, in the terminal: delete everything." },
 ] as const;
 export type EggId = (typeof EGGS)[number]["id"];
 export const TOTAL = EGGS.length;
