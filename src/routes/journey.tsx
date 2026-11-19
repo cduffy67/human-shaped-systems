@@ -98,6 +98,29 @@ export const Route = createFileRoute("/journey")({
   component: Journey,
 });
 
+const AT_WORK = [
+  {
+    tag: "Slack · partners",
+    title: "UKI Partner Network",
+    body: "Founded Slack's partner network for the UK and Ireland, with global systems integrators including Accenture and Deloitte, and a long tail of boutique partners. Having delivered on the integrator side at Deloitte, I knew what partners need to sell and build with confidence.",
+  },
+  {
+    tag: "Slack · enablement",
+    title: "Slack Campfires",
+    body: "An enablement programme I designed in EMEA to get Salesforce teams confident with Slack. It was later rolled out globally.",
+  },
+  {
+    tag: "Slack · ongoing",
+    title: "Slackbot Skills workshops",
+    body: "Sessions with enterprise customers across the UK and Ireland: getting teams confident with Slackbot, then helping them build skills that run real business processes, well beyond ad hoc chat.",
+  },
+  {
+    tag: "On stage",
+    title: "Keynotes and sessions",
+    body: "Dreamforce in San Francisco, Salesforce World Tour London, the Global Industry Summit in Munich and the Salesforce Ireland Summit in Dublin, plus a host of EMEA events.",
+  },
+] as const;
+
 export function Journey() {
   const engine = useSiteMode() === "engine";
   return (
@@ -123,6 +146,22 @@ export function Journey() {
           ),
         )}
       </div>
+
+      {/* Things built at work: the programmes, not just the job titles */}
+      <section aria-labelledby="built-at-work" className="mt-12">
+        <h2 id="built-at-work" className="beat mode-mono text-[0.72rem] uppercase tracking-[0.22em] text-muted-foreground">
+          {engine ? "$ ls ~/built-at-work" : "Things I've built at work"}
+        </h2>
+        <div className="mt-4 grid gap-px overflow-hidden rounded-[6px] border border-border bg-border sm:grid-cols-2">
+          {AT_WORK.map((w) => (
+            <article key={w.title} className="beat bg-background p-5">
+              <p className="no-slash mode-mono text-xs text-accent">{w.tag}</p>
+              <h3 className="mt-2 text-lg leading-snug">{w.title}</h3>
+              <p className="no-slash mt-2 text-sm leading-relaxed text-ink-soft">{w.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
       </PageHeader>
 
       {/* Photography, early */}
