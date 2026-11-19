@@ -3,6 +3,7 @@ import { Page, PageHeader } from "@/components/site";
 import { useSiteMode } from "@/lib/mode";
 import { ArrowUpRight } from "lucide-react";
 import { BUILT } from "@/lib/built";
+import { ArchDiagram } from "@/components/arch-diagram";
 import { NextStep } from "@/components/site";
 
 export const Route = createFileRoute("/lab")({
@@ -62,6 +63,7 @@ function BuiltSection({ engine }: { engine: boolean }) {
                 </span>
                 {p.finding}
               </p>
+              <ArchDiagram arch={p.arch} engine={engine} />
             </div>
             <aside className="flex flex-col gap-5 md:pt-7">
               <ul className="flex flex-wrap gap-2 md:flex-col md:items-start">

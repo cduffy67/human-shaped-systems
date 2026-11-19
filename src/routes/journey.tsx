@@ -53,7 +53,7 @@ const CHAPTERS: {
     era: "Enterprise",
     title: "Solutions engineering, first lap",
     years: "2022 – 2025",
-    body: "Enterprise financial services and fintech. Grew into one of the leading SEs in EMEA, built the UKI Partner Network from scratch, and designed Slack Campfires, an enablement programme that went on to run globally.",
+    body: "Enterprise financial services and fintech. Grew into one of the leading SEs in EMEA, and built the partner network and Campfires along the way.",
     tags: ["Solution design", "Zero-to-one", "Storytelling"],
   },
   {
