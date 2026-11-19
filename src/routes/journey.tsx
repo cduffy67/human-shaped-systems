@@ -172,14 +172,12 @@ export function Journey() {
             alt="Conor speaking on stage at a Salesforce event"
             ratio="aspect-[4/3]"
             title="Evangelising"
-            caption="Making complex ideas useful in a room."
           />
           <Plate className="beat"
             src={podcast.url}
             alt="Conor in conversation during a filmed interview"
             ratio="aspect-[4/3]"
             title="In conversation"
-            caption="Adoption beats features."
           />
           <Plate className="beat"
             src={cambridge.url}
@@ -187,7 +185,6 @@ export function Journey() {
             ratio="aspect-[4/3]"
             position="object-top"
             title="Learning"
-            caption="Stay the least expert in the room."
           />
         </div>
       </BeatSection>
