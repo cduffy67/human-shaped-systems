@@ -42,9 +42,7 @@ export function Lab() {
 function BuiltSection({ engine }: { engine: boolean }) {
   return (
     <section aria-labelledby="built-heading" className="mt-14">
-      <h2 id="built-heading" className="beat mode-mono text-[0.72rem] uppercase tracking-[0.22em] text-muted-foreground">
-        {engine ? "$ ls ~/built" : "Built · side projects"}
-      </h2>
+      <h2 id="built-heading" className="sr-only">Side projects</h2>
       <div className="mt-4 border-t border-border">
         {BUILT.map((p) => (
           <article key={p.slug} id={p.slug} className="beat scroll-mt-24 grid gap-6 border-b border-border py-9 md:grid-cols-[1fr_15rem]">

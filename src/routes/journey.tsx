@@ -149,7 +149,7 @@ export function Journey() {
 
       {/* Things built at work: the programmes, not just the job titles */}
       <section aria-labelledby="built-at-work" className="mt-12">
-        <h2 id="built-at-work" className="beat mode-mono text-[0.72rem] uppercase tracking-[0.22em] text-muted-foreground">
+        <h2 id="built-at-work" className={`beat mode-mono text-[0.72rem] tracking-[0.22em] text-muted-foreground ${engine ? "" : "uppercase"}`}>
           {engine ? "$ ls ~/built-at-work" : "Things I've built at work"}
         </h2>
         <div className="mt-4 grid gap-px overflow-hidden rounded-[6px] border border-border bg-border sm:grid-cols-2">

@@ -19,7 +19,7 @@ export const OPENERS = {
   how: { engine: "$ ./method --run", boardroom: "OPERATING MODEL" },
   journey: { engine: "$ git log --oneline career", boardroom: "THE WINDING VERSION" },
   buildlog: { engine: "$ git log --stat", boardroom: "BUILT IN PUBLIC" },
-  cases: { engine: "$ ls cases/", boardroom: "SELECTED WORK" },
+  cases: { engine: "$ cd ~/lab", boardroom: "SIDE PROJECTS" },
   contact: { engine: "$ mail conor", boardroom: "NEXT STEPS" },
 } as const;
 export type OpenerKey = keyof typeof OPENERS;
