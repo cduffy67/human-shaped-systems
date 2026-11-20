@@ -82,7 +82,13 @@ export const getSpotifyStats = createServerFn({ method: "GET" }).handler(async (
     const live = await fetchSpotify();
     if (live) return live;
     console.error("spotify: live fetch failed — serving the last saved snapshot");
-    return lastSnapshot<import("./types").SpotifyStats>("spotify");
+    const snap = await lastSnapshot<import("./types").SpotifyStats>("spotify");
+    if (!snap) return snap;
+    // Older snapshots predate the hidden-artist filter, so scrub them too.
+    const hide = /kneecap/i;
+    const top_tracks = (snap.top_tracks ?? []).filter((t) => !hide.test(t.artist));
+    const top_artists = (snap.top_artists ?? []).filter((a) => !hide.test(a.name));
+    return { ...snap, tracks: top_tracks, top_tracks, top_track: top_tracks[0] ?? null, top_artists, artists: top_artists.map((a) => a.name) };
   }),
 );
 

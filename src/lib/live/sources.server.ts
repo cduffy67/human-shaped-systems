@@ -150,6 +150,9 @@ const pickArt = (images: Art) => {
   return [...images].sort((a, b) => Math.abs((a.width ?? 0) - 300) - Math.abs((b.width ?? 0) - 300))[0]?.url ?? null;
 };
 
+/** Artists kept off the site's Spotify tile (matched case-insensitively on any credited artist). */
+export const HIDDEN_ARTISTS = /kneecap/i;
+
 export async function fetchSpotify(): Promise<SpotifyStats | null> {
   const token = await getAccessToken("spotify");
   if (!token) return null;
@@ -163,17 +166,24 @@ export async function fetchSpotify(): Promise<SpotifyStats | null> {
     return res.json();
   };
 
-  const trackData = await get("/me/top/tracks?time_range=short_term&limit=5");
-  const artistData = await get("/me/top/artists?time_range=short_term&limit=3");
+  // Ask for a few extra so the tile stays full after hidden artists are filtered out.
+  const trackData = await get("/me/top/tracks?time_range=short_term&limit=10");
+  const artistData = await get("/me/top/artists?time_range=short_term&limit=6");
   if (!trackData && !artistData) return null;
 
-  const top_tracks: SpotifyTrack[] = (trackData?.items ?? []).map((t: any) => ({
+  const top_tracks: SpotifyTrack[] = (trackData?.items ?? [])
+    .filter((t: any) => !(t.artists ?? []).some((a: any) => HIDDEN_ARTISTS.test(a?.name ?? "")))
+    .slice(0, 5)
+    .map((t: any) => ({
     title: t.name,
     artist: t.artists?.[0]?.name ?? "",
     art: pickArt(t.album?.images),
     url: t.external_urls?.spotify ?? null,
   }));
-  const top_artists: SpotifyArtist[] = (artistData?.items ?? []).map((a: any) => ({
+  const top_artists: SpotifyArtist[] = (artistData?.items ?? [])
+    .filter((a: any) => !HIDDEN_ARTISTS.test(a?.name ?? ""))
+    .slice(0, 3)
+    .map((a: any) => ({
     name: a.name,
     url: a.external_urls?.spotify ?? null,
     image: pickArt(a.images),
